@@ -34,13 +34,11 @@ public class PostDao {
         return Optional.of(post);
     }
 
-    @Transactional
     public Post find(long id) {
         return em.find(Post.class, id);
     }
 
-    @Transactional
-    public List<Post> getAll() {
+    public List<Post> findAll() {
         return em.createQuery(FIND_ALL_MESSAGE).getResultList();
     }
 

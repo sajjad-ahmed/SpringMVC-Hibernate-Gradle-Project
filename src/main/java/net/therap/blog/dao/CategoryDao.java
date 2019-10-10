@@ -1,10 +1,5 @@
 package net.therap.blog.dao;
 
-/**
- * @author sajjad.ahmed
- * @since 9/20/19.
- */
-
 import net.therap.blog.domain.Category;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +10,10 @@ import javax.persistence.PersistenceException;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @author sajjad.ahmed
+ * @since 9/20/19.
+ */
 @Repository
 public class CategoryDao {
 
@@ -34,13 +33,11 @@ public class CategoryDao {
         return Optional.of(category);
     }
 
-    @Transactional
     public Category find(long id) {
         return em.find(Category.class, id);
     }
 
-    @Transactional
-    public List<Category> getAll() {
+    public List<Category> findAll() {
         return em.createQuery(FIND_ALL_CATEGORY).getResultList();
     }
 

@@ -16,12 +16,6 @@ import java.util.Optional;
 @Repository
 public class MessageDao {
 
-    private static final String FIND_ALL_MESSAGE = "FROM Message";
-
-    private static final String GET_ALL_SENT_MESSAGES = "FROM Message WHERE sender_id = :senderId";
-
-    private static final String GET_ALL_RECEIVED_MESSAGES = "FROM Message WHERE receiver_id = :receiverId";
-
     @PersistenceContext
     EntityManager em;
 
@@ -36,14 +30,12 @@ public class MessageDao {
         return Optional.of(message);
     }
 
-    @Transactional
     public Message find(long id) {
         return em.find(Message.class, id);
     }
 
-    @Transactional
-    public List<Message> getAll() {
-        return em.createQuery(FIND_ALL_MESSAGE).getResultList();
+    public List<Message> findAll() {
+        return em.createNamedQuery("Message.findAll", Message.class).getResultList();
     }
 
     @Transactional
@@ -58,9 +50,9 @@ public class MessageDao {
         }
     }
 
-    public List<Message> sentMessages(long id) {
+    public List<Message> findSentMessages(long id) {
         try {
-            TypedQuery<Message> query = em.createQuery(GET_ALL_SENT_MESSAGES, Message.class);
+            TypedQuery<Message> query = em.createNamedQuery("Message.findSentMessages", Message.class);
             query.setParameter("senderId", id);
             return query.getResultList();
         } catch (NoResultException e) {
@@ -68,9 +60,9 @@ public class MessageDao {
         }
     }
 
-    public List<Message> receivedMessages(long id) {
+    public List<Message> findReceivedMessages(long id) {
         try {
-            TypedQuery<Message> query = em.createQuery(GET_ALL_RECEIVED_MESSAGES, Message.class);
+            TypedQuery<Message> query = em.createNamedQuery("Message.findReceivedMessages", Message.class);
             query.setParameter("receiverId", id);
             return query.getResultList();
         } catch (NoResultException e) {

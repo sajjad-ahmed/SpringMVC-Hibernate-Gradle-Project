@@ -34,13 +34,11 @@ public class CommentDao {
         return Optional.of(comment);
     }
 
-    @Transactional
     public Comment find(long id) {
         return em.find(Comment.class, id);
     }
 
-    @Transactional
-    public List<Comment> getAll() {
+    public List<Comment> findAll() {
         return em.createQuery(FIND_ALL_MESSAGE).getResultList();
     }
 

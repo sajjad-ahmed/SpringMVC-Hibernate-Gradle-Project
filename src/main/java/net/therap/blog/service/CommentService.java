@@ -22,7 +22,7 @@ public class CommentService {
     }
 
     public List<Comment> getAll() {
-        return commentDao.getAll();
+        return commentDao.findAll();
     }
 
     public void delete(long id) {

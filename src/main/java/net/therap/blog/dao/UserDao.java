@@ -34,13 +34,11 @@ public class UserDao {
         return Optional.of(user);
     }
 
-    @Transactional
     public User find(long id) {
         return em.find(User.class, id);
     }
 
-    @Transactional
-    public List<User> getAll() {
+    public List<User> findAll() {
         return em.createQuery(FIND_ALL_USERS).getResultList();
     }
 

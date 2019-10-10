@@ -22,7 +22,7 @@ public class MessageService {
     }
 
     public List<Message> getAll() {
-        return messageDao.getAll();
+        return messageDao.findAll();
     }
 
     public void delete(long id) {
@@ -34,13 +34,13 @@ public class MessageService {
     }
 
     public List<Message> getSentMessages(long userId) {
-        List<Message> messages = messageDao.sentMessages(userId);
+        List<Message> messages = messageDao.findSentMessages(userId);
         messages.removeIf(x -> x.is_deleted);
         return messages;
     }
 
     public List<Message> getReceivedMessages(long userId) {
-        List<Message> messages = messageDao.receivedMessages(userId);
+        List<Message> messages = messageDao.findReceivedMessages(userId);
         messages.removeIf(x -> x.is_deleted);
         return messages;
     }

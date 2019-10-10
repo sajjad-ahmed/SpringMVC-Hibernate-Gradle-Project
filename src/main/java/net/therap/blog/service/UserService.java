@@ -43,14 +43,14 @@ public class UserService {
 
     public List<User> getAll(HttpSession session) {
         if (hasAccess(session)) {
-            return userDao.getAll();
+            return userDao.findAll();
         } else {
             return null;
         }
     }
 
     public List<User> getAllExceptSelf(long id) {
-        List<User> users = userDao.getAll();
+        List<User> users = userDao.findAll();
         users.removeIf(i -> i.getId() == id);
         return users;
     }

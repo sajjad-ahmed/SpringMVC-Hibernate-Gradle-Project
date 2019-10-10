@@ -65,6 +65,14 @@ CREATE TABLE comment (
   )
 );
 
+CREATE TABLE post_category (
+  post_id BIGINT(20) NOT NULL,
+  category_id BIGINT(20) NOT NULL,
+  KEY fk_category_id (category_id),
+  KEY fk_post_id (post_id),
+  CONSTRAINT fk_category_id FOREIGN KEY (category_id) REFERENCES category (id),
+  CONSTRAINT fk_post_id FOREIGN KEY (post_id) REFERENCES post (id)
+);
 
 ALTER TABLE post ADD CONSTRAINT fk_post_created_by FOREIGN KEY (created_by)
 REFERENCES user (id);

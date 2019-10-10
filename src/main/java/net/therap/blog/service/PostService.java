@@ -25,13 +25,13 @@ public class PostService {
     }
 
     public List<Post> getAll() {
-        return postDao.getAll();
+        return postDao.findAll();
     }
 
 
     public List<Post> getPostByAccess(HttpSession session) {
         String userRole = SessionUtil.getUserRole(session);
-        List<Post> posts = postDao.getAll();
+        List<Post> posts = postDao.findAll();
         if (userRole.equals(Constants.ROLES[0])) {
             return posts;
         } else if (userRole.equals(Constants.ROLES[1])) {

@@ -17,33 +17,49 @@ import java.util.Date;
 
 @Entity
 @Table(name = "message")
+@NamedQueries({
+        @NamedQuery(name="Message.findAll",
+                query="FROM Message"),
+        @NamedQuery(name="Message.findSentMessages",
+                query="FROM Message WHERE sender_id = :senderId"),
+        @NamedQuery(name="Message.findReceivedMessages",
+                query="FROM Message WHERE receiver_id = :receiverId"),
+})
 public class Message implements Serializable {
 
     private static final long serialVersionUID = 1l;
-    @Column(columnDefinition = "TINYINT")
-    @Type(type = "org.hibernate.type.NumericBooleanType")
-    public boolean is_seen;
-    @Column(columnDefinition = "TINYINT")
-    @Type(type = "org.hibernate.type.NumericBooleanType")
-    public boolean is_deleted;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     @NotEmpty(message = "{NotEmpty.message.body}")
     @Length(min = 1, max = 200)
     private String body;
+
     @OneToOne
     @JoinColumn(name = "sender_id")
     private User sender;
+
     @OneToOne
     @JoinColumn(name = "receiver_id")
     private User receiver;
+
     @CreationTimestamp
     @Column(name = "created_at")
     private Date createdAt;
+
     @UpdateTimestamp
     @Column(name = "updated_at")
     private Date updatedAt;
+
+    @Column(columnDefinition = "TINYINT")
+    @Type(type = "org.hibernate.type.NumericBooleanType")
+    public boolean is_deleted;
+
+    @Column(columnDefinition = "TINYINT")
+    @Type(type = "org.hibernate.type.NumericBooleanType")
+    public boolean is_seen;
 
     public Message() {
     }

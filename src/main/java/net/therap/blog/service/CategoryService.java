@@ -22,7 +22,7 @@ public class CategoryService {
     }
 
     public List<Category> getAll() {
-        return categoryDao.getAll();
+        return categoryDao.findAll();
     }
 
     public void delete(long id) {

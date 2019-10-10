@@ -39,8 +39,7 @@ dependencies {
 
     compile "javax.servlet:jstl:1.2"
     compile "javax.servlet:servlet-api:3.0-alpha-1"
-    compile "javax.validation:validation-api:1.0.0.GA"
-
+    compile group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
     compile "mysql:mysql-connector-java:8.0.11"
 
     compile "org.hibernate:hibernate-core:$hibernateVersion"
@@ -50,7 +49,7 @@ dependencies {
     compile "org.hibernate:hibernate-validator-annotation-processor:$hibernateVersion"
 
     //lesson learned: Hibernate 4.3 this brought the newer spec (2.1). Thus NEVER EVER use 2.0
-    compile "org.hibernate.javax.persistence:hibernate-jpa-2.1api: '1.0.0.Final"
+    compile group: 'org.hibernate.javax.persistence', name: 'hibernate-jpa-2.1-api', version: '1.0.0.Final'
 
     compile "opensymphony:sitemesh:2.4.2"
 
