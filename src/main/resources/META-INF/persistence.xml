@@ -1,0 +1,30 @@
+<persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns="http://java.sun.com/xml/ns/persistence"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+             version="2.0">
+
+    <persistence-unit name="blog" transaction-type="RESOURCE_LOCAL">
+
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <class>net.therap.blog.domain.User</class>
+        <class>net.therap.blog.domain.Message</class>
+        <class>net.therap.blog.domain.Post</class>
+        <class>net.therap.blog.domain.Comment</class>
+        <class>net.therap.blog.domain.Category</class>
+
+        <properties>
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/test"/>
+            <property name="javax.persistence.jdbc.user" value="sajjad"/>
+            <property name="javax.persistence.jdbc.password" value="sajjad"/>
+
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+            <property name="connection.autocommit" value="true"/>
+            <property name="hibernate.enable_lazy_load_no_trans" value="true"/>
+            <property name="javax.persistence.validation.mode" value="NONE"/>
+        </properties>
+    </persistence-unit>
+</persistence>
