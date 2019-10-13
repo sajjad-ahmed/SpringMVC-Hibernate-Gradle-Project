@@ -1,11 +1,11 @@
 package net.therap.blog.web.controller;
 
+import net.therap.blog.dao.CategoryDao;
+import net.therap.blog.dao.CommentDao;
 import net.therap.blog.domain.Category;
 import net.therap.blog.domain.Comment;
 import net.therap.blog.domain.Post;
 import net.therap.blog.domain.User;
-import net.therap.blog.service.CategoryService;
-import net.therap.blog.service.CommentService;
 import net.therap.blog.service.PostService;
 import net.therap.blog.service.UserService;
 import net.therap.blog.util.Constants;
@@ -29,7 +29,6 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
 import javax.validation.Validation;
 import javax.validation.Validator;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -43,13 +42,13 @@ public class PostController implements Constants {
     private UserService userService;
 
     @Autowired
-    private CategoryService categoryService;
+    private CategoryDao categoryDao;
 
     @Autowired
     private PostService postService;
 
     @Autowired
-    private CommentService commentService;
+    private CommentDao commentDao;
 
     @Autowired
     private PostValidator postValidator;
@@ -64,14 +63,14 @@ public class PostController implements Constants {
     @RequestMapping(value = URL.POST_CREATE_VIEW, method = RequestMethod.GET)
     public String showCreatePostForm(Model model) {
         model.addAttribute("post", new Post());
-        model.addAttribute("categories", categoryService.findAll());
+        model.addAttribute("categories", categoryDao.findAll());
         return URL.POST_CREATE_VIEW;
     }
 
     @RequestMapping(value = URL.POST_CREATE, method = RequestMethod.GET)
     public String cratePostForm(Model model) {
         model.addAttribute("post", new Post());
-        model.addAttribute("categories", categoryService.findAll());
+        model.addAttribute("categories", categoryDao.findAll());
         return URL.POST_CREATE_VIEW;
     }
 
@@ -89,7 +88,7 @@ public class PostController implements Constants {
             error.addError(new FieldError("post", propertyPath, message));
         }
         if (error.hasErrors()) {
-            model.addAttribute("categories", categoryService.findAll());
+            model.addAttribute("categories", categoryDao.findAll());
             return URL.POST_CREATE_VIEW;
         }
         if (!picture.isEmpty()) {
@@ -102,7 +101,7 @@ public class PostController implements Constants {
             }
         }
         post.getCategories().forEach(i -> {
-            Category category = categoryService.find(i.getId());
+            Category category = categoryDao.find(i.getId());
             i.setName(category.getName());
         });
         postService.add(post);
@@ -147,7 +146,7 @@ public class PostController implements Constants {
                                  Model model) {
         Post post = comment.getPostId();
         comment.setPostId(post);
-        commentService.add(comment);
+        commentDao.save(comment);
         model.addAttribute("post", post);
         model.addAttribute("comment", new Comment());
         model.addAttribute("comments", post.getComments());
@@ -157,9 +156,9 @@ public class PostController implements Constants {
     @RequestMapping(value = URL.COMMENT_DELETE)
     public String commentDeleteHandler(@PathVariable("id") long id,
                                        Model model) {
-        Comment comment = commentService.find(id);
+        Comment comment = commentDao.find(id);
         long postId = comment.getPostId().getId();
-        commentService.delete(comment.getId());
+        commentDao.delete(comment.getId());
         Post post = postService.find(postId);
         model.addAttribute("post", post);
         model.addAttribute("comment", new Comment());
@@ -171,7 +170,7 @@ public class PostController implements Constants {
     @RequestMapping(value = URL.COMMENT_UPDATE, method = RequestMethod.GET)
     public String commentUpdateHandler(@PathVariable("id") long id,
                                        Model model) {
-        Comment comment = commentService.find(id);
+        Comment comment = commentDao.find(id);
         long postId = comment.getPostId().getId();
         Post post = postService.find(postId);
         model.addAttribute("post", post);

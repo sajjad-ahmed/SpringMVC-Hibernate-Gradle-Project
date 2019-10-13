@@ -1,5 +1,6 @@
 package net.therap.blog.service;
 
+import net.therap.blog.dao.CommentDao;
 import net.therap.blog.dao.UserDao;
 import net.therap.blog.domain.User;
 import net.therap.blog.util.Constants;
@@ -29,7 +30,7 @@ public class UserService implements Constants {
     private MessageService messageService;
 
     @Autowired
-    private CommentService commentService;
+    private CommentDao commentDao;
 
     public void add(User user, HttpSession session) {
         if (hasAccess(session)) {
@@ -58,9 +59,9 @@ public class UserService implements Constants {
     }
 
     public void delete(long id) {
-        commentService.findAll().forEach(i -> {
+        commentDao.findAll().forEach(i -> {
             if (i.getUserId().getId() == id) {
-                commentService.delete(i.getId());
+                commentDao.delete(i.getId());
             }
         });
         postService.findAll().forEach(i -> {

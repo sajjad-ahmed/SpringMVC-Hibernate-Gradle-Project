@@ -1,7 +1,7 @@
 package net.therap.blog.web.controller;
 
+import net.therap.blog.dao.CategoryDao;
 import net.therap.blog.domain.Post;
-import net.therap.blog.service.CategoryService;
 import net.therap.blog.service.PostService;
 import net.therap.blog.util.Constants;
 import net.therap.blog.util.URL;
@@ -23,14 +23,14 @@ import java.util.List;
 public class HomeController implements Constants {
 
     @Autowired
-    CategoryService categoryService;
+    CategoryDao categoryDao;
 
     @Autowired
     PostService postService;
 
     @RequestMapping(value = URL.ROOT, method = RequestMethod.GET)
     public String showHomePage(ModelMap modelMap, HttpSession session) {
-        modelMap.put(AVAILABLE_CATEGORIES, categoryService.findAll());
+        modelMap.put(AVAILABLE_CATEGORIES, categoryDao.findAll());
         List<Post> posts = this.postService.getPostByAccess(session);
         modelMap.put("posts", posts);
         return URL.HOME_VIEW;

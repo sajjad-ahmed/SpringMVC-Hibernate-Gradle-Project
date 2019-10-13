@@ -1,7 +1,7 @@
 package net.therap.blog.web.controller;
 
+import net.therap.blog.dao.CategoryDao;
 import net.therap.blog.domain.Category;
-import net.therap.blog.service.CategoryService;
 import net.therap.blog.util.URL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,19 +26,19 @@ import javax.validation.Validator;
 public class CategoryController {
 
     @Autowired
-    private CategoryService categoryService;
+    private CategoryDao categoryDao;
 
     @RequestMapping(value = URL.CATEGORY_MANAGEMENT_VIEW, method = RequestMethod.GET)
     public String showCategoryView(Model model) {
         model.addAttribute("category", new Category());
-        model.addAttribute("categories", categoryService.findAll());
+        model.addAttribute("categories", categoryDao.findAll());
         return URL.CATEGORY_MANAGEMENT_VIEW;
     }
 
     @RequestMapping(value = URL.CATEGORY_MANAGE, method = RequestMethod.GET)
     public String showCategoryManage(Model model) {
         model.addAttribute("category", new Category());
-        model.addAttribute("categories", categoryService.findAll());
+        model.addAttribute("categories", categoryDao.findAll());
         return URL.CATEGORY_MANAGEMENT_VIEW;
     }
 
@@ -54,24 +54,24 @@ public class CategoryController {
         if (error.hasErrors()) {
             return URL.CATEGORY_MANAGEMENT_VIEW;
         }
-        categoryService.add(category);
+        categoryDao.save(category);
         return "redirect:" + URL.CATEGORY_MANAGE;
     }
 
     @RequestMapping(value = URL.CATEGORY_UPDATE)
     public String updateCategoryHandler(@PathVariable("id") long id, Model model) {
-        Category category = categoryService.find(id);
+        Category category = categoryDao.find(id);
         model.addAttribute("category", category);
-        model.addAttribute("categories", categoryService.findAll());
+        model.addAttribute("categories", categoryDao.findAll());
         return URL.CATEGORY_MANAGEMENT_VIEW;
     }
 
     @RequestMapping(value = URL.CATEGORY_DELETE)
     public String deleteCategoryHandler(@PathVariable("id") long id, Model model) {
-        Category category = categoryService.find(id);
-        categoryService.delete(category.getId());
+        Category category = categoryDao.find(id);
+        categoryDao.delete(category.getId());
         model.addAttribute("category", category);
-        model.addAttribute("categories", categoryService.findAll());
+        model.addAttribute("categories", categoryDao.findAll());
         return "redirect:" + URL.CATEGORY_MANAGE;
     }
 }
