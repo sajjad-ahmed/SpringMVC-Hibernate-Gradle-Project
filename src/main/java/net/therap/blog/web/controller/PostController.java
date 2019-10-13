@@ -36,7 +36,7 @@ import java.util.List;
  * @since 9/30/19.
  */
 @Controller
-public class PostController {
+public class PostController implements Constants {
 
     @Autowired
     private UserService userService;
@@ -137,7 +137,7 @@ public class PostController {
                                     Model model) {
         Post post = postService.find(id);
         model.addAttribute("post", post);
-        model.addAttribute("roles", Arrays.asList(Constants.ROLES));
+        model.addAttribute("roles", Arrays.asList(ROLES));
         return URL.POST_CREATE_VIEW;
     }
 

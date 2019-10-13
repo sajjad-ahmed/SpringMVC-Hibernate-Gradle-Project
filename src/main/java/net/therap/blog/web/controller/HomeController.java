@@ -20,7 +20,7 @@ import java.util.List;
  * @since 9/19/19.
  */
 @Controller
-public class HomeController {
+public class HomeController implements Constants {
 
     @Autowired
     CategoryService categoryService;
@@ -30,7 +30,7 @@ public class HomeController {
 
     @RequestMapping(value = URL.ROOT, method = RequestMethod.GET)
     public String showHomePage(ModelMap modelMap, HttpSession session) {
-        modelMap.put(Constants.AVAILABLE_CATEGORIES, categoryService.getAll());
+        modelMap.put(AVAILABLE_CATEGORIES, categoryService.getAll());
         List<Post> posts = this.postService.getPostByAccess(session);
         modelMap.put("posts", posts);
         return URL.HOME_VIEW;

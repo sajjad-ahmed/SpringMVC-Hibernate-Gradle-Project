@@ -21,7 +21,7 @@ import java.util.Objects;
  * @since 10/3/19.
  */
 @Controller
-public class AuthenticationController {
+public class AuthenticationController implements Constants{
 
     public static final int AUTHENTICATION_FAILED_FLAG = -1;
 
@@ -45,10 +45,10 @@ public class AuthenticationController {
             if (Objects.nonNull(password) && Objects.nonNull(email) && Objects.nonNull(user)) {
                 if (user.getPassword().equals(password) && user.getEmail().equals(email)) {
                     HttpSession session = request.getSession();
-                    session.setAttribute(Constants.USER_ID_PARAMETER, user.getId());
-                    session.setAttribute(Constants.USER_EMAIL_PARAMETER, user.getEmail());
-                    session.setAttribute(Constants.USER_ROLE_PARAMETER, user.getRole());
-                    session.setAttribute(Constants.USER_FIRST_NAME_PARAMETER, user.getFirstName());
+                    session.setAttribute(USER_ID_PARAMETER, user.getId());
+                    session.setAttribute(USER_EMAIL_PARAMETER, user.getEmail());
+                    session.setAttribute(USER_ROLE_PARAMETER, user.getRole());
+                    session.setAttribute(USER_FIRST_NAME_PARAMETER, user.getFirstName());
                     return "redirect:" + URL.ROOT;
                 }
             }

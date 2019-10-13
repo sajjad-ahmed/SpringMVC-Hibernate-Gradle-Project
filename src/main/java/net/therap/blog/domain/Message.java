@@ -52,13 +52,13 @@ public class Message implements Serializable {
     @Column(name = "updated_at")
     private Date updatedAt;
 
-    @Column(columnDefinition = "TINYINT")
+    @Column(name = "is_deleted",columnDefinition = "TINYINT")
     @Type(type = "org.hibernate.type.NumericBooleanType")
-    public boolean is_deleted;
+    public boolean isDeleted;
 
-    @Column(columnDefinition = "TINYINT")
+    @Column(name = "is_seen",columnDefinition = "TINYINT")
     @Type(type = "org.hibernate.type.NumericBooleanType")
-    public boolean is_seen;
+    public boolean isSeen;
 
     public Message() {
     }
@@ -79,20 +79,20 @@ public class Message implements Serializable {
         this.body = body;
     }
 
-    public boolean isIs_seen() {
-        return is_seen;
+    public boolean isIsSeen() {
+        return isSeen;
     }
 
-    public void setIs_seen(boolean is_seen) {
-        this.is_seen = is_seen;
+    public void setIsSeen(boolean is_seen) {
+        this.isSeen = is_seen;
     }
 
-    public boolean isIs_deleted() {
-        return is_deleted;
+    public boolean isIsDeleted() {
+        return isDeleted;
     }
 
-    public void setIs_deleted(boolean is_deleted) {
-        this.is_deleted = is_deleted;
+    public void setIsDeleted(boolean is_deleted) {
+        this.isDeleted = is_deleted;
     }
 
     public User getSender() {
@@ -132,8 +132,8 @@ public class Message implements Serializable {
         return "Message{" +
                 "id=" + id +
                 ", body='" + body + '\'' +
-                ", is_seen=" + is_seen +
-                ", is_deleted=" + is_deleted +
+                ", is_seen=" + isSeen +
+                ", is_deleted=" + isDeleted +
                 ", sender=" + sender +
                 ", receiver=" + receiver +
                 ", created_at=" + createdAt +

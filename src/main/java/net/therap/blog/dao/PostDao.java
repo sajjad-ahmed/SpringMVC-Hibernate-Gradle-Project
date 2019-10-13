@@ -55,7 +55,7 @@ public class PostDao {
         }
     }
 
-    public Object findPostByUri(String uri) {
+    public Post findPostByUri(String uri) {
         try {
             TypedQuery<Post> query = em.createQuery(FIND_POST_BY_URI, Post.class);
             query.setParameter("uri", uri);

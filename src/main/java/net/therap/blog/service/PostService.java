@@ -1,5 +1,6 @@
 package net.therap.blog.service;
 
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import net.therap.blog.dao.PostDao;
 import net.therap.blog.domain.Post;
 import net.therap.blog.util.Constants;
@@ -9,13 +10,14 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author sajjad.ahmed
  * @since 9/30/19.
  */
 @Service
-public class PostService {
+public class PostService implements Constants {
 
     @Autowired
     private PostDao postDao;
@@ -32,17 +34,17 @@ public class PostService {
     public List<Post> getPostByAccess(HttpSession session) {
         String userRole = SessionUtil.getUserRole(session);
         List<Post> posts = postDao.findAll();
-        if (userRole.equals(Constants.ROLES[0])) {
+        if (userRole.equals(ROLES[0])) {
             return posts;
-        } else if (userRole.equals(Constants.ROLES[1])) {
+        } else if (userRole.equals(ROLES[1])) {
             posts.removeIf(i ->
-                    String.valueOf(i.getAccess()).charAt(0) == Constants.ACCESS_DENY);
-        } else if (userRole.equals(Constants.ROLES[2])) {
+                    String.valueOf(i.getAccess()).charAt(0) == ACCESS_DENY);
+        } else if (userRole.equals(ROLES[2])) {
             posts.removeIf(i ->
-                    String.valueOf(i.getAccess()).charAt(1) == Constants.ACCESS_DENY);
-        } else if (userRole.equals(Constants.ACCESS_GUEST)) {
+                    String.valueOf(i.getAccess()).charAt(1) == ACCESS_DENY);
+        } else if (userRole.equals(ACCESS_GUEST)) {
             posts.removeIf(i ->
-                    String.valueOf(i.getAccess()).charAt(2) == Constants.ACCESS_DENY);
+                    String.valueOf(i.getAccess()).charAt(2) == ACCESS_DENY);
         }
         return posts;
     }
@@ -56,11 +58,7 @@ public class PostService {
     }
 
     public boolean isUriAlreadyInUse(String uri) {
-        boolean inUse = true;
-        if (postDao.findPostByUri(uri) == null) {
-            inUse = false;
-        }
-        return inUse;
+        return Objects.nonNull(postDao.findPostByUri(uri));
     }
 
 }

@@ -27,7 +27,7 @@ import java.util.List;
  * @since 9/30/19.
  */
 @Controller
-public class MessageController {
+public class MessageController implements Constants {
 
     @Autowired
     private UserService userService;
@@ -43,7 +43,7 @@ public class MessageController {
     @RequestMapping(value = URL.MESSAGE_SEND, method = RequestMethod.GET)
     public String showNewMessageForm(Model model, HttpSession session) {
         model.addAttribute("message", new Message());
-        long currentUserId = (long) session.getAttribute(Constants.USER_ID_PARAMETER);
+        long currentUserId = (long) session.getAttribute(USER_ID_PARAMETER);
         List<User> users = userService.findAllExceptSelf(currentUserId);
         model.addAttribute("users", users);
         return URL.MESSAGE_ADD_VIEW;
@@ -55,7 +55,7 @@ public class MessageController {
                                      BindingResult error,
                                      HttpSession session) {
 
-        System.out.println(Constants.LOG+message.getBody());
+        System.out.println(LOG + message.getBody());
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
         for (ConstraintViolation<Message> violation : validator.validate(message)) {
             String propertyPath = violation.getPropertyPath().toString();
@@ -63,7 +63,7 @@ public class MessageController {
             error.addError(new FieldError("message", propertyPath, msg));
         }
         if (error.hasErrors()) {
-            long currentUserId = (long) session.getAttribute(Constants.USER_ID_PARAMETER);
+            long currentUserId = (long) session.getAttribute(USER_ID_PARAMETER);
             List<User> users = userService.findAllExceptSelf(currentUserId);
             model.addAttribute("users", users);
             return URL.MESSAGE_ADD_VIEW;
@@ -74,7 +74,7 @@ public class MessageController {
 
     @RequestMapping(value = URL.MESSAGE_SHOW_INBOX, method = RequestMethod.GET)
     public String showInbox(Model model, HttpSession session) {
-        long userId = (long) session.getAttribute(Constants.USER_ID_PARAMETER);
+        long userId = (long) session.getAttribute(USER_ID_PARAMETER);
         model.addAttribute("sentMessages", messageService.getSentMessages(userId));
         model.addAttribute("receivedMessages", messageService.getReceivedMessages(userId));
         return URL.MESSAGE_INBOX_VIEW;
@@ -86,7 +86,7 @@ public class MessageController {
                                        Model model) {
         Message message = messageService.find(id);
         messageService.delete(message.getId());
-        long userId = (long) session.getAttribute(Constants.USER_ID_PARAMETER);
+        long userId = (long) session.getAttribute(USER_ID_PARAMETER);
         model.addAttribute("sentMessages", messageService.getSentMessages(userId));
         model.addAttribute("receivedMessages", messageService.getReceivedMessages(userId));
         return URL.MESSAGE_INBOX_VIEW;

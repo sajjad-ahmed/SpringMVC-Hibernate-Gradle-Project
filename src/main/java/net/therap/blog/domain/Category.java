@@ -37,9 +37,10 @@ public class Category implements Serializable {
     private Date updatedAt;
 
     @ManyToMany(mappedBy = "categories")
-    private List<Post> posts = new ArrayList<>();
+    private List<Post> posts;
 
     public Category() {
+        this.posts = new ArrayList<>();
     }
 
     public long getId() {

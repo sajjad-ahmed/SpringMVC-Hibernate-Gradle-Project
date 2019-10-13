@@ -15,7 +15,7 @@ import java.util.List;
  * @since 9/30/19.
  */
 @Service
-public class UserService {
+public class UserService implements Constants {
 
     @Autowired
     private UserDao userDao;
@@ -90,7 +90,7 @@ public class UserService {
 
     private boolean hasAccess(HttpSession session) {
         String userRole = SessionUtil.getUserRole(session);
-        if (userRole.equals(Constants.ROLES[0])) {
+        if (userRole.equals(ROLES[0])) {
             return true;
         } else {
             return false;

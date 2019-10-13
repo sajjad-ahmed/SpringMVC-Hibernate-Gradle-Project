@@ -4,7 +4,7 @@ package net.therap.blog.util;
  * @author sajjad.ahmed
  * @since 9/30/19.
  */
-public class Constants {
+public interface Constants {
 
     public static final String[] ROLES = {"ADMIN", "AUTHOR", "SUBSCRIBER"};
 
