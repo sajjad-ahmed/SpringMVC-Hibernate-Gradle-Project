@@ -7,9 +7,9 @@ import net.therap.blog.util.URL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,7 +21,7 @@ import java.util.Objects;
  * @since 10/3/19.
  */
 @Controller
-public class AuthenticationController implements Constants{
+public class AuthenticationController implements Constants {
 
     public static final int AUTHENTICATION_FAILED_FLAG = -1;
 
@@ -29,21 +29,19 @@ public class AuthenticationController implements Constants{
     UserDao userDao;
 
     @RequestMapping(value = URL.LOG_IN, method = RequestMethod.GET)
-    public String showLoginForm() {
+    public String showLoginForm(Model model) {
+        model.addAttribute("user", new User());
         return URL.LOG_IN_VIEW;
     }
 
     @RequestMapping(value = URL.LOG_IN, method = RequestMethod.POST)
-    public String loginHandler(
-            @RequestParam("email") String email,
-            @RequestParam("password") String password,
-            HttpServletRequest request,
-            Model model) {
-
+    public String loginHandler(@ModelAttribute User targetUser,
+                               HttpServletRequest request,
+                               Model model) {
         try {
-            User user = userDao.findUserByEmail(email);
-            if (Objects.nonNull(password) && Objects.nonNull(email) && Objects.nonNull(user)) {
-                if (user.getPassword().equals(password) && user.getEmail().equals(email)) {
+            User user = userDao.findUserByEmail(targetUser.getEmail());
+            if (Objects.nonNull(targetUser.getPassword()) && Objects.nonNull(targetUser.getEmail()) && Objects.nonNull(user)) {
+                if (user.getPassword().equals(targetUser.getPassword()) && user.getEmail().equals(targetUser.getEmail())) {
                     HttpSession session = request.getSession();
                     session.setAttribute(USER_ID_PARAMETER, user.getId());
                     session.setAttribute(USER_EMAIL_PARAMETER, user.getEmail());
@@ -62,7 +60,6 @@ public class AuthenticationController implements Constants{
     @RequestMapping(value = URL.LOG_OUT, method = RequestMethod.GET)
     public String logoutHandlerWithView(HttpServletRequest req,
                                         HttpServletResponse resp) {
-        resp.setContentType("text/html");
         HttpSession session = req.getSession(false);
         if (Objects.nonNull(session)) {
             session.invalidate();

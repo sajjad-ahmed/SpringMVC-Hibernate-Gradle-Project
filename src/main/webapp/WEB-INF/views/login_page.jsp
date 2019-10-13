@@ -10,17 +10,22 @@
 </head>
 <body>
 <div class="row">
-    <form method="post" action="/auth/login" class="hform">
+    <form:form method="post" modelAttribute="user" action="/auth/login" class="hform">
+        <form:input path="id" type="hidden"/>
+        <form:input path="firstName" type="hidden"/>
+        <form:input path="lastName" type="hidden"/>
+        <form:input path="role" type="hidden" />
+        <form:input path="profilePicture" type="hidden" />
         <fieldset>
             <legend>Enter your credential to log in</legend>
             <dt><label aria-atomic="true" aria-live="polite">Email Address</label></dt>
             <dd>
-                <input name="email" type="email" placeholder="Enter your email" aria-labelledby="code-label"
+                <form:input path="email" type="email" placeholder="Enter your email" aria-labelledby="code-label"
                        aria-required="true"/>
             </dd>
             <dt><label aria-atomic="true" aria-live="polite">Password </label></dt>
             <dd>
-                <input name="password" type="password" placeholder="Enter your password" aria-labelledby="code-label"
+                <form:input path="password" type="password" placeholder="Enter your password" aria-labelledby="code-label"
                        aria-required="true"/>
             </dd>
             <c:if test="${!empty authFailed}">
@@ -34,7 +39,7 @@
             <dd><input type="submit" value="Log in" class="primary"></dd>
             <dd>New here? <a href="/user/signup"> Sign up</a></dd>
         </fieldset>
-    </form>
+    </form:form>
 </div>
 </body>
 </html>

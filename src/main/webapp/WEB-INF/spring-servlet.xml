@@ -23,7 +23,6 @@
 
     <context:annotation-config/>
 
-
     <bean id="emailValidator" class="net.therap.blog.web.validator.UniqueEmailValidator"/>
     <bean id="uniqueUriValidator" class="net.therap.blog.web.validator.PostValidator"/>
 
