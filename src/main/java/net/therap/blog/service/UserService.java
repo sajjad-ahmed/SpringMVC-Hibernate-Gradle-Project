@@ -90,7 +90,7 @@ public class UserService implements Constants {
 
     private boolean hasAccess(HttpSession session) {
         String userRole = SessionUtil.getUserRole(session);
-        if (userRole.equals(ROLES[0])) {
+        if (userRole.equals(ROLES.ADMIN.name())) {
             return true;
         } else {
             return false;

@@ -137,7 +137,7 @@ public class PostController implements Constants {
                                     Model model) {
         Post post = postService.find(id);
         model.addAttribute("post", post);
-        model.addAttribute("roles", Arrays.asList(ROLES));
+        model.addAttribute("roles", ROLES.values());
         return URL.POST_CREATE_VIEW;
     }
 

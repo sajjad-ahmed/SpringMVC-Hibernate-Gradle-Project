@@ -1,12 +1,12 @@
 package net.therap.blog.util;
 
+import java.util.ArrayList;
+
 /**
  * @author sajjad.ahmed
  * @since 9/30/19.
  */
 public interface Constants {
-
-    public static final String[] ROLES = {"ADMIN", "AUTHOR", "SUBSCRIBER"};
 
     public static final String ACCESS_GUEST = "GUEST";
 
@@ -25,4 +25,8 @@ public interface Constants {
     public static final char FULL_ACCESS = '7';
 
     public static final String LOG = "----Log----: ";
+
+    enum ROLES {
+        ADMIN, AUTHOR, SUBSCRIBER
+    }
 }

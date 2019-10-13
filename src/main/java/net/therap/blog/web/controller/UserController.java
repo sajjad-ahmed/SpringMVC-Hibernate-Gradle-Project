@@ -37,14 +37,14 @@ public class UserController implements Constants {
     @RequestMapping(value = URL.USER_ADD_VIEW, method = RequestMethod.GET)
     public String showEditUserForm(Model model) {
         model.addAttribute("user", new User());
-        model.addAttribute("roles", Arrays.asList(ROLES));
+        model.addAttribute("roles", ROLES.values());
         return URL.USER_ADD_VIEW;
     }
 
     @RequestMapping(value = URL.USER_ADD, method = RequestMethod.GET)
     public String showAddUserForm(Model model) {
         model.addAttribute("user", new User());
-        model.addAttribute("roles", Arrays.asList(ROLES));
+        model.addAttribute("roles", ROLES.values());
         return URL.USER_ADD_VIEW;
     }
 
@@ -68,7 +68,7 @@ public class UserController implements Constants {
             error.addError(new FieldError("user", propertyPath, message));
         }
         if (error.hasErrors()) {
-            model.addAttribute("roles", Arrays.asList(ROLES));
+            model.addAttribute("roles", ROLES.values());
             return URL.USER_ADD_VIEW;
         }
         if (!file.isEmpty()) {
@@ -94,7 +94,7 @@ public class UserController implements Constants {
     public String userUpdateHandler(@PathVariable("id") long id, Model model) {
         User user = userService.find(id);
         model.addAttribute("user", user);
-        model.addAttribute("roles", Arrays.asList(ROLES));
+        model.addAttribute("roles", ROLES.values());
         return URL.USER_ADD_VIEW;
     }
 
@@ -118,7 +118,7 @@ public class UserController implements Constants {
             error.addError(new FieldError("user", propertyPath, message));
         }
         if (error.hasErrors()) {
-            model.addAttribute("roles", Arrays.asList(ROLES));
+            model.addAttribute("roles", ROLES.values());
             return URL.USER_SIGN_UP_VIEW;
         }
         if (!file.isEmpty()) {
