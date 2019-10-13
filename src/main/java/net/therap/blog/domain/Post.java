@@ -22,6 +22,12 @@ import java.util.List;
 
 @Entity
 @Table(name = "post")
+@NamedQueries({
+        @NamedQuery(name = "Post.findAll",
+                query = "FROM Post"),
+        @NamedQuery(name = "Post.findByUri",
+                query = "FROM Post WHERE uri = :uri"),
+})
 public class Post implements Serializable {
 
     private static final long serialVersionUID = 1l;

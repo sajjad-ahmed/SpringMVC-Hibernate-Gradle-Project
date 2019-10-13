@@ -17,8 +17,6 @@ import java.util.Objects;
 @Repository
 public class CategoryDao {
 
-    private static final String FIND_ALL_CATEGORY = "FROM Category";
-
     @PersistenceContext
     EntityManager em;
 
@@ -38,7 +36,7 @@ public class CategoryDao {
     }
 
     public List<Category> findAll() {
-        return em.createQuery(FIND_ALL_CATEGORY).getResultList();
+        return em.createNamedQuery("Category.findAll", Category.class).getResultList();
     }
 
     @Transactional

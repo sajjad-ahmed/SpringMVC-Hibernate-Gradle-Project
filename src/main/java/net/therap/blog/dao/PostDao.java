@@ -16,10 +16,6 @@ import java.util.Objects;
 @Repository
 public class PostDao {
 
-    private static final String FIND_ALL_MESSAGE = "FROM Post";
-
-    private static final String FIND_POST_BY_URI = "FROM Post WHERE uri = :uri";
-
     @PersistenceContext
     EntityManager em;
 
@@ -39,7 +35,7 @@ public class PostDao {
     }
 
     public List<Post> findAll() {
-        return em.createQuery(FIND_ALL_MESSAGE).getResultList();
+        return em.createNamedQuery("Post.findAll", Post.class).getResultList();
     }
 
     @Transactional
@@ -56,7 +52,7 @@ public class PostDao {
 
     public Post findBy(String uri) {
         try {
-            TypedQuery<Post> query = em.createQuery(FIND_POST_BY_URI, Post.class);
+            TypedQuery<Post> query = em.createNamedQuery("Post.findByUri", Post.class);
             query.setParameter("uri", uri);
             return query.getSingleResult();
         } catch (NoResultException e) {

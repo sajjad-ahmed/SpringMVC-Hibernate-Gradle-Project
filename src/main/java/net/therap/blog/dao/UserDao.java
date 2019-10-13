@@ -17,10 +17,6 @@ import java.util.Optional;
 @Repository
 public class UserDao {
 
-    private static final String FIND_ALL_USERS = "FROM User";
-
-    private static final String FIND_USER_BY_EMAIL = "FROM User WHERE email = :email";
-
     @PersistenceContext
     EntityManager em;
 
@@ -40,7 +36,7 @@ public class UserDao {
     }
 
     public List<User> findAll() {
-        return em.createQuery(FIND_ALL_USERS).getResultList();
+        return em.createNamedQuery("User.findAll", User.class).getResultList();
     }
 
     @Transactional
@@ -59,7 +55,7 @@ public class UserDao {
 
     public User findUserByEmail(String email) {
         try {
-            TypedQuery<User> query = em.createQuery(FIND_USER_BY_EMAIL, User.class);
+            TypedQuery<User> query = em.createNamedQuery("User.findByEmail", User.class);
             query.setParameter("email", email);
             return query.getSingleResult();
         } catch (NoResultException e) {

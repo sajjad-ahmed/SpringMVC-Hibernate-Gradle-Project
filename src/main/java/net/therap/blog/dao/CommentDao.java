@@ -18,8 +18,6 @@ import java.util.Objects;
 @Repository
 public class CommentDao {
 
-    private static final String FIND_ALL_MESSAGE = "FROM Comment";
-
     @PersistenceContext
     EntityManager em;
 
@@ -39,7 +37,7 @@ public class CommentDao {
     }
 
     public List<Comment> findAll() {
-        return em.createQuery(FIND_ALL_MESSAGE).getResultList();
+        return em.createNamedQuery("Comment.findAll", Comment.class).getResultList();
     }
 
     @Transactional

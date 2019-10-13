@@ -15,6 +15,10 @@ import java.util.Base64;
 @Entity
 @Table(name = "user",
         uniqueConstraints = @UniqueConstraint(columnNames = {"email"}))
+@NamedQueries({
+        @NamedQuery(name = "User.findAll", query = "FROM User"),
+        @NamedQuery(name = "User.findByEmail", query = "FROM User WHERE email = :email"),
+})
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1l;

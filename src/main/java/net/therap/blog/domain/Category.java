@@ -1,7 +1,5 @@
 package net.therap.blog.domain;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -17,6 +15,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "category")
+@NamedQueries({
+        @NamedQuery(name = "Category.findAll", query = "FROM Category"),
+})
 public class Category implements Serializable {
 
     private static final long serialVersionUID = 1l;
