@@ -9,7 +9,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  * @author sajjad.ahmed
@@ -24,14 +23,14 @@ public class CategoryDao {
     EntityManager em;
 
     @Transactional
-    public Optional<Category> save(Category category) {
+    public Category save(Category category) {
         if (category.getId() == 0) {
             em.persist(category);
             em.flush();
         } else {
             em.merge(category);
         }
-        return Optional.of(category);
+        return category;
     }
 
     public Category find(long id) {

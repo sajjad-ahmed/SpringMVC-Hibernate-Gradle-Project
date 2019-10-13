@@ -14,7 +14,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Repository
 public class CommentDao {
@@ -25,14 +24,14 @@ public class CommentDao {
     EntityManager em;
 
     @Transactional
-    public Optional<Comment> save(Comment comment) {
+    public Comment save(Comment comment) {
         if (comment.getId() == 0) {
             em.persist(comment);
             em.flush();
         } else {
             em.merge(comment);
         }
-        return Optional.of(comment);
+        return comment;
     }
 
     public Comment find(long id) {

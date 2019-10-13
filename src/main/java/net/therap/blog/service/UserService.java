@@ -3,12 +3,14 @@ package net.therap.blog.service;
 import net.therap.blog.dao.UserDao;
 import net.therap.blog.domain.User;
 import net.therap.blog.util.Constants;
+import net.therap.blog.util.ROLES;
 import net.therap.blog.util.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author sajjad.ahmed
@@ -41,7 +43,7 @@ public class UserService implements Constants {
         userDao.save(user);
     }
 
-    public List<User> getAll(HttpSession session) {
+    public List<User> findAll(HttpSession session) {
         if (hasAccess(session)) {
             return userDao.findAll();
         } else {
@@ -56,18 +58,18 @@ public class UserService implements Constants {
     }
 
     public void delete(long id) {
-        commentService.getAll().forEach(i -> {
+        commentService.findAll().forEach(i -> {
             if (i.getUserId().getId() == id) {
                 commentService.delete(i.getId());
             }
         });
-        postService.getAll().forEach(i -> {
+        postService.findAll().forEach(i -> {
             if (i.getCreator().getId() == id) {
                 postService.delete(i.getId());
             }
         });
 
-        messageService.getAll().forEach(i -> {
+        messageService.findAll().forEach(i -> {
             if (i.getSender().getId() == id) {
                 messageService.delete(i.getId());
             }
@@ -81,19 +83,11 @@ public class UserService implements Constants {
 
 
     public boolean isEmailAlreadyInUse(String value) {
-        boolean inUse = true;
-        if (userDao.findUserByEmail(value) == null) {
-            inUse = false;
-        }
-        return inUse;
+        return Objects.nonNull(userDao.findUserByEmail(value));
     }
 
     private boolean hasAccess(HttpSession session) {
         String userRole = SessionUtil.getUserRole(session);
-        if (userRole.equals(ROLES.ADMIN.name())) {
-            return true;
-        } else {
-            return false;
-        }
+        return userRole.equals(ROLES.ADMIN.name());
     }
 }

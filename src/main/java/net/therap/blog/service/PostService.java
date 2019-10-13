@@ -1,9 +1,9 @@
 package net.therap.blog.service;
 
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import net.therap.blog.dao.PostDao;
 import net.therap.blog.domain.Post;
 import net.therap.blog.util.Constants;
+import net.therap.blog.util.ROLES;
 import net.therap.blog.util.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,10 +26,9 @@ public class PostService implements Constants {
         postDao.save(post);
     }
 
-    public List<Post> getAll() {
+    public List<Post> findAll() {
         return postDao.findAll();
     }
-
 
     public List<Post> getPostByAccess(HttpSession session) {
         String userRole = SessionUtil.getUserRole(session);
@@ -58,7 +57,7 @@ public class PostService implements Constants {
     }
 
     public boolean isUriAlreadyInUse(String uri) {
-        return Objects.nonNull(postDao.findPostByUri(uri));
+        return Objects.nonNull(postDao.findBy(uri));
     }
 
 }

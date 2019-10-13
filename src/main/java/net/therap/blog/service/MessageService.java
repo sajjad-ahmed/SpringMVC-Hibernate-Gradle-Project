@@ -17,11 +17,11 @@ public class MessageService {
     @Autowired
     private MessageDao messageDao;
 
-    public void add(Message message) {
+    public void save(Message message) {
         messageDao.save(message);
     }
 
-    public List<Message> getAll() {
+    public List<Message> findAll() {
         return messageDao.findAll();
     }
 

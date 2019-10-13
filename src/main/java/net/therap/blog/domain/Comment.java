@@ -31,14 +31,11 @@ public class Comment implements Serializable {
 
     @Column(nullable = false)
     @NotEmpty
-    @Type(type = "text")
     private String body;
 
-    @CreationTimestamp
     @Column(name = "created_at")
     private Date createdAt;
 
-    @UpdateTimestamp
     @Column(name = "updated_at")
     private Date updatedAt;
 

@@ -26,7 +26,4 @@ public interface Constants {
 
     public static final String LOG = "----Log----: ";
 
-    enum ROLES {
-        ADMIN, AUTHOR, SUBSCRIBER
-    }
 }

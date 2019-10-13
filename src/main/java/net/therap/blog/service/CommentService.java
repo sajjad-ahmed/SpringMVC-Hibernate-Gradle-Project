@@ -21,7 +21,7 @@ public class CommentService {
         commentDao.save(comment);
     }
 
-    public List<Comment> getAll() {
+    public List<Comment> findAll() {
         return commentDao.findAll();
     }
 

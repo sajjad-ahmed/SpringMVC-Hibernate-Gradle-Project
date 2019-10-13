@@ -30,7 +30,7 @@ public class HomeController implements Constants {
 
     @RequestMapping(value = URL.ROOT, method = RequestMethod.GET)
     public String showHomePage(ModelMap modelMap, HttpSession session) {
-        modelMap.put(AVAILABLE_CATEGORIES, categoryService.getAll());
+        modelMap.put(AVAILABLE_CATEGORIES, categoryService.findAll());
         List<Post> posts = this.postService.getPostByAccess(session);
         modelMap.put("posts", posts);
         return URL.HOME_VIEW;

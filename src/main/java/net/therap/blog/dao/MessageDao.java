@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Repository
 public class MessageDao {
@@ -21,14 +20,14 @@ public class MessageDao {
     EntityManager em;
 
     @Transactional
-    public Optional<Message> save(Message message) {
+    public Message save(Message message) {
         if (message.getId() == 0) {
             em.persist(message);
             em.flush();
         } else {
             em.merge(message);
         }
-        return Optional.of(message);
+        return message;
     }
 
     public Message find(long id) {

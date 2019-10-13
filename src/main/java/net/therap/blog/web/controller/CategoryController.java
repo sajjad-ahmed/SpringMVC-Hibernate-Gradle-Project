@@ -31,14 +31,14 @@ public class CategoryController {
     @RequestMapping(value = URL.CATEGORY_MANAGEMENT_VIEW, method = RequestMethod.GET)
     public String showCategoryView(Model model) {
         model.addAttribute("category", new Category());
-        model.addAttribute("categories", categoryService.getAll());
+        model.addAttribute("categories", categoryService.findAll());
         return URL.CATEGORY_MANAGEMENT_VIEW;
     }
 
     @RequestMapping(value = URL.CATEGORY_MANAGE, method = RequestMethod.GET)
     public String showCategoryManage(Model model) {
         model.addAttribute("category", new Category());
-        model.addAttribute("categories", categoryService.getAll());
+        model.addAttribute("categories", categoryService.findAll());
         return URL.CATEGORY_MANAGEMENT_VIEW;
     }
 
@@ -62,7 +62,7 @@ public class CategoryController {
     public String updateCategoryHandler(@PathVariable("id") long id, Model model) {
         Category category = categoryService.find(id);
         model.addAttribute("category", category);
-        model.addAttribute("categories", categoryService.getAll());
+        model.addAttribute("categories", categoryService.findAll());
         return URL.CATEGORY_MANAGEMENT_VIEW;
     }
 
@@ -71,7 +71,7 @@ public class CategoryController {
         Category category = categoryService.find(id);
         categoryService.delete(category.getId());
         model.addAttribute("category", category);
-        model.addAttribute("categories", categoryService.getAll());
+        model.addAttribute("categories", categoryService.findAll());
         return "redirect:" + URL.CATEGORY_MANAGE;
     }
 }

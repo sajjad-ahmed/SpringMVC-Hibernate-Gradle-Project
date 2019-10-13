@@ -9,6 +9,7 @@ import net.therap.blog.service.CommentService;
 import net.therap.blog.service.PostService;
 import net.therap.blog.service.UserService;
 import net.therap.blog.util.Constants;
+import net.therap.blog.util.ROLES;
 import net.therap.blog.util.URL;
 import net.therap.blog.web.editor.CategoryEditor;
 import net.therap.blog.web.editor.PostEditor;
@@ -63,14 +64,14 @@ public class PostController implements Constants {
     @RequestMapping(value = URL.POST_CREATE_VIEW, method = RequestMethod.GET)
     public String showCreatePostForm(Model model) {
         model.addAttribute("post", new Post());
-        model.addAttribute("categories", categoryService.getAll());
+        model.addAttribute("categories", categoryService.findAll());
         return URL.POST_CREATE_VIEW;
     }
 
     @RequestMapping(value = URL.POST_CREATE, method = RequestMethod.GET)
     public String cratePostForm(Model model) {
         model.addAttribute("post", new Post());
-        model.addAttribute("categories", categoryService.getAll());
+        model.addAttribute("categories", categoryService.findAll());
         return URL.POST_CREATE_VIEW;
     }
 
@@ -88,7 +89,7 @@ public class PostController implements Constants {
             error.addError(new FieldError("post", propertyPath, message));
         }
         if (error.hasErrors()) {
-            model.addAttribute("categories", categoryService.getAll());
+            model.addAttribute("categories", categoryService.findAll());
             return URL.POST_CREATE_VIEW;
         }
         if (!picture.isEmpty()) {

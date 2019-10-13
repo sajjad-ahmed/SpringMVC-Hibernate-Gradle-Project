@@ -67,11 +67,9 @@ public class Post implements Serializable {
     @OneToMany(mappedBy = "postId", cascade = CascadeType.ALL)
     private List<Comment> comments;
 
-    @CreationTimestamp
     @Column(name = "created_at")
     private Date createdAt;
 
-    @UpdateTimestamp
     @Column(name = "updated_at")
     private Date updatedAt;
 

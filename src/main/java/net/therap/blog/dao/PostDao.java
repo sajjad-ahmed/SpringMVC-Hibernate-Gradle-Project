@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Repository
 public class PostDao {
@@ -25,14 +24,14 @@ public class PostDao {
     EntityManager em;
 
     @Transactional
-    public Optional<Post> save(Post post) {
+    public Post save(Post post) {
         if (post.getId() == 0) {
             em.merge(post);
             em.flush();
         } else {
             em.merge(post);
         }
-        return Optional.of(post);
+        return post;
     }
 
     public Post find(long id) {
@@ -55,7 +54,7 @@ public class PostDao {
         }
     }
 
-    public Post findPostByUri(String uri) {
+    public Post findBy(String uri) {
         try {
             TypedQuery<Post> query = em.createQuery(FIND_POST_BY_URI, Post.class);
             query.setParameter("uri", uri);

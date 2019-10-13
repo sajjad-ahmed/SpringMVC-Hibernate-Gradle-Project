@@ -25,14 +25,14 @@ public class UserDao {
     EntityManager em;
 
     @Transactional
-    public Optional<User> save(User user) {
+    public User save(User user) {
         if (user.getId() == 0) {
             em.persist(user);
             em.flush();
         } else {
             em.merge(user);
         }
-        return Optional.of(user);
+        return user;
     }
 
     public User find(long id) {

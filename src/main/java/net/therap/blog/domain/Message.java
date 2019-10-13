@@ -44,11 +44,9 @@ public class Message implements Serializable {
     @JoinColumn(name = "receiver_id")
     private User receiver;
 
-    @CreationTimestamp
     @Column(name = "created_at")
     private Date createdAt;
 
-    @UpdateTimestamp
     @Column(name = "updated_at")
     private Date updatedAt;
 

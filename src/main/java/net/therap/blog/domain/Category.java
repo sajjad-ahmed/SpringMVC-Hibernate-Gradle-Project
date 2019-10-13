@@ -28,11 +28,9 @@ public class Category implements Serializable {
     @Length(min = 3, max = 50)
     private String name;
 
-    @CreationTimestamp
     @Column(name = "created_at")
     private Date createdAt;
 
-    @UpdateTimestamp
     @Column(name = "updated_at")
     private Date updatedAt;
 

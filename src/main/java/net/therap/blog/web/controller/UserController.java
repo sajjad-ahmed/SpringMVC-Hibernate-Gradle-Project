@@ -3,6 +3,7 @@ package net.therap.blog.web.controller;
 import net.therap.blog.domain.User;
 import net.therap.blog.service.UserService;
 import net.therap.blog.util.Constants;
+import net.therap.blog.util.ROLES;
 import net.therap.blog.util.URL;
 import net.therap.blog.web.validator.UniqueEmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,7 +86,7 @@ public class UserController implements Constants {
 
     @RequestMapping(value = URL.USER_MANAGE, method = RequestMethod.GET)
     public String userManagementHandler(ModelMap modelMap, HttpSession session) {
-        List<User> posts = this.userService.getAll(session);
+        List<User> posts = this.userService.findAll(session);
         modelMap.put("users", posts);
         return URL.USER_MANAGEMENT_VIEW;
     }

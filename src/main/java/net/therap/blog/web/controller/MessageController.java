@@ -68,7 +68,7 @@ public class MessageController implements Constants {
             model.addAttribute("users", users);
             return URL.MESSAGE_ADD_VIEW;
         }
-        messageService.add(message);
+        messageService.save(message);
         return "redirect:" + URL.MESSAGE_SHOW_INBOX;
     }
 
