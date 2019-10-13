@@ -3,10 +3,10 @@ package net.therap.blog.domain;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -14,16 +14,15 @@ import java.util.Date;
  * @author sajjad.ahmed
  * @since 10/3/19.
  */
-
 @Entity
 @Table(name = "message")
 @NamedQueries({
-        @NamedQuery(name="Message.findAll",
-                query="FROM Message"),
-        @NamedQuery(name="Message.findSentMessages",
-                query="FROM Message WHERE sender_id = :senderId"),
-        @NamedQuery(name="Message.findReceivedMessages",
-                query="FROM Message WHERE receiver_id = :receiverId"),
+        @NamedQuery(name = "Message.findAll",
+                query = "FROM Message"),
+        @NamedQuery(name = "Message.findSentMessages",
+                query = "FROM Message WHERE sender_id = :senderId"),
+        @NamedQuery(name = "Message.findReceivedMessages",
+                query = "FROM Message WHERE receiver_id = :receiverId"),
 })
 public class Message implements Serializable {
 
@@ -33,8 +32,8 @@ public class Message implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotEmpty(message = "{NotEmpty.message.body}")
-    @Length(min = 1, max = 200)
+    @NotNull(message = "Message body cant be empty")
+    @Size(min = 1, max = 200)
     private String body;
 
     @OneToOne

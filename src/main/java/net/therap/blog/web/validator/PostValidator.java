@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,7 +29,7 @@ public class PostValidator implements Validator {
     public void validate(Object target, Errors errors) {
         Post post = (Post) target;
         String value = post.getUri();
-        if (value != null && postService.isUriAlreadyInUse(value)) {
+        if (Objects.nonNull(value) && postService.isUriAlreadyInUse(value)) {
             errors.rejectValue("uri", "duplicate.uri", "URI already exists");
         }
         String access = String.valueOf(post.getAccess());

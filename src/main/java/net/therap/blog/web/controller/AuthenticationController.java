@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.Objects;
 
 /**
  * @author sajjad.ahmed
@@ -41,7 +42,7 @@ public class AuthenticationController {
 
         try {
             User user = userDao.findUserByEmail(email);
-            if (password != null && email != null && user != null) {
+            if (Objects.nonNull(password) && Objects.nonNull(email) && Objects.nonNull(user)) {
                 if (user.getPassword().equals(password) && user.getEmail().equals(email)) {
                     HttpSession session = request.getSession();
                     session.setAttribute(Constants.USER_ID_PARAMETER, user.getId());
@@ -63,7 +64,7 @@ public class AuthenticationController {
                                         HttpServletResponse resp) {
         resp.setContentType("text/html");
         HttpSession session = req.getSession(false);
-        if (session != null) {
+        if (Objects.nonNull(session)) {
             session.invalidate();
         }
         return "redirect:" + URL.ROOT;

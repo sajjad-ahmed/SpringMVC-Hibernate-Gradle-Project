@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * @author sajjad.ahmed
@@ -35,7 +36,7 @@ public class AuthenticationFilter implements Filter {
         if (uri.contains("auth") || uri.contains("signup") || uri.contains("post/show") || uri.equals("/")) {
             chain.doFilter(req, res);
         } else {
-            if (session.getAttribute(Constants.USER_ID_PARAMETER) != null) {
+            if (Objects.nonNull((session.getAttribute(Constants.USER_ID_PARAMETER)))) {
                 long userIdParameter = (long) session.getAttribute(Constants.USER_ID_PARAMETER);
                 if (userIdParameter == 0) {
                     RequestDispatcher requestDispatcher = req.getRequestDispatcher("/");

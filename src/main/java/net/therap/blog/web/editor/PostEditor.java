@@ -4,6 +4,7 @@ import net.therap.blog.domain.Post;
 import net.therap.blog.service.PostService;
 
 import java.beans.PropertyEditorSupport;
+import java.util.Objects;
 
 /**
  * @author sajjad.ahmed
@@ -19,7 +20,7 @@ public class PostEditor extends PropertyEditorSupport {
 
     public String getAsText() {
         Post post = (Post) this.getValue();
-        if (post != null)
+        if (Objects.nonNull(post))
             return String.valueOf(post.getId());
         return null;
     }

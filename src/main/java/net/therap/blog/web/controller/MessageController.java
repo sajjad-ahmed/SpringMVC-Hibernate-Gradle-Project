@@ -11,10 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.ConstraintViolation;
+import javax.validation.Valid;
+import javax.validation.Validation;
+import javax.validation.Validator;
 import java.util.List;
 
 /**
@@ -39,15 +44,28 @@ public class MessageController {
     public String showNewMessageForm(Model model, HttpSession session) {
         model.addAttribute("message", new Message());
         long currentUserId = (long) session.getAttribute(Constants.USER_ID_PARAMETER);
-        List<User> users = userService.getAllExceptSelf(currentUserId);
+        List<User> users = userService.findAllExceptSelf(currentUserId);
         model.addAttribute("users", users);
         return URL.MESSAGE_ADD_VIEW;
     }
 
     @RequestMapping(value = URL.MESSAGE_SEND, method = RequestMethod.POST)
-    public String sendMessageHandler(@ModelAttribute("message") Message message,
-                                     BindingResult error) {
+    public String sendMessageHandler(@ModelAttribute("message") @Valid Message message,
+                                     Model model,
+                                     BindingResult error,
+                                     HttpSession session) {
+
+        System.out.println(Constants.LOG+message.getBody());
+        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+        for (ConstraintViolation<Message> violation : validator.validate(message)) {
+            String propertyPath = violation.getPropertyPath().toString();
+            String msg = violation.getMessage();
+            error.addError(new FieldError("message", propertyPath, msg));
+        }
         if (error.hasErrors()) {
+            long currentUserId = (long) session.getAttribute(Constants.USER_ID_PARAMETER);
+            List<User> users = userService.findAllExceptSelf(currentUserId);
+            model.addAttribute("users", users);
             return URL.MESSAGE_ADD_VIEW;
         }
         messageService.add(message);

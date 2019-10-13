@@ -49,7 +49,7 @@ public class UserService {
         }
     }
 
-    public List<User> getAllExceptSelf(long id) {
+    public List<User> findAllExceptSelf(long id) {
         List<User> users = userDao.findAll();
         users.removeIf(i -> i.getId() == id);
         return users;

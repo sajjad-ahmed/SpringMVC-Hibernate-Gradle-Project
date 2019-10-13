@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Repository
@@ -45,7 +46,7 @@ public class UserDao {
     @Transactional
     public Optional<User> delete(long id) {
         User user = em.find(User.class, id);
-        if (user != null) {
+        if (Objects.nonNull(user)) {
             try {
                 em.remove(user);
             } catch (IllegalStateException | PersistenceException e) {

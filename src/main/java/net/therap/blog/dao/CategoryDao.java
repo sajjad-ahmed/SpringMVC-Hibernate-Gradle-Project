@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -44,7 +45,7 @@ public class CategoryDao {
     @Transactional
     public void delete(long id) {
         Category category = em.find(Category.class, id);
-        if (category != null) {
+        if (Objects.nonNull(category)) {
             try {
                 em.remove(category);
             } catch (IllegalStateException | PersistenceException e) {

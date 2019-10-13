@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import java.util.Objects;
+
 /**
  * @author sajjad.ahmed
  * @since 10/9/19.
@@ -24,7 +26,7 @@ public class UniqueEmailValidator implements Validator {
     public void validate(Object target, Errors errors) {
         User user = (User) target;
         String email = user.getEmail();
-        if (email != null && userService.isEmailAlreadyInUse(email)) {
+        if (Objects.nonNull(email) && userService.isEmailAlreadyInUse(email)) {
             errors.rejectValue("email", "duplicate.email", "Duplicate email");
         }
     }

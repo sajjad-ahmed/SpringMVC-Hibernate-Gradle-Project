@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Repository
@@ -45,7 +46,7 @@ public class PostDao {
     @Transactional
     public void delete(long id) {
         Post post = em.find(Post.class, id);
-        if (post != null) {
+        if (Objects.nonNull(post)) {
             try {
                 em.remove(post);
             } catch (IllegalStateException | PersistenceException e) {

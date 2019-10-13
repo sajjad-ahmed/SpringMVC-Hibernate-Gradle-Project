@@ -4,6 +4,7 @@ import net.therap.blog.domain.User;
 import net.therap.blog.service.UserService;
 
 import java.beans.PropertyEditorSupport;
+import java.util.Objects;
 
 /**
  * @author sajjad.ahmed
@@ -19,7 +20,7 @@ public class UserEditor extends PropertyEditorSupport {
 
     public String getAsText() {
         User user = (User) this.getValue();
-        if (user != null)
+        if (Objects.nonNull(user))
             return String.valueOf(user.getId());
         return null;
     }

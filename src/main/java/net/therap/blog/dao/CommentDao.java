@@ -13,6 +13,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Repository
@@ -45,7 +46,7 @@ public class CommentDao {
     @Transactional
     public void delete(long id) {
         Comment comment = em.find(Comment.class, id);
-        if (comment != null) {
+        if (Objects.nonNull(comment)) {
             try {
                 em.remove(comment);
             } catch (IllegalStateException | PersistenceException e) {
