@@ -8,18 +8,15 @@ import net.therap.blog.util.Constants;
 import net.therap.blog.util.URL;
 import net.therap.blog.web.editor.UserEditor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
-import javax.validation.Validation;
-import javax.validation.Validator;
 import java.util.List;
 
 /**
@@ -38,6 +35,7 @@ public class MessageController implements Constants {
     @InitBinder
     protected void initBinder(WebDataBinder binder) throws Exception {
         binder.registerCustomEditor(User.class, new UserEditor(userService));
+        binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
     }
 
     @RequestMapping(value = URL.MESSAGE_SEND, method = RequestMethod.GET)
@@ -50,19 +48,12 @@ public class MessageController implements Constants {
     }
 
     @RequestMapping(value = URL.MESSAGE_SEND, method = RequestMethod.POST)
-    public String sendMessageHandler(@ModelAttribute("message") @Valid Message message,
+    public String sendMessageHandler(@Valid @ModelAttribute("message") Message message,
                                      Model model,
                                      BindingResult error,
                                      HttpSession session) {
-
-        System.out.println(LOG + message.getBody());
-        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-        for (ConstraintViolation<Message> violation : validator.validate(message)) {
-            String propertyPath = violation.getPropertyPath().toString();
-            String msg = violation.getMessage();
-            error.addError(new FieldError("message", propertyPath, msg));
-        }
         if (error.hasErrors()) {
+            System.out.println(LOG + "ERROR FOUND");
             long currentUserId = (long) session.getAttribute(USER_ID_PARAMETER);
             List<User> users = userService.findAllExceptSelf(currentUserId);
             model.addAttribute("users", users);

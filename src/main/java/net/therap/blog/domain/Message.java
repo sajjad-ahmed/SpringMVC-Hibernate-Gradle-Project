@@ -32,7 +32,7 @@ public class Message implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotNull(message = "Message body cant be empty")
+    @NotNull
     @Size(min = 1, max = 200)
     private String body;
 
