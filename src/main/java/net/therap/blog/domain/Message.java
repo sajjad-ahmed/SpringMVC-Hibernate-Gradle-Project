@@ -18,11 +18,11 @@ import java.util.Date;
 @Table(name = "message")
 @NamedQueries({
         @NamedQuery(name = "Message.findAll",
-                query = "FROM Message"),
+                query = "FROM Message as m WHERE m.isDeleted = FALSE"),
         @NamedQuery(name = "Message.findSentMessages",
-                query = "FROM Message WHERE sender_id = :senderId"),
+                query = "FROM Message WHERE sender_id = :senderId AND isDeleted = FALSE"),
         @NamedQuery(name = "Message.findReceivedMessages",
-                query = "FROM Message WHERE receiver_id = :receiverId"),
+                query = "FROM Message WHERE receiver_id = :receiverId AND isDeleted = FALSE"),
 })
 public class Message implements Serializable {
 

@@ -42,11 +42,8 @@ public class MessageDao {
     public void delete(long id) {
         Message message = em.find(Message.class, id);
         if (Objects.nonNull(message)) {
-            try {
-                em.remove(message);
-            } catch (IllegalStateException | PersistenceException e) {
-                e.printStackTrace();
-            }
+            message.setIsDeleted(true);
+            em.merge(message);
         }
     }
 
