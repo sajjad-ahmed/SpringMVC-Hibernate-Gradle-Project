@@ -7,7 +7,7 @@ import net.therap.blog.util.Constants;
 import net.therap.blog.util.URL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -23,16 +23,16 @@ import java.util.List;
 public class HomeController implements Constants {
 
     @Autowired
-    CategoryDao categoryDao;
+    private CategoryDao categoryDao;
 
     @Autowired
-    PostService postService;
+    private PostService postService;
 
     @RequestMapping(value = URL.ROOT, method = RequestMethod.GET)
-    public String showHomePage(ModelMap modelMap, HttpSession session) {
-        modelMap.put(AVAILABLE_CATEGORIES, categoryDao.findAll());
-        List<Post> posts = this.postService.getPostByAccess(session);
-        modelMap.put("posts", posts);
+    public String showHomePage(Model model, HttpSession session) {
+        model.addAttribute(AVAILABLE_CATEGORIES, categoryDao.findAll());
+        List<Post> posts = postService.getPostByAccess(session);
+        model.addAttribute("posts", posts);
         return URL.HOME_VIEW;
     }
 }

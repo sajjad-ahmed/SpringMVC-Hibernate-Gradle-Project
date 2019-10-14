@@ -9,7 +9,6 @@ import net.therap.blog.web.validator.UniqueEmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +19,6 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
 import javax.validation.Validation;
 import javax.validation.Validator;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -85,9 +83,9 @@ public class UserController implements Constants {
     }
 
     @RequestMapping(value = URL.USER_MANAGE, method = RequestMethod.GET)
-    public String userManagementHandler(ModelMap modelMap, HttpSession session) {
+    public String userManagementHandler(Model model, HttpSession session) {
         List<User> posts = this.userService.findAll(session);
-        modelMap.put("users", posts);
+        model.addAttribute("users", posts);
         return URL.USER_MANAGEMENT_VIEW;
     }
 
