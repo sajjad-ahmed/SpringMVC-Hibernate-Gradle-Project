@@ -57,8 +57,10 @@
                         <div class="footer">
                             <a class="button primary" href="<c:url value="/user/update/${user.id}"/>"><spring:message
                                     code="label.update.header"/></a>
-                            <a class="button danger" href="<c:url value="/user/delete/${user.id}"/>"><spring:message
-                                    code="label.delete.header"/></a>
+                            <c:if test="${sessionScope.userID != user.id}">
+                                <a class="button danger" href="<c:url value="/user/delete/${user.id}"/>"><spring:message
+                                        code="label.delete.header"/></a>
+                            </c:if>
                         </div>
                     </section>
                 </tr>

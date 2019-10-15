@@ -17,10 +17,11 @@
 
             <div class="content">
                 <h3><c:out value="${user.title}"/></h3>
-                <p>Author: <c:out value="${user.getAuthorName()}"/>; Date: <c:out value="${user.formattedDate}"/></p>
+                <p>by <strong><c:out value="${user.getAuthorName()}"/></strong> - <c:out
+                        value="${user.formattedDate}"/></p>
             </div>
             <div class="footer">
-                <a href="/post/show/${user.id}" class="button outline primary"><spring:message code="label.post.read.more"/></a>
+                <a href="/post/show/${user.uri}" class="button outline primary"><spring:message code="label.post.read.more"/></a>
             </div>
         </section>
     </c:forEach>

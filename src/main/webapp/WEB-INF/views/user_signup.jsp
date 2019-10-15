@@ -33,7 +33,7 @@
                 <td><form:errors path="email" cssStyle="color: red"/></td>
             </tr>
             <tr>
-                <td><spring:message code="label.user.signUp.password"/> Password :</td>
+                <td><spring:message code="label.user.signUp.password"/></td>
                 <td><form:password path="password" placeholder="Choose a password"/></td>
                 <td><form:errors path="password" cssStyle="color: red"/></td>
             </tr>

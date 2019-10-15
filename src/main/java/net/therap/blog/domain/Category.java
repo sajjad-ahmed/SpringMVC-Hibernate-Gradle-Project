@@ -36,7 +36,10 @@ public class Category implements Serializable {
     @Column(name = "updated_at")
     private Date updatedAt;
 
-    @ManyToMany(mappedBy = "categories")
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @JoinTable(name = "post_category",
+            joinColumns = {@JoinColumn(name = "category_id")},
+            inverseJoinColumns = @JoinColumn(name = "post_id"))
     private List<Post> posts;
 
     public Category() {

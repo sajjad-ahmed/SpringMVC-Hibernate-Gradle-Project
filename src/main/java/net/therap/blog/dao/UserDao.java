@@ -1,10 +1,5 @@
 package net.therap.blog.dao;
 
-/**
- * @author sajjad.ahmed
- * @since 9/20/19.
- */
-
 import net.therap.blog.domain.User;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +9,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * @author sajjad.ahmed
+ * @since 9/20/19.
+ */
 @Repository
 public class UserDao {
 

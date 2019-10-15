@@ -62,7 +62,6 @@ public class UserService implements Constants {
                 postService.delete(i.getId());
             }
         });
-
         messageDao.findAll().forEach(i -> {
             if (i.getSender().getId() == id) {
                 messageDao.delete(i.getId());

@@ -59,10 +59,10 @@ public class Post implements Serializable {
     @NotNull
     private byte[] picture;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE},fetch = FetchType.LAZY)
     @JoinTable(name = "post_category",
             joinColumns = {@JoinColumn(name = "post_id")},
-            inverseJoinColumns = {@JoinColumn(name = "category_id")})
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
     private List<Category> categories;
 
 
@@ -165,7 +165,7 @@ public class Post implements Serializable {
 
     public String getFormattedDate() {
         SimpleDateFormat ft =
-                new SimpleDateFormat("E yyyy.MM.dd 'at' hh:mm:ss a zzz");
+                new SimpleDateFormat("MMMMM',' yyyy");
         return ft.format(createdAt);
     }
     public void setUpdatedAt(Date updatedAt) {

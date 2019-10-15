@@ -62,7 +62,7 @@ public class URL {
 
     public static final String POST_UPDATE = "/post/update/{id}";
 
-    public static final String POST_SHOW = "/post/show/{id}";
+    public static final String POST_SHOW = "/post/show/{uri}";
 
     public static final String POST_DELETE = "/post/delete/{id}";
 

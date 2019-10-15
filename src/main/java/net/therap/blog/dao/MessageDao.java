@@ -1,18 +1,20 @@
 package net.therap.blog.dao;
 
-/**
- * @author sajjad.ahmed
- * @since 9/20/19.
- */
-
 import net.therap.blog.domain.Message;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * @author sajjad.ahmed
+ * @since 9/20/19.
+ */
 @Repository
 public class MessageDao {
 

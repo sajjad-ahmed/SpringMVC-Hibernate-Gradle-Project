@@ -96,25 +96,28 @@ public class PostController implements Constants {
             Category category = categoryDao.find(i.getId());
             i.setName(category.getName());
         });
-        postService.add(post);
+        postService.save(post);
         return "redirect:" + POST_MANAGE;
     }
 
     @RequestMapping(value = POST_MANAGE, method = RequestMethod.GET)
     public String postManagementHandler(Model model, HttpSession session) {
         String userRole = SessionUtil.getUserRole(session);
+        if (userRole.equals(ROLES.SUBSCRIBER.name())) {
+            return ACCESS_ERROR_VIEW;
+        }
         List<Post> posts = postService.findAll();
         if (Objects.nonNull(posts)) {
-            posts = filterPostByRole(userRole, posts);
+            posts = SessionUtil.filterPostByRole(session, posts);
         }
         model.addAttribute("posts", posts);
         return POST_MANAGEMENT_VIEW;
     }
 
     @RequestMapping(value = POST_SHOW)
-    public String showSinglePost(@PathVariable("id") long id,
+    public String showSinglePost(@PathVariable("uri") String uri,
                                  Model model) {
-        Post post = postService.find(id);
+        Post post = postService.findBy(uri);
         model.addAttribute("post", post);
         model.addAttribute("comment", new Comment());
         model.addAttribute("comments", post.getComments());
@@ -145,13 +148,21 @@ public class PostController implements Constants {
         if (errors.hasErrors()) {
             Post post = comment.getPostId();
             model.addAttribute("post", post);
-            model.addAttribute("comment", new Comment());
             model.addAttribute("comments", post.getComments());
             return SINGLE_POST_VIEW;
         }
         Post post = comment.getPostId();
-        comment.setPostId(post);
-        commentDao.save(comment);
+        if (comment.getId() == 0) {
+            post.getComments().add(comment);
+        } else {
+            post.getComments().forEach(i -> {
+                if (i.getId() == comment.getId()) {
+                    i.setBody(comment.getBody());
+                }
+            });
+        }
+        postService.save(post);
+        post = postService.find(post.getId());
         model.addAttribute("post", post);
         model.addAttribute("comment", new Comment());
         model.addAttribute("comments", post.getComments());
@@ -162,12 +173,12 @@ public class PostController implements Constants {
     public String commentDeleteHandler(@PathVariable("id") long id,
                                        Model model) {
         Comment comment = commentDao.find(id);
-        long postId = comment.getPostId().getId();
-        commentDao.delete(comment.getId());
-        Post post = postService.find(postId);
+        Post post = postService.find(comment.getPostId().getId());
+        post.getComments().removeIf(i -> i.getId() == comment.getId());
+        postService.save(post);
         model.addAttribute("post", post);
         model.addAttribute("comment", new Comment());
-        model.addAttribute("comments", post.getComments());
+        model.addAttribute("comments", postService.find(post.getId()).getComments());
         return SINGLE_POST_VIEW;
     }
 
@@ -185,31 +196,15 @@ public class PostController implements Constants {
         return SINGLE_POST_VIEW;
     }
 
-    private List<Post> filterPostByRole(String userRole, List<Post> posts) {
-        if (userRole.equals(ROLES.ADMIN.name())) {
-            return posts;
-        } else if (userRole.equals(ROLES.AUTHOR.name())) {
-            posts.removeIf(i ->
-                    String.valueOf(i.getAccess()).charAt(0) == ACCESS_DENY);
-        } else if (userRole.equals(ROLES.SUBSCRIBER.name())) {
-            posts.removeIf(i ->
-                    String.valueOf(i.getAccess()).charAt(1) == ACCESS_DENY);
-        } else if (userRole.equals(ACCESS_GUEST)) {
-            posts.removeIf(i ->
-                    String.valueOf(i.getAccess()).charAt(2) == ACCESS_DENY);
-        }
-        return posts;
-    }
 
     @RequestMapping(value = SHOW_POST_BY_CATEGORY, method = RequestMethod.GET)
     public String showPostByCategory(@PathVariable("id") long id,
                                      Model model,
                                      HttpSession session) {
         Category category = categoryDao.find(id);
-        String userRole = SessionUtil.getUserRole(session);
         List<Post> posts = category.getPosts();
         if (Objects.nonNull(posts)) {
-            posts = filterPostByRole(userRole, posts);
+            posts = SessionUtil.filterPostByRole(session, posts);
         }
         model.addAttribute("posts", posts);
         model.addAttribute(AVAILABLE_CATEGORIES, categoryDao.findAll());

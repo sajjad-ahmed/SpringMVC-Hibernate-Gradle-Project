@@ -3,12 +3,9 @@ package net.therap.blog.service;
 import net.therap.blog.dao.PostDao;
 import net.therap.blog.domain.Post;
 import net.therap.blog.util.Constants;
-import net.therap.blog.util.ROLES;
-import net.therap.blog.util.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Objects;
 
@@ -22,8 +19,8 @@ public class PostService implements Constants {
     @Autowired
     private PostDao postDao;
 
-    public void add(Post post) {
-        postDao.save(post);
+    public Post save(Post post) {
+        return postDao.save(post);
     }
 
     public List<Post> findAll() {
@@ -42,4 +39,7 @@ public class PostService implements Constants {
         return Objects.nonNull(postDao.findBy(uri));
     }
 
+    public Post findBy(String uri) {
+        return postDao.findBy(uri);
+    }
 }

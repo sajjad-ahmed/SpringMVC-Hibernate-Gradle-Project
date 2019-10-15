@@ -1,10 +1,5 @@
 package net.therap.blog.dao;
 
-/**
- * @author sajjad.ahmed
- * @since 9/20/19.
- */
-
 import net.therap.blog.domain.Comment;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +10,10 @@ import javax.persistence.PersistenceException;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * @author sajjad.ahmed
+ * @since 9/20/19.
+ */
 @Repository
 public class CommentDao {
 

@@ -10,7 +10,7 @@
 </head>
 <body>
 <c:if test="${!empty post}">
-    <h5 style="padding-top:20px; "> Author: <c:out value="${post.getAuthorName()}"/>; Date: <c:out
+    <h5 style="padding-top:20px; "> by <strong><c:out value="${post.getAuthorName()}"/></strong> - <c:out
             value="${post.formattedDate}"/></h5>
 
     <c:forEach items="${post.categories}" var="category">

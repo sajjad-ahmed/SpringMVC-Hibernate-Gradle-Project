@@ -1,6 +1,9 @@
 package net.therap.blog.util;
 
+import net.therap.blog.domain.Post;
+
 import javax.servlet.http.HttpSession;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -19,8 +22,20 @@ public class SessionUtil implements Constants {
         }
     }
 
-    private boolean hasAccess(HttpSession session) {
+    public static List<Post> filterPostByRole(HttpSession session, List<Post> posts) {
         String userRole = SessionUtil.getUserRole(session);
-        return userRole.equals(ROLES.ADMIN.name());
+        if (userRole.equals(ROLES.ADMIN.name())) {
+            return posts;
+        } else if (userRole.equals(ROLES.AUTHOR.name())) {
+            posts.removeIf(i ->
+                    String.valueOf(i.getAccess()).charAt(0) == ACCESS_DENY);
+        } else if (userRole.equals(ROLES.SUBSCRIBER.name())) {
+            posts.removeIf(i ->
+                    String.valueOf(i.getAccess()).charAt(1) == ACCESS_DENY);
+        } else if (userRole.equals(ACCESS_GUEST)) {
+            posts.removeIf(i ->
+                    String.valueOf(i.getAccess()).charAt(2) == ACCESS_DENY);
+        }
+        return posts;
     }
 }
