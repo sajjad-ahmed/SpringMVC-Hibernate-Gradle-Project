@@ -9,17 +9,18 @@
     <title> <spring:message code="label.home.home.text"/> </title>
 </head>
 <body>
+
 <c:if test="${!empty posts}">
-    <c:forEach items="${posts}" var="post">
+    <c:forEach items="${posts}" var="user">
         <section class="card z-depth2">
-            <img src="data:image/*;base64,${post.getImageBase64()}"/>
+            <img src="data:image/*;base64,${user.getImageBase64()}"/>
 
             <div class="content">
-                <h3><c:out value="${post.title}"/></h3>
-                <p>Author: <c:out value="${post.getAuthorName()}"/>; Date: <c:out value="${post.createdAt}"/></p>
+                <h3><c:out value="${user.title}"/></h3>
+                <p>Author: <c:out value="${user.getAuthorName()}"/>; Date: <c:out value="${user.formattedDate}"/></p>
             </div>
             <div class="footer">
-                <a href="/post/show/${post.id}" class="button outline primary"><spring:message code="label.post.read.more"/></a>
+                <a href="/post/show/${user.id}" class="button outline primary"><spring:message code="label.post.read.more"/></a>
             </div>
         </section>
     </c:forEach>

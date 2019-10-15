@@ -29,8 +29,10 @@ public class PostValidator implements Validator {
     public void validate(Object target, Errors errors) {
         Post post = (Post) target;
         String value = post.getUri();
-        if (Objects.nonNull(value) && postService.isUriAlreadyInUse(value)) {
-            errors.rejectValue("uri", "validator.duplicate.uri", "URI already exists");
+        if (post.getId() == 0) {
+            if (Objects.nonNull(value) && postService.isUriAlreadyInUse(value)) {
+                errors.rejectValue("uri", "validator.duplicate.uri", "URI already exists");
+            }
         }
         String access = String.valueOf(post.getAccess());
         String regexp = "^[1,7]{3}$";

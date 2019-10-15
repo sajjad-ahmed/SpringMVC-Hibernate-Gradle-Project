@@ -6,12 +6,15 @@ import net.therap.blog.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.Objects;
 
 import static net.therap.blog.util.URL.*;
@@ -35,10 +38,17 @@ public class AuthenticationController implements Constants {
     }
 
     @RequestMapping(value = LOG_IN, method = RequestMethod.POST)
-    public String loginHandler(@ModelAttribute User targetUser,
+    public String loginHandler(@Valid @ModelAttribute(name = "user") User targetUser,
+                               Errors errors,
                                HttpServletRequest request,
                                Model model) throws IllegalArgumentException {
-
+        if (errors.hasErrors()) {
+            for (FieldError error : errors.getFieldErrors()) {
+                if (error.getField().equals("email") || error.getField().equals("password")) {
+                    return LOG_IN_VIEW;
+                }
+            }
+        }
         User user = userDao.findUserByEmail(targetUser.getEmail());
         if (Objects.nonNull(targetUser.getPassword()) && Objects.nonNull(targetUser.getEmail()) && Objects.nonNull(user)) {
             if (user.getPassword().equals(targetUser.getPassword()) && user.getEmail().equals(targetUser.getEmail())) {

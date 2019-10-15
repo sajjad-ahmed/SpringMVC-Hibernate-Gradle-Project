@@ -67,6 +67,9 @@ public class UserService implements Constants {
             if (i.getSender().getId() == id) {
                 messageDao.delete(i.getId());
             }
+            if (i.getReceiver().getId() == id) {
+                messageDao.delete(i.getId());
+            }
         });
         userDao.delete(id);
     }

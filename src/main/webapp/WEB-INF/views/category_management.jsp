@@ -23,7 +23,12 @@
                     <form:input path="name"/>
                     <form:errors cssStyle="color: red" path="name"/>
                 </dd>
-                <dd><input type="submit" value="ADD" class="primary"></dd>
+                <c:if test="${category.id == 0}">
+                    <dd><input type="submit" value="<spring:message code="label.add.header"/>" class="primary"></dd>
+                </c:if>
+                <c:if test="${category.id != 0}">
+                    <dd><input type="submit" value="<spring:message code="label.update.header"/>" class="primary"></dd>
+                </c:if>
             </fieldset>
         </table>
     </form:form>

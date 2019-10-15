@@ -65,8 +65,14 @@
             </dd>
             <dd><form:errors path="categories" cssStyle="color: red"/></dd>
 
-            <dd><input type="submit" value="<spring:message code="label.post.createPage.submit.button"/>" class="primary">
-            </dd>
+            <c:if test="${post.id != 0}">
+                <dd><input type="submit" value="<spring:message code="label.post.createPage.update.button"/>"
+                           class="primary"></dd>
+            </c:if>
+            <c:if test="${post.id == 0}">
+                <dd><input type="submit" value="<spring:message code="label.post.createPage.submit.button"/>"
+                           class="primary"></dd>
+            </c:if>
         </fieldset>
 
     </form:form>

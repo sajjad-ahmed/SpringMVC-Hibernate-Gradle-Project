@@ -52,7 +52,7 @@ public class URL {
 
     public static final String CATEGORY_MANAGE = "/category/manage";
 
-    public static final String SHOW_POSTS_BY_CATEGORY = "/category/show/posts/{id}";
+    public static final String SHOW_POST_BY_CATEGORY = "/category/post/show/{id}";
 
     public static final String POST_MANAGEMENT_VIEW = "post_management";
 

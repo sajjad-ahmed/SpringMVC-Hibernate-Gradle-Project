@@ -15,30 +15,52 @@
     <h4><spring:message code="label.user.management.list.title"/></h4>
     <c:if test="${!empty users}">
         <table class="bordered">
-            <tr>
-                <th><spring:message code="label.user.management.id.header"/></th>
-                <th><spring:message code="label.user.management.firstName.header"/></th>
-                <th><spring:message code="label.user.management.lastName.header"/></th>
-                <th><spring:message code="label.user.management.email.header"/></th>
-                <th><spring:message code="label.user.management.passowrd.header"/></th>
-                <th><spring:message code="label.user.management.role.header"/>Role</th>
-                <th><spring:message code="label.user.management.picture.header"/>Profile Picture</th>
-                <th width="60"><spring:message code="label.update.header"/></th>
-                <th width="60"><spring:message code="label.delete.header"/></th>
-            </tr>
-            <c:forEach items="${users}" var="post">
+            <c:forEach items="${users}" var="user">
                 <tr>
-                    <td><c:out value="${post.id}"/></td>
-                    <td><c:out value="${post.firstName}"/></td>
-                    <td><c:out value="${post.lastName}"/></td>
-                    <td><c:out value="${post.email}"/></td>
-                    <td><c:out value="${post.password}"/></td>
-                    <td><c:out value="${post.role}"/></td>
-                    <td><img src="data:image/*;base64,${post.getImageBase64()}" width="70" height="50"/></td>
-                    <td><a class="button primary" href="<c:url value="/user/update/${post.id}"/>"><spring:message
-                            code="label.update.header"/></a></td>
-                    <td><a class="button danger" href="<c:url value="/user/delete/${post.id}"/>"><spring:message
-                            code="label.delete.header"/></a></td>
+                    <section class="card">
+                        <div class="header">
+                            <img src="data:image/*;base64,${user.getImageBase64()}" width="100" height="75"/>
+                        </div>
+                        <div class="content">
+                            <table class="bordered">
+                                <tr>
+                                    <td width="200px"><strong><spring:message code="label.user.field.id"/></strong></td>
+                                    <td><c:out value="${user.id}"/></td>
+                                </tr>
+                                <tr>
+                                    <td width="200px"><strong><spring:message
+                                            code="label.user.field.firsName"/></strong></td>
+                                    <td><c:out value="${user.firstName}"/></td>
+                                </tr>
+                                <tr>
+                                    <td width="200px"><strong><spring:message
+                                            code="label.user.field.lastName"/></strong></td>
+                                    <td><c:out value="${user.lastName}"/></td>
+                                </tr>
+                                <tr>
+                                    <td width="200px"><strong><spring:message code="label.user.field.email"/></strong>
+                                    </td>
+                                    <td><c:out value="${user.email}"/></td>
+                                </tr>
+                                <tr>
+                                    <td width="200px"><strong><spring:message
+                                            code="label.user.field.password"/></strong></td>
+                                    <td><c:out value="${user.password}"/></td>
+                                </tr>
+                                <tr>
+                                    <td width="200px"><strong><spring:message code="label.user.field.role"/></strong>
+                                    </td>
+                                    <td><c:out value="${user.role}"/></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="footer">
+                            <a class="button primary" href="<c:url value="/user/update/${user.id}"/>"><spring:message
+                                    code="label.update.header"/></a>
+                            <a class="button danger" href="<c:url value="/user/delete/${user.id}"/>"><spring:message
+                                    code="label.delete.header"/></a>
+                        </div>
+                    </section>
                 </tr>
             </c:forEach>
         </table>

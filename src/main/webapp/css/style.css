@@ -1733,11 +1733,14 @@ div.responsiveTableWrapperInner {
     display: block;
     color: #ffffff;
     text-decoration: none;
+    border: 1px solid #212121;
 }
 
 .hnav li a:hover,
 .vnav li a:hover {
-    background-color: #880E4F;
+    background-color: transparent;
+    border-radius: 10px;
+    border: 1px solid #fff;
 }
 
 .hnav .active a,
@@ -2045,7 +2048,7 @@ form .description {
 }
 
 form .validation {
-    color: #EC407A;
+    color: #ef9a9a;
     display: none;
 }
 
@@ -2108,7 +2111,7 @@ form input[type="password"].validationError,
 form input[type="search"].validationError,
 form select.validationError,
 form textarea.validationError {
-    border-color: #EC407A;
+    border-color: #ef9a9a;
 }
 
 form .selectControl select {
@@ -2265,7 +2268,7 @@ form .selectControl:after {
 .appFormStyle form select.validationError,
 .appFormStyle form textarea.validationError {
     border: none;
-    border-bottom: 2px solid #EC407A;
+    border-bottom: 2px solid #ef9a9a;
 }
 
 .floatingLabels label {
@@ -2616,7 +2619,7 @@ button.danger,
 .button.alert,
 .button.danger {
     color: #ffffff;
-    background-color: #EC407A;
+    background-color: #ef9a9a;
 }
 
 .uploadButton.alert:hover,
@@ -2646,7 +2649,7 @@ button.danger:disabled,
 .button.danger.disabled,
 .button.alert:disabled,
 .button.danger:disabled {
-    background-color: #EC407A;
+    background-color: #ef9a9a;
 }
 
 .uploadButton.outline,
@@ -2730,7 +2733,7 @@ button.flat.danger,
 .button.flat.alert,
 .button.outline.danger,
 .button.flat.danger {
-    color: #EC407A;
+    color: #ef9a9a;
 }
 
 .uploadButton.outline,
@@ -2784,7 +2787,7 @@ input[type="submit"].outline.danger,
 button.outline.danger,
 .button.outline.alert,
 .button.outline.danger {
-    border-color: #EC407A;
+    border-color: #ef9a9a;
 }
 
 .uploadButton.outline.alert:hover,
@@ -2795,7 +2798,7 @@ input[type="submit"].outline.danger:hover,
 button.outline.danger:hover,
 .button.outline.alert:hover,
 .button.outline.danger:hover {
-    background-color: #EC407A;
+    background-color: #ef9a9a;
 }
 
 .uploadButton.raised,
@@ -3421,6 +3424,6 @@ a {
 .top-nav {
     padding-top: 10px;
     padding-bottom: 10px;
-    background: #AD1457;
+    background: #212121;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
 }

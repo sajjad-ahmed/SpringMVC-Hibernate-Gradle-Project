@@ -27,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Objects;
 
 import static net.therap.blog.util.URL.*;
 
@@ -101,7 +102,11 @@ public class PostController implements Constants {
 
     @RequestMapping(value = POST_MANAGE, method = RequestMethod.GET)
     public String postManagementHandler(Model model, HttpSession session) {
-        List<Post> posts = getAccessiblePost(session);
+        String userRole = SessionUtil.getUserRole(session);
+        List<Post> posts = postService.findAll();
+        if (Objects.nonNull(posts)) {
+            posts = filterPostByRole(userRole, posts);
+        }
         model.addAttribute("posts", posts);
         return POST_MANAGEMENT_VIEW;
     }
@@ -129,6 +134,7 @@ public class PostController implements Constants {
         Post post = postService.find(id);
         model.addAttribute("post", post);
         model.addAttribute("roles", ROLES.values());
+        model.addAttribute("categories", categoryDao.findAll());
         return POST_CREATE_VIEW;
     }
 
@@ -179,9 +185,7 @@ public class PostController implements Constants {
         return SINGLE_POST_VIEW;
     }
 
-    private List<Post> getAccessiblePost(HttpSession session) {
-        String userRole = SessionUtil.getUserRole(session);
-        List<Post> posts = postService.findAll();
+    private List<Post> filterPostByRole(String userRole, List<Post> posts) {
         if (userRole.equals(ROLES.ADMIN.name())) {
             return posts;
         } else if (userRole.equals(ROLES.AUTHOR.name())) {
@@ -195,6 +199,21 @@ public class PostController implements Constants {
                     String.valueOf(i.getAccess()).charAt(2) == ACCESS_DENY);
         }
         return posts;
+    }
+
+    @RequestMapping(value = SHOW_POST_BY_CATEGORY, method = RequestMethod.GET)
+    public String showPostByCategory(@PathVariable("id") long id,
+                                     Model model,
+                                     HttpSession session) {
+        Category category = categoryDao.find(id);
+        String userRole = SessionUtil.getUserRole(session);
+        List<Post> posts = category.getPosts();
+        if (Objects.nonNull(posts)) {
+            posts = filterPostByRole(userRole, posts);
+        }
+        model.addAttribute("posts", posts);
+        model.addAttribute(AVAILABLE_CATEGORIES, categoryDao.findAll());
+        return HOME_VIEW;
     }
 }
 

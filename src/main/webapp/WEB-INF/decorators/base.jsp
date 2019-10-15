@@ -17,12 +17,10 @@
             <nav class="row relative">
                 <div class="span-t8 span-s6">
                     <ul class="hnav pull-left hidden-t" style="background-color: transparent">
-                        <li><a href="/"><spring:message code="label.home.home.text"/></a></li>
+                        <li><a href="/"><spring:message code="label.home.blogName.text"/></a></li>
                         <c:forEach items="${availableCategories}" var="category">
-                            <li><a href="/category/show/posts/${category.id}">
-                                <c:out value="${category.name}"/>
-                            </a>
-                            </li>
+                            <li><a href="<c:url value="/category/post/show/${category.id}"/>"> <c:out
+                                    value="${category.name}"/></a></li>
                         </c:forEach>
                     </ul>
                 </div>
@@ -48,7 +46,6 @@
 <body style="margin:0px; background: white;">
 <div class="container">
     <div style="padding-top:50px;background-color: transparent"></div>
-
     <div style="padding-top:50px;"/>
     <h2 style="color: #880E4F; font-weight: bold;"><decorator:title/></h2>
 </div>

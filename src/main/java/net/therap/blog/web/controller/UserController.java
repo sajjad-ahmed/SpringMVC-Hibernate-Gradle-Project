@@ -62,7 +62,9 @@ public class UserController implements Constants {
         if (!userRole.equals(ROLES.ADMIN.name())) {
             return ACCESS_ERROR_VIEW;
         }
-        uniqueEmailValidator.validate(user, errors);
+        if (user.getId() == 0) {
+            uniqueEmailValidator.validate(user, errors);
+        }
         if (errors.hasErrors()) {
             model.addAttribute("roles", ROLES.values());
             return USER_ADD_VIEW;

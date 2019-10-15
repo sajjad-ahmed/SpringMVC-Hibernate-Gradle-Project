@@ -5,6 +5,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
@@ -162,6 +163,11 @@ public class Post implements Serializable {
         return updatedAt;
     }
 
+    public String getFormattedDate() {
+        SimpleDateFormat ft =
+                new SimpleDateFormat("E yyyy.MM.dd 'at' hh:mm:ss a zzz");
+        return ft.format(createdAt);
+    }
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }

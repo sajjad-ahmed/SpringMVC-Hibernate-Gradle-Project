@@ -26,17 +26,17 @@
                 <th width="60"><spring:message code="label.update.header"/></th>
                 <th width="60"><spring:message code="label.delete.header"/></th>
             </tr>
-            <c:forEach items="${posts}" var="post">
+            <c:forEach items="${posts}" var="user">
                 <tr>
-                    <td><c:out value="${post.id}"/></td>
-                    <td><c:out value="${post.title}"/></td>
-                    <td><c:out value="${post.getAuthorName()}"/></td>
-                    <td><c:out value="${post.access}"/></td>
-                    <td><c:out value="${post.uri}"/></td>
-                    <td><c:out value="${post.createdAt}"/></td>
-                    <td><c:out value="${post.updatedAt}"/></td>
-                    <td><a class="button primary" href="<c:url value="/post/update/${post.id}"/>">Update</a></td>
-                    <td><a class="button danger" href="<c:url value="/post/delete/${post.id}"/>">Delete</a></td>
+                    <td><c:out value="${user.id}"/></td>
+                    <td><c:out value="${user.title}"/></td>
+                    <td><c:out value="${user.getAuthorName()}"/></td>
+                    <td><c:out value="${user.access}"/></td>
+                    <td><c:out value="${user.uri}"/></td>
+                    <td><c:out value="${user.createdAt}"/></td>
+                    <td><c:out value="${user.updatedAt}"/></td>
+                    <td><a class="button primary" href="<c:url value="/post/update/${user.id}"/>">Update</a></td>
+                    <td><a class="button danger" href="<c:url value="/post/delete/${user.id}"/>">Delete</a></td>
                 </tr>
             </c:forEach>
         </table>

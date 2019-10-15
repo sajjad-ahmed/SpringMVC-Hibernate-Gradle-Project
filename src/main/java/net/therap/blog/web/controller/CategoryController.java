@@ -2,7 +2,6 @@ package net.therap.blog.web.controller;
 
 import net.therap.blog.dao.CategoryDao;
 import net.therap.blog.domain.Category;
-import net.therap.blog.service.PostService;
 import net.therap.blog.util.Constants;
 import net.therap.blog.util.ROLES;
 import net.therap.blog.util.SessionUtil;
@@ -28,9 +27,6 @@ public class CategoryController implements Constants {
 
     @Autowired
     private CategoryDao categoryDao;
-
-    @Autowired
-    private PostService postService;
 
     @InitBinder
     protected void initBinder(WebDataBinder binder) throws Exception {

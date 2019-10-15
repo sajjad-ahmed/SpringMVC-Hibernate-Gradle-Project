@@ -11,10 +11,12 @@
 <body>
 <c:if test="${!empty post}">
     <h5 style="padding-top:20px; "> Author: <c:out value="${post.getAuthorName()}"/>; Date: <c:out
-            value="${post.createdAt}"/></h5>
+            value="${post.formattedDate}"/></h5>
 
     <c:forEach items="${post.categories}" var="category">
-        <div class="chip"><b class="primary">T</b><c:out value="${category.name}"/></div>
+        <a href="<c:url value="/category/post/show/${category.id}"/>" style="text-decoration: none">
+            <div class="chip"><b class="primary">C</b> <c:out value="${category.name}"/></div>
+        </a>
     </c:forEach>
     <div class="chipContainer">
     </div>
@@ -81,19 +83,22 @@
             <form:input path="postId" type="hidden" value="${post.id}"/>
             <form:input path="userId" value="${sessionScope.userID}" type="hidden"/>
             <fieldset>
-                <legend><spring:message code="label.post.comment.legend.new"/> </legend>
+                <legend><spring:message code="label.post.comment.legend.new"/></legend>
 
-                <dt><label aria-atomic="true" aria-live="polite"><spring:message code="label.post.comment.prompt"/> </label></dt>
+                <dt><label aria-atomic="true" aria-live="polite"><spring:message
+                        code="label.post.comment.prompt"/> </label></dt>
                 <dd>
                     <form:textarea path="body" cssClass="tht" aria-labelledby="code-label" aria-required="true"/>
                 </dd>
                 <dd><form:errors path="body" cssStyle="color: red"/></dd>
 
                 <c:if test="${comment.id ==0}">
-                    <dd><input type="submit" value="<spring:message code="label.post.comment.button.submit"/>" class="primary"></dd>
+                    <dd><input type="submit" value="<spring:message code="label.post.comment.button.submit"/>"
+                               class="primary"></dd>
                 </c:if>
                 <c:if test="${comment.id !=0}">
-                    <dd><input type="submit" value="<spring:message code="label.post.comment.button.update"/>" class="primary"></dd>
+                    <dd><input type="submit" value="<spring:message code="label.post.comment.button.update"/>"
+                               class="primary"></dd>
                 </c:if>
             </fieldset>
         </form:form>
