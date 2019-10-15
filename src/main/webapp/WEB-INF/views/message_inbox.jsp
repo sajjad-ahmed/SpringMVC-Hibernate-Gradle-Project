@@ -11,7 +11,7 @@
 
 <body>
 <div>
-    <h3><spring:message code="label.sentMessage.title"/></h3>
+    <h3><strong><spring:message code="label.sentMessage.title"/></strong></h3>
     <c:if test="${!empty sentMessages}">
         <table>
             <tr>
@@ -42,7 +42,7 @@
     <br>
     <br>
 
-    <h3><spring:message code="label.receivedMessage.title"/></h3>
+    <h3><strong><spring:message code="label.receivedMessage.title"/></strong></h3>
     <c:if test="${!empty receivedMessages}">
         <table>
             <tr>

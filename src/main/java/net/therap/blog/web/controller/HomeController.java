@@ -37,6 +37,4 @@ public class HomeController implements Constants {
         model.addAttribute("posts", posts);
         return HOME_VIEW;
     }
-
-
 }

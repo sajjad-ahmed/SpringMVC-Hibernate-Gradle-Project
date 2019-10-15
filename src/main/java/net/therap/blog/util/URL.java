@@ -81,5 +81,4 @@ public class URL {
     public static final String COMMENT_DELETE = "/comment/delete/{id}";
 
     public static final String ACCESS_ERROR_VIEW = "access_error";
-
 }

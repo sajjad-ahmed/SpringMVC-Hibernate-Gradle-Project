@@ -196,7 +196,6 @@ public class PostController implements Constants {
         return SINGLE_POST_VIEW;
     }
 
-
     @RequestMapping(value = SHOW_POST_BY_CATEGORY, method = RequestMethod.GET)
     public String showPostByCategory(@PathVariable("id") long id,
                                      Model model,

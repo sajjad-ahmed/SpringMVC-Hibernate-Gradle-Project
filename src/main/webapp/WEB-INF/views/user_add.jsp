@@ -29,9 +29,13 @@
                 <td><form:input path="email"/></td>
                 <td><form:errors path="email" cssStyle="color: red"/></td>
             </tr>
-
             <tr>
+                <c:if test="${user.id == 0}">
                 <td><spring:message code="label.user.field.password"/></td>
+                </c:if>
+                <c:if test="${user.id != 0}">
+                    <td><spring:message code="label.user.field.new.password"/></td>
+                </c:if>
                 <td><form:password path="password"/></td>
                 <td><form:errors path="password" cssStyle="color: red"/></td>
             </tr>
