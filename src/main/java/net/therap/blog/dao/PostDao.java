@@ -17,7 +17,7 @@ import java.util.Objects;
 public class PostDao {
 
     @PersistenceContext
-    EntityManager em;
+    private EntityManager em;
 
     @Transactional
     public Post save(Post post) {

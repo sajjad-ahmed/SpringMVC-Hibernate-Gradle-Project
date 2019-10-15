@@ -33,7 +33,7 @@ public class Message implements Serializable {
     private long id;
 
     @NotNull
-    @Size(min = 1, max = 200)
+    @Size(min = 4, max = 200)
     private String body;
 
     @OneToOne

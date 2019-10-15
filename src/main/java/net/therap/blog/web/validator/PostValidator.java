@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 public class PostValidator implements Validator {
 
     @Autowired
-    PostService postService;
+    private PostService postService;
 
     public boolean supports(Class clazz) {
         return Post.class.isAssignableFrom(clazz);
@@ -30,14 +30,14 @@ public class PostValidator implements Validator {
         Post post = (Post) target;
         String value = post.getUri();
         if (Objects.nonNull(value) && postService.isUriAlreadyInUse(value)) {
-            errors.rejectValue("uri", "duplicate.uri", "URI already exists");
+            errors.rejectValue("uri", "validator.duplicate.uri", "URI already exists");
         }
         String access = String.valueOf(post.getAccess());
         String regexp = "^[1,7]{3}$";
         Pattern pattern = Pattern.compile(regexp);
         Matcher matcher = pattern.matcher(access);
         if (!matcher.matches()) {
-            errors.rejectValue("access", "post.access.error", "Must be a 3 digit number containing only 1 or 7");
+            errors.rejectValue("access", "validator.post.access.error", "Must be a 3 digit number containing only 1 or 7");
 
         }
     }

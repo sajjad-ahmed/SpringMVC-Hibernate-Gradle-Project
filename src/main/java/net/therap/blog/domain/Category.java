@@ -1,8 +1,8 @@
 package net.therap.blog.domain;
 
-import org.hibernate.validator.constraints.Length;
-
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,7 +26,8 @@ public class Category implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Length(min = 3, max = 50)
+    @NotNull
+    @Size(min = 3, max = 50)
     private String name;
 
     @Column(name = "created_at")

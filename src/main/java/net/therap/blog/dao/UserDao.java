@@ -18,7 +18,7 @@ import java.util.Optional;
 public class UserDao {
 
     @PersistenceContext
-    EntityManager em;
+    private EntityManager em;
 
     @Transactional
     public User save(User user) {

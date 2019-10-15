@@ -5,19 +5,20 @@ import net.therap.blog.domain.Message;
 import net.therap.blog.domain.User;
 import net.therap.blog.service.UserService;
 import net.therap.blog.util.Constants;
-import net.therap.blog.util.URL;
 import net.therap.blog.web.editor.UserEditor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
+
+import static net.therap.blog.util.URL.*;
 
 /**
  * @author sajjad.ahmed
@@ -38,40 +39,39 @@ public class MessageController implements Constants {
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
     }
 
-    @RequestMapping(value = URL.MESSAGE_SEND, method = RequestMethod.GET)
+    @RequestMapping(value = MESSAGE_SEND, method = RequestMethod.GET)
     public String showNewMessageForm(Model model, HttpSession session) {
         model.addAttribute("message", new Message());
         long currentUserId = (long) session.getAttribute(USER_ID_PARAMETER);
         List<User> users = userService.findAllExceptSelf(currentUserId);
         model.addAttribute("users", users);
-        return URL.MESSAGE_ADD_VIEW;
+        return MESSAGE_ADD_VIEW;
     }
 
-    @RequestMapping(value = URL.MESSAGE_SEND, method = RequestMethod.POST)
+    @RequestMapping(value = MESSAGE_SEND, method = RequestMethod.POST)
     public String sendMessageHandler(@Valid @ModelAttribute("message") Message message,
+                                     Errors errors,
                                      Model model,
-                                     BindingResult error,
                                      HttpSession session) {
-        if (error.hasErrors()) {
-            System.out.println(LOG + "ERROR FOUND");
+        if (errors.hasErrors()) {
             long currentUserId = (long) session.getAttribute(USER_ID_PARAMETER);
             List<User> users = userService.findAllExceptSelf(currentUserId);
             model.addAttribute("users", users);
-            return URL.MESSAGE_ADD_VIEW;
+            return MESSAGE_ADD_VIEW;
         }
         messageDao.save(message);
-        return "redirect:" + URL.MESSAGE_SHOW_INBOX;
+        return "redirect:" + MESSAGE_SHOW_INBOX;
     }
 
-    @RequestMapping(value = URL.MESSAGE_SHOW_INBOX, method = RequestMethod.GET)
+    @RequestMapping(value = MESSAGE_SHOW_INBOX, method = RequestMethod.GET)
     public String showInbox(Model model, HttpSession session) {
         long userId = (long) session.getAttribute(USER_ID_PARAMETER);
         model.addAttribute("sentMessages", messageDao.findSentMessages(userId));
         model.addAttribute("receivedMessages", messageDao.findReceivedMessages(userId));
-        return URL.MESSAGE_INBOX_VIEW;
+        return MESSAGE_INBOX_VIEW;
     }
 
-    @RequestMapping(value = URL.MESSAGE_DELETE)
+    @RequestMapping(value = MESSAGE_DELETE)
     public String messageDeleteHandler(@PathVariable("id") long id,
                                        HttpSession session,
                                        Model model) {
@@ -80,7 +80,7 @@ public class MessageController implements Constants {
         long userId = (long) session.getAttribute(USER_ID_PARAMETER);
         model.addAttribute("sentMessages", messageDao.findSentMessages(userId));
         model.addAttribute("receivedMessages", messageDao.findReceivedMessages(userId));
-        return URL.MESSAGE_INBOX_VIEW;
+        return MESSAGE_INBOX_VIEW;
     }
 
 }

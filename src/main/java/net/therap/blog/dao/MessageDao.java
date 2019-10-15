@@ -17,7 +17,7 @@ import java.util.Objects;
 public class MessageDao {
 
     @PersistenceContext
-    EntityManager em;
+    private EntityManager em;
 
     @Transactional
     public Message save(Message message) {

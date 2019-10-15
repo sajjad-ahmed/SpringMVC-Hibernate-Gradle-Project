@@ -2,11 +2,11 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ page language="java" contentType="text/html; charset=US-ASCII" pageEncoding="US-ASCII" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 
 <html>
 <head>
-    <title>Category Management</title>
+    <title><spring:message code="label.category.title"/></title>
 </head>
 <body>
 
@@ -16,8 +16,9 @@
         <table align="center">
             <fieldset>
                 <form:input path="id" type="hidden"/>
-                <legend>Add a new Category</legend>
-                <dt><label aria-atomic="true" aria-live="polite">Category Name</label></dt>
+                <legend><spring:message code="label.category.body.title"/></legend>
+                <dt><label aria-atomic="true" aria-live="polite"><spring:message
+                        code="label.category.body.name"/> </label></dt>
                 <dd>
                     <form:input path="name"/>
                     <form:errors cssStyle="color: red" path="name"/>
@@ -33,14 +34,14 @@
 
     <div class="hform" align="center">
         <fieldset>
-            <legend>Category List</legend>
+            <legend><spring:message code="label.category.list.title"/></legend>
             <c:if test="${!empty categories}">
                 <table class="bordered">
                     <tr>
-                        <th>ID</th>
-                        <th>Category Name</th>
-                        <th>Update</th>
-                        <th>Delete</th>
+                        <th><spring:message code="label.id.header"/></th>
+                        <th><spring:message code="label.category.header"/></th>
+                        <th><spring:message code="label.update.header"/></th>
+                        <th><spring:message code="label.delete.header"/></th>
                     </tr>
                     <c:forEach items="${categories}" var="category">
                         <tr>
@@ -57,7 +58,7 @@
                 </table>
             </c:if>
             <c:if test="${empty categories}">
-                <h4> No categories added yet</h4>
+                <h4><spring:message code="label.category.list.notFound"/></h4>
             </c:if>
         </fieldset>
     </div>

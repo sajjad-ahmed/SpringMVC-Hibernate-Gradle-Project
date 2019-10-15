@@ -19,7 +19,7 @@ import java.util.Objects;
 public class CommentDao {
 
     @PersistenceContext
-    EntityManager em;
+    private EntityManager em;
 
     @Transactional
     public Comment save(Comment comment) {

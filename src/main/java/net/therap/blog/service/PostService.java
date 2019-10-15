@@ -30,24 +30,6 @@ public class PostService implements Constants {
         return postDao.findAll();
     }
 
-    public List<Post> getPostByAccess(HttpSession session) {
-        String userRole = SessionUtil.getUserRole(session);
-        List<Post> posts = postDao.findAll();
-        if (userRole.equals(ROLES.ADMIN.name())) {
-            return posts;
-        } else if (userRole.equals(ROLES.AUTHOR.name())) {
-            posts.removeIf(i ->
-                    String.valueOf(i.getAccess()).charAt(0) == ACCESS_DENY);
-        } else if (userRole.equals(ROLES.SUBSCRIBER.name())) {
-            posts.removeIf(i ->
-                    String.valueOf(i.getAccess()).charAt(1) == ACCESS_DENY);
-        } else if (userRole.equals(ACCESS_GUEST)) {
-            posts.removeIf(i ->
-                    String.valueOf(i.getAccess()).charAt(2) == ACCESS_DENY);
-        }
-        return posts;
-    }
-
     public void delete(long id) {
         postDao.delete(id);
     }

@@ -1,8 +1,8 @@
 package net.therap.blog.domain;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -30,7 +30,8 @@ public class Comment implements Serializable {
     private User userId;
 
     @Column(nullable = false)
-    @NotEmpty
+    @NotNull
+    @Size(min = 1, max = 500)
     private String body;
 
     @Column(name = "created_at")

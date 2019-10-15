@@ -52,11 +52,11 @@ public class URL {
 
     public static final String CATEGORY_MANAGE = "/category/manage";
 
-    public static final String SHOW_POSTS_BY_CATEGORY = "/show/category/{id}";
+    public static final String SHOW_POSTS_BY_CATEGORY = "/category/show/posts/{id}";
 
     public static final String POST_MANAGEMENT_VIEW = "post_management";
 
-    public static final String POST_CREATE_VIEW = "/post_create";
+    public static final String POST_CREATE_VIEW = "post_create";
 
     public static final String POST_CREATE = "/post/create";
 
@@ -79,4 +79,7 @@ public class URL {
     public static final String COMMENT_UPDATE = "/comment/update/{id}";
 
     public static final String COMMENT_DELETE = "/comment/delete/{id}";
+
+    public static final String ACCESS_ERROR_VIEW = "access_error";
+
 }

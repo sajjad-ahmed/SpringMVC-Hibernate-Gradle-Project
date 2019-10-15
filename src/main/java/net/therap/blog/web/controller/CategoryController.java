@@ -2,77 +2,92 @@ package net.therap.blog.web.controller;
 
 import net.therap.blog.dao.CategoryDao;
 import net.therap.blog.domain.Category;
-import net.therap.blog.util.URL;
+import net.therap.blog.service.PostService;
+import net.therap.blog.util.Constants;
+import net.therap.blog.util.ROLES;
+import net.therap.blog.util.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 
-import javax.validation.ConstraintViolation;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import javax.validation.Validation;
-import javax.validation.Validator;
+
+import static net.therap.blog.util.URL.*;
 
 /**
  * @author sajjad.ahmed
  * @since 9/30/19.
  */
 @Controller
-public class CategoryController {
+public class CategoryController implements Constants {
 
     @Autowired
     private CategoryDao categoryDao;
 
-    @RequestMapping(value = URL.CATEGORY_MANAGEMENT_VIEW, method = RequestMethod.GET)
-    public String showCategoryView(Model model) {
-        model.addAttribute("category", new Category());
-        model.addAttribute("categories", categoryDao.findAll());
-        return URL.CATEGORY_MANAGEMENT_VIEW;
+    @Autowired
+    private PostService postService;
+
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) throws Exception {
+        binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
     }
 
-    @RequestMapping(value = URL.CATEGORY_MANAGE, method = RequestMethod.GET)
+    @RequestMapping(value = CATEGORY_MANAGE, method = RequestMethod.GET)
     public String showCategoryManage(Model model) {
         model.addAttribute("category", new Category());
         model.addAttribute("categories", categoryDao.findAll());
-        return URL.CATEGORY_MANAGEMENT_VIEW;
+        return CATEGORY_MANAGEMENT_VIEW;
     }
 
-    @RequestMapping(value = URL.CATEGORY_ADD, method = RequestMethod.POST)
-    public String addCategoryHandler(@ModelAttribute @Valid Category category,
-                                     BindingResult error) {
-        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-        for (ConstraintViolation<Category> violation : validator.validate(category)) {
-            String propertyPath = violation.getPropertyPath().toString();
-            String message = violation.getMessage();
-            error.addError(new FieldError("category", propertyPath, message));
+    @RequestMapping(value = CATEGORY_ADD, method = RequestMethod.POST)
+    public String addCategoryHandler(@Valid @ModelAttribute Category category,
+                                     Errors errors,
+                                     Model model,
+                                     HttpSession session) {
+        String userRole = SessionUtil.getUserRole(session);
+        if (!userRole.equals(ROLES.ADMIN.name())) {
+            return ACCESS_ERROR_VIEW;
         }
-        if (error.hasErrors()) {
-            return URL.CATEGORY_MANAGEMENT_VIEW;
+        if (errors.hasErrors()) {
+            model.addAttribute("categories", categoryDao.findAll());
+            return CATEGORY_MANAGEMENT_VIEW;
         }
         categoryDao.save(category);
-        return "redirect:" + URL.CATEGORY_MANAGE;
+        return "redirect:" + CATEGORY_MANAGE;
     }
 
-    @RequestMapping(value = URL.CATEGORY_UPDATE)
-    public String updateCategoryHandler(@PathVariable("id") long id, Model model) {
+    @RequestMapping(value = CATEGORY_UPDATE)
+    public String updateCategoryHandler(@PathVariable("id") long id,
+                                        Model model,
+                                        HttpSession session) {
+        String userRole = SessionUtil.getUserRole(session);
+        if (!userRole.equals(ROLES.ADMIN.name())) {
+            return ACCESS_ERROR_VIEW;
+        }
         Category category = categoryDao.find(id);
         model.addAttribute("category", category);
         model.addAttribute("categories", categoryDao.findAll());
-        return URL.CATEGORY_MANAGEMENT_VIEW;
+        return CATEGORY_MANAGEMENT_VIEW;
     }
 
-    @RequestMapping(value = URL.CATEGORY_DELETE)
-    public String deleteCategoryHandler(@PathVariable("id") long id, Model model) {
+    @RequestMapping(value = CATEGORY_DELETE)
+    public String deleteCategoryHandler(@PathVariable("id") long id,
+                                        Model model,
+                                        HttpSession session) {
+        String userRole = SessionUtil.getUserRole(session);
+        if (!userRole.equals(ROLES.ADMIN.name())) {
+            return ACCESS_ERROR_VIEW;
+        }
         Category category = categoryDao.find(id);
         categoryDao.delete(category.getId());
         model.addAttribute("category", category);
         model.addAttribute("categories", categoryDao.findAll());
-        return "redirect:" + URL.CATEGORY_MANAGE;
+        return "redirect:" + CATEGORY_MANAGE;
     }
-}
 
+}

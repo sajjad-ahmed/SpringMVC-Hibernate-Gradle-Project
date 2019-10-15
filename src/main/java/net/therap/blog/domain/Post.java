@@ -1,14 +1,9 @@
 package net.therap.blog.domain;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.UpdateTimestamp;
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -40,18 +35,18 @@ public class Post implements Serializable {
     @JoinColumn(name = "created_by")
     private User creator;
 
-    @NotEmpty
-    @Length(min = 4, max = 255)
+    @NotNull
+    @Size(min = 4, max = 255)
     @Column(unique = true, nullable = false)
     @Pattern(regexp = "^[a-zA-Z0-9-]*$", message = "Only [a-z] [A-z] [0-9] and hyphen allowed")
     private String uri;
 
-    @NotEmpty
+    @NotNull
+    @Size(min = 4, max = 400)
     @Column(nullable = false)
-    @Type(type = "text")
     private String title;
 
-    @NotEmpty
+    @NotNull
     @Column(nullable = false)
     private String body;
 

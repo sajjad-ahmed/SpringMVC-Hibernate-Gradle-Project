@@ -33,24 +33,16 @@ public class UserService implements Constants {
     @Autowired
     private CommentDao commentDao;
 
-    public void add(User user, HttpSession session) {
-        if (hasAccess(session)) {
+    public void add(User user) {
             userDao.save(user);
-        } else {
-            return;
-        }
     }
 
     public void signUp(User user) {
         userDao.save(user);
     }
 
-    public List<User> findAll(HttpSession session) {
-        if (hasAccess(session)) {
+    public List<User> findAll() {
             return userDao.findAll();
-        } else {
-            return null;
-        }
     }
 
     public List<User> findAllExceptSelf(long id) {
@@ -86,10 +78,5 @@ public class UserService implements Constants {
 
     public boolean isEmailAlreadyInUse(String value) {
         return Objects.nonNull(userDao.findUserByEmail(value));
-    }
-
-    private boolean hasAccess(HttpSession session) {
-        String userRole = SessionUtil.getUserRole(session);
-        return userRole.equals(ROLES.ADMIN.name());
     }
 }

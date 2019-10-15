@@ -6,17 +6,11 @@
 
 <html>
 <head>
-    <title><spring:message code="label.dashboard.title"/> </title>
+    <title><spring:message code="label.access.error.page.title"/></title>
 </head>
 <body>
 
-<c:forEach items="${uris}" var="uri">
-    <br>
-    <a href=" ${uri.key}"> ${uri.value}</a>
-    <br>
-</c:forEach>
+<h3 style="color: red"><spring:message code="label.access.error.message"/></h3>
 
 </body>
 </html>
-
-

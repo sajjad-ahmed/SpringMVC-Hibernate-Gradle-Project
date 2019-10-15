@@ -18,7 +18,7 @@ import java.util.Objects;
 public class CategoryDao {
 
     @PersistenceContext
-    EntityManager em;
+    private EntityManager em;
 
     @Transactional
     public Category save(Category category) {

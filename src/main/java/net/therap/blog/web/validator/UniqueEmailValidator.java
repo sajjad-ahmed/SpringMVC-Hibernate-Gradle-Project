@@ -17,7 +17,7 @@ import java.util.Objects;
 public class UniqueEmailValidator implements Validator {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     public boolean supports(Class clazz) {
         return User.class.isAssignableFrom(clazz);
@@ -27,7 +27,7 @@ public class UniqueEmailValidator implements Validator {
         User user = (User) target;
         String email = user.getEmail();
         if (Objects.nonNull(email) && userService.isEmailAlreadyInUse(email)) {
-            errors.rejectValue("email", "duplicate.email", "Duplicate email");
+            errors.rejectValue("email", "validator.duplicate.email", "Duplicate email");
         }
     }
 }

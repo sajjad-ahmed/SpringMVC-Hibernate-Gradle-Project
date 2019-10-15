@@ -2,29 +2,29 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ page language="java" contentType="text/html; charset=US-ASCII" pageEncoding="US-ASCII" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 
 <html>
 <head>
-    <title>User Management</title>
+    <title><spring:message code="label.user.management.title"/></title>
 </head>
 
 <body>
 <div>
-    <a href="/user/add" class="button primary"> Add a new user</a>
-    <h4>User list:</h4>
+    <a href="/user/add" class="button primary"> <spring:message code="label.user.management.form.title"/></a>
+    <h4><spring:message code="label.user.management.list.title"/></h4>
     <c:if test="${!empty users}">
         <table class="bordered">
             <tr>
-                <th>User ID</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Email Name</th>
-                <th>Password</th>
-                <th>Role</th>
-                <th>Profile Picture</th>
-                <th width="60">Update</th>
-                <th width="60">Delete</th>
+                <th><spring:message code="label.user.management.id.header"/></th>
+                <th><spring:message code="label.user.management.firstName.header"/></th>
+                <th><spring:message code="label.user.management.lastName.header"/></th>
+                <th><spring:message code="label.user.management.email.header"/></th>
+                <th><spring:message code="label.user.management.passowrd.header"/></th>
+                <th><spring:message code="label.user.management.role.header"/>Role</th>
+                <th><spring:message code="label.user.management.picture.header"/>Profile Picture</th>
+                <th width="60"><spring:message code="label.update.header"/></th>
+                <th width="60"><spring:message code="label.delete.header"/></th>
             </tr>
             <c:forEach items="${users}" var="post">
                 <tr>
@@ -35,8 +35,10 @@
                     <td><c:out value="${post.password}"/></td>
                     <td><c:out value="${post.role}"/></td>
                     <td><img src="data:image/*;base64,${post.getImageBase64()}" width="70" height="50"/></td>
-                    <td><a class="button primary" href="<c:url value="/user/update/${post.id}"/>">Update</a></td>
-                    <td><a class="button danger" href="<c:url value="/user/delete/${post.id}"/>">Delete</a></td>
+                    <td><a class="button primary" href="<c:url value="/user/update/${post.id}"/>"><spring:message
+                            code="label.update.header"/></a></td>
+                    <td><a class="button danger" href="<c:url value="/user/delete/${post.id}"/>"><spring:message
+                            code="label.delete.header"/></a></td>
                 </tr>
             </c:forEach>
         </table>

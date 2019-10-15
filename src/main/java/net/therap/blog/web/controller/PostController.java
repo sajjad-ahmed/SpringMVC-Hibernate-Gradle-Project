@@ -10,26 +10,25 @@ import net.therap.blog.service.PostService;
 import net.therap.blog.service.UserService;
 import net.therap.blog.util.Constants;
 import net.therap.blog.util.ROLES;
-import net.therap.blog.util.URL;
+import net.therap.blog.util.SessionUtil;
 import net.therap.blog.web.editor.CategoryEditor;
 import net.therap.blog.web.editor.PostEditor;
 import net.therap.blog.web.editor.UserEditor;
 import net.therap.blog.web.validator.PostValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
-import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
-import javax.validation.Validation;
-import javax.validation.Validator;
 import java.util.List;
+
+import static net.therap.blog.util.URL.*;
 
 /**
  * @author sajjad.ahmed
@@ -58,38 +57,30 @@ public class PostController implements Constants {
         binder.registerCustomEditor(List.class, "categories", new CategoryEditor(List.class));
         binder.registerCustomEditor(User.class, new UserEditor(userService));
         binder.registerCustomEditor(Post.class, new PostEditor(postService));
+        binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
     }
 
-    @RequestMapping(value = URL.POST_CREATE_VIEW, method = RequestMethod.GET)
-    public String showCreatePostForm(Model model) {
-        model.addAttribute("post", new Post());
-        model.addAttribute("categories", categoryDao.findAll());
-        return URL.POST_CREATE_VIEW;
-    }
-
-    @RequestMapping(value = URL.POST_CREATE, method = RequestMethod.GET)
+    @RequestMapping(value = POST_CREATE, method = RequestMethod.GET)
     public String cratePostForm(Model model) {
         model.addAttribute("post", new Post());
         model.addAttribute("categories", categoryDao.findAll());
-        return URL.POST_CREATE_VIEW;
+        return POST_CREATE_VIEW;
     }
 
-    @RequestMapping(value = URL.POST_CREATE, method = RequestMethod.POST)
-    public String createPostHandler(@ModelAttribute @Valid Post post,
-                                    @RequestParam("file") MultipartFile picture,
+    @RequestMapping(value = POST_CREATE, method = RequestMethod.POST)
+    public String createPostHandler(@Valid @ModelAttribute Post post,
+                                    Errors errors,
                                     Model model,
-                                    BindingResult error) {
-
-        postValidator.validate(post, error);
-        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-        for (ConstraintViolation<Post> violation : validator.validate(post)) {
-            String propertyPath = violation.getPropertyPath().toString();
-            String message = violation.getMessage();
-            error.addError(new FieldError("post", propertyPath, message));
+                                    HttpSession session,
+                                    @RequestParam("file") MultipartFile picture) {
+        String userRole = SessionUtil.getUserRole(session);
+        if (!(userRole.equals(ROLES.ADMIN.name()) || userRole.equals(ROLES.AUTHOR.name()))) {
+            return ACCESS_ERROR_VIEW;
         }
-        if (error.hasErrors()) {
+        postValidator.validate(post, errors);
+        if (errors.hasErrors()) {
             model.addAttribute("categories", categoryDao.findAll());
-            return URL.POST_CREATE_VIEW;
+            return POST_CREATE_VIEW;
         }
         if (!picture.isEmpty()) {
             try {
@@ -105,55 +96,63 @@ public class PostController implements Constants {
             i.setName(category.getName());
         });
         postService.add(post);
-        return "redirect:" + URL.POST_MANAGE;
+        return "redirect:" + POST_MANAGE;
     }
 
-    @RequestMapping(value = URL.POST_MANAGE, method = RequestMethod.GET)
+    @RequestMapping(value = POST_MANAGE, method = RequestMethod.GET)
     public String postManagementHandler(Model model, HttpSession session) {
-        List<Post> posts = this.postService.getPostByAccess(session);
+        List<Post> posts = getAccessiblePost(session);
         model.addAttribute("posts", posts);
-        return URL.POST_MANAGEMENT_VIEW;
+        return POST_MANAGEMENT_VIEW;
     }
 
-    @RequestMapping(value = URL.POST_SHOW)
+    @RequestMapping(value = POST_SHOW)
     public String showSinglePost(@PathVariable("id") long id,
                                  Model model) {
         Post post = postService.find(id);
         model.addAttribute("post", post);
         model.addAttribute("comment", new Comment());
         model.addAttribute("comments", post.getComments());
-        return URL.SINGLE_POST_VIEW;
+        return SINGLE_POST_VIEW;
     }
 
-    @RequestMapping(value = URL.POST_DELETE)
+    @RequestMapping(value = POST_DELETE)
     public String postDeleteHandler(@PathVariable("id") long id) {
         Post post = postService.find(id);
         postService.delete(post.getId());
-        return "redirect:" + URL.POST_MANAGE;
+        return "redirect:" + POST_MANAGE;
     }
 
-    @RequestMapping(value = URL.POST_UPDATE)
+    @RequestMapping(value = POST_UPDATE)
     public String postUpdateHandler(@PathVariable("id") long id,
                                     Model model) {
         Post post = postService.find(id);
         model.addAttribute("post", post);
         model.addAttribute("roles", ROLES.values());
-        return URL.POST_CREATE_VIEW;
+        return POST_CREATE_VIEW;
     }
 
-    @RequestMapping(value = URL.COMMENT_ADD, method = RequestMethod.POST)
-    public String addCommentForm(@ModelAttribute @Valid Comment comment,
+    @RequestMapping(value = COMMENT_ADD, method = RequestMethod.POST)
+    public String addCommentForm(@Valid @ModelAttribute Comment comment,
+                                 Errors errors,
                                  Model model) {
+        if (errors.hasErrors()) {
+            Post post = comment.getPostId();
+            model.addAttribute("post", post);
+            model.addAttribute("comment", new Comment());
+            model.addAttribute("comments", post.getComments());
+            return SINGLE_POST_VIEW;
+        }
         Post post = comment.getPostId();
         comment.setPostId(post);
         commentDao.save(comment);
         model.addAttribute("post", post);
         model.addAttribute("comment", new Comment());
         model.addAttribute("comments", post.getComments());
-        return URL.SINGLE_POST_VIEW;
+        return SINGLE_POST_VIEW;
     }
 
-    @RequestMapping(value = URL.COMMENT_DELETE)
+    @RequestMapping(value = COMMENT_DELETE)
     public String commentDeleteHandler(@PathVariable("id") long id,
                                        Model model) {
         Comment comment = commentDao.find(id);
@@ -163,11 +162,10 @@ public class PostController implements Constants {
         model.addAttribute("post", post);
         model.addAttribute("comment", new Comment());
         model.addAttribute("comments", post.getComments());
-        return URL.SINGLE_POST_VIEW;
-
+        return SINGLE_POST_VIEW;
     }
 
-    @RequestMapping(value = URL.COMMENT_UPDATE, method = RequestMethod.GET)
+    @RequestMapping(value = COMMENT_UPDATE)
     public String commentUpdateHandler(@PathVariable("id") long id,
                                        Model model) {
         Comment comment = commentDao.find(id);
@@ -178,8 +176,25 @@ public class PostController implements Constants {
         List<Comment> comments = post.getComments();
         comments.removeIf(i -> i.getId() == comment.getId());
         model.addAttribute("comments", comments);
-        return URL.SINGLE_POST_VIEW;
+        return SINGLE_POST_VIEW;
+    }
 
+    private List<Post> getAccessiblePost(HttpSession session) {
+        String userRole = SessionUtil.getUserRole(session);
+        List<Post> posts = postService.findAll();
+        if (userRole.equals(ROLES.ADMIN.name())) {
+            return posts;
+        } else if (userRole.equals(ROLES.AUTHOR.name())) {
+            posts.removeIf(i ->
+                    String.valueOf(i.getAccess()).charAt(0) == ACCESS_DENY);
+        } else if (userRole.equals(ROLES.SUBSCRIBER.name())) {
+            posts.removeIf(i ->
+                    String.valueOf(i.getAccess()).charAt(1) == ACCESS_DENY);
+        } else if (userRole.equals(ACCESS_GUEST)) {
+            posts.removeIf(i ->
+                    String.valueOf(i.getAccess()).charAt(2) == ACCESS_DENY);
+        }
+        return posts;
     }
 }
 

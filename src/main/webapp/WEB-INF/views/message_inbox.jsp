@@ -2,24 +2,24 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ page language="java" contentType="text/html; charset=US-ASCII" pageEncoding="US-ASCII" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 
 <html>
 <head>
-    <title>My Inbox</title>
+    <title><spring:message code="label.inbox.title"/></title>
 </head>
 
 <body>
 <div>
-    <h3> Sent Messages</h3>
+    <h3><spring:message code="label.sentMessage.title"/></h3>
     <c:if test="${!empty sentMessages}">
         <table>
             <tr>
-                <th>Sent on</th>
-                <th>To</th>
-                <th>Message</th>
-                <th>Receiver role</th>
-                <th>Delete</th>
+                <th><spring:message code="label.sentMessage.sentOn"/></th>
+                <th><spring:message code="label.sentMessage.to"/></th>
+                <th><spring:message code="label.sentMessage.message"/></th>
+                <th><spring:message code="label.sentMessage.role"/></th>
+                <th><spring:message code="label.delete.header"/></th>
             </tr>
             <c:forEach items="${sentMessages}" var="message">
                 <tr>
@@ -35,22 +35,22 @@
         </table>
     </c:if>
     <c:if test="${empty sentMessages}">
-        <h3> You haven't sent any message</h3>
+        <h3><spring:message code="label.sentMessage.message.notFound"/></h3>
     </c:if>
 
     <br>
     <br>
     <br>
 
-    <h3> Received Messages</h3>
+    <h3><spring:message code="label.receivedMessage.title"/></h3>
     <c:if test="${!empty receivedMessages}">
         <table>
             <tr>
-                <th>Received on</th>
-                <th>Sent by</th>
-                <th>Message</th>
-                <th>User type</th>
-                <th>Delete</th>
+                <th><spring:message code="label.receivedMessage.receivedOn"/></th>
+                <th><spring:message code="label.receivedMessage.sentBy"/></th>
+                <th><spring:message code="label.receivedMessage.message"/></th>
+                <th><spring:message code="label.receivedMessage.role"/></th>
+                <th><spring:message code="label.delete.header"/></th>
             </tr>
             <c:forEach items="${receivedMessages}" var="message">
                 <tr>
@@ -59,14 +59,15 @@
                     <td><c:out value="${message.body}"/></td>
                     <td><c:out value="${message.sender.role}"/></td>
                     <td><a class="button danger"
-                           href="<c:url value="/message/delete/${message.id}"/>">Delete</a>
+                           href="<c:url value="/message/delete/${message.id}"/>"> <spring:message
+                            code="label.delete.header"/></a>
                     </td>
                 </tr>
             </c:forEach>
         </table>
     </c:if>
     <c:if test="${empty receivedMessages}">
-        <h3> No message received</h3>
+        <h3><spring:message code="label.receivedMessage.notFound"/></h3>
     </c:if>
 
 </div>

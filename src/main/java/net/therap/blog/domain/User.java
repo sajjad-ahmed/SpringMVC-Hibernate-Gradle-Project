@@ -1,10 +1,9 @@
 package net.therap.blog.domain;
 
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
-
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Base64;
 
@@ -27,29 +26,28 @@ public class User implements Serializable {
     @GeneratedValue
     private long id;
 
-    @NotEmpty
-    @Length(min = 1, max = 50)
+    @NotNull
+    @Size(min = 1, max = 50)
     @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @NotEmpty
-    @Length(min = 1, max = 50)
+    @NotNull
+    @Size(min = 1, max = 50)
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @NotEmpty
-    @Length(min = 1, max = 255)
+    @NotNull
+    @Size(min = 1, max = 255)
     @Column(nullable = false, unique = true)
     @Pattern(regexp = ".+@.+\\.[a-z]+")
     private String email;
 
-    @NotEmpty
-    @Length(min = 5, max = 255)
+    @NotNull
+    @Size(min = 5, max = 255)
     @Column(nullable = false)
     private String password;
 
-    @NotEmpty
-    @Length(min = 1, max = 50)
+    @NotNull
     @Column(nullable = false)
     private String role;
 

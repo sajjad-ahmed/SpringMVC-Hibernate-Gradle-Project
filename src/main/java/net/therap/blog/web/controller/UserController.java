@@ -4,22 +4,22 @@ import net.therap.blog.domain.User;
 import net.therap.blog.service.UserService;
 import net.therap.blog.util.Constants;
 import net.therap.blog.util.ROLES;
-import net.therap.blog.util.URL;
+import net.therap.blog.util.SessionUtil;
 import net.therap.blog.web.validator.UniqueEmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
-import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
-import javax.validation.Validation;
-import javax.validation.Validator;
 import java.util.List;
+
+import static net.therap.blog.util.URL.*;
 
 /**
  * @author sajjad.ahmed
@@ -29,46 +29,43 @@ import java.util.List;
 public class UserController implements Constants {
 
     @Autowired
-    UniqueEmailValidator uniqueEmailValidator;
+    private UniqueEmailValidator uniqueEmailValidator;
+
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = URL.USER_ADD_VIEW, method = RequestMethod.GET)
-    public String showEditUserForm(Model model) {
-        model.addAttribute("user", new User());
-        model.addAttribute("roles", ROLES.values());
-        return URL.USER_ADD_VIEW;
+    @InitBinder
+    protected void initBinderMenu(WebDataBinder binder) throws Exception {
+        binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
     }
 
-    @RequestMapping(value = URL.USER_ADD, method = RequestMethod.GET)
+    @RequestMapping(value = USER_ADD, method = RequestMethod.GET)
     public String showAddUserForm(Model model) {
         model.addAttribute("user", new User());
         model.addAttribute("roles", ROLES.values());
-        return URL.USER_ADD_VIEW;
+        return USER_ADD_VIEW;
     }
 
-    @RequestMapping(value = URL.USER_SIGN_UP, method = RequestMethod.GET)
+    @RequestMapping(value = USER_SIGN_UP, method = RequestMethod.GET)
     public String showUserSignUpForm(Model model) {
         model.addAttribute("user", new User());
-        return URL.USER_SIGN_UP_VIEW;
+        return USER_SIGN_UP_VIEW;
     }
 
-    @RequestMapping(value = URL.USER_ADD, method = RequestMethod.POST)
-    public String addUserHandler(@ModelAttribute @Valid User user,
+    @RequestMapping(value = USER_ADD, method = RequestMethod.POST)
+    public String addUserHandler(@Valid @ModelAttribute User user,
+                                 Errors errors,
                                  @RequestParam("file") MultipartFile file,
                                  HttpSession session,
-                                 Model model,
-                                 BindingResult error) {
-        uniqueEmailValidator.validate(user, error);
-        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-        for (ConstraintViolation<User> violation : validator.validate(user)) {
-            String propertyPath = violation.getPropertyPath().toString();
-            String message = violation.getMessage();
-            error.addError(new FieldError("user", propertyPath, message));
+                                 Model model) {
+        String userRole = SessionUtil.getUserRole(session);
+        if (!userRole.equals(ROLES.ADMIN.name())) {
+            return ACCESS_ERROR_VIEW;
         }
-        if (error.hasErrors()) {
+        uniqueEmailValidator.validate(user, errors);
+        if (errors.hasErrors()) {
             model.addAttribute("roles", ROLES.values());
-            return URL.USER_ADD_VIEW;
+            return USER_ADD_VIEW;
         }
         if (!file.isEmpty()) {
             try {
@@ -78,47 +75,46 @@ public class UserController implements Constants {
                 e.printStackTrace();
             }
         }
-        userService.add(user, session);
-        return "redirect:" + URL.USER_MANAGE;
+        userService.add(user);
+        return "redirect:" + USER_MANAGE;
     }
 
-    @RequestMapping(value = URL.USER_MANAGE, method = RequestMethod.GET)
-    public String userManagementHandler(Model model, HttpSession session) {
-        List<User> posts = this.userService.findAll(session);
+    @RequestMapping(value = USER_MANAGE, method = RequestMethod.GET)
+    public String userManagementHandler(Model model) {
+        List<User> posts = this.userService.findAll();
         model.addAttribute("users", posts);
-        return URL.USER_MANAGEMENT_VIEW;
+        return USER_MANAGEMENT_VIEW;
     }
 
-    @RequestMapping(value = URL.USER_UPDATE)
+    @RequestMapping(value = USER_UPDATE)
     public String userUpdateHandler(@PathVariable("id") long id, Model model) {
         User user = userService.find(id);
         model.addAttribute("user", user);
         model.addAttribute("roles", ROLES.values());
-        return URL.USER_ADD_VIEW;
+        return USER_ADD_VIEW;
     }
 
-    @RequestMapping(value = URL.USER_DELETE)
-    public String userDeleteHandler(@PathVariable("id") long id, Model model) {
+    @RequestMapping(value = USER_DELETE)
+    public String userDeleteHandler(@PathVariable("id") long id) {
         User user = userService.find(id);
         userService.delete(user.getId());
-        return "redirect:" + URL.USER_MANAGE;
+        return "redirect:" + USER_MANAGE;
     }
 
-    @RequestMapping(value = URL.USER_SIGN_UP, method = RequestMethod.POST)
-    public String userSignUpHandler(@ModelAttribute @Valid User user,
-                                    @RequestParam("file") MultipartFile file,
+    @RequestMapping(value = USER_SIGN_UP, method = RequestMethod.POST)
+    public String userSignUpHandler(@Valid @ModelAttribute User user,
+                                    Errors errors,
                                     Model model,
-                                    BindingResult error) {
-        uniqueEmailValidator.validate(user, error);
-        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-        for (ConstraintViolation<User> violation : validator.validate(user)) {
-            String propertyPath = violation.getPropertyPath().toString();
-            String message = violation.getMessage();
-            error.addError(new FieldError("user", propertyPath, message));
+                                    @RequestParam("file") MultipartFile file,
+                                    HttpSession session) {
+        String userRole = SessionUtil.getUserRole(session);
+        if (!userRole.equals(ROLES.ADMIN.name())) {
+            return ACCESS_ERROR_VIEW;
         }
-        if (error.hasErrors()) {
+        uniqueEmailValidator.validate(user, errors);
+        if (errors.hasErrors()) {
             model.addAttribute("roles", ROLES.values());
-            return URL.USER_SIGN_UP_VIEW;
+            return USER_SIGN_UP_VIEW;
         }
         if (!file.isEmpty()) {
             try {
@@ -129,7 +125,7 @@ public class UserController implements Constants {
             }
         }
         userService.signUp(user);
-        return "redirect:" + URL.ROOT;
+        return "redirect:" + ROOT;
     }
 }
 

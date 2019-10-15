@@ -2,29 +2,29 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ page language="java" contentType="text/html; charset=US-ASCII" pageEncoding="US-ASCII" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 
 <html>
 <head>
-    <title>User Management</title>
+    <title><spring:message code="label.postManagement.title"/></title>
 </head>
 
 <body>
 <div>
-    <a href="/post/create" class="button primary"> Create A new Post</a>
-    <h4>Available Posts:</h4>
+    <a href="/post/create" class="button primary"> <spring:message code="label.postManagement.new.post.button"/> </a>
+    <h4><spring:message code="label.postManagement.available.posts.header"/></h4>
     <c:if test="${!empty posts}">
         <table class="bordered">
             <tr>
-                <th>Post ID</th>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Access</th>
-                <th>URI</th>
-                <th>Created</th>
-                <th>Updated</th>
-                <th width="60">Update</th>
-                <th width="60">Delete</th>
+                <th><spring:message code="label.postManagement.id.header"/></th>
+                <th><spring:message code="label.postManagement.title.header"/></th>
+                <th><spring:message code="label.postManagement.author.header"/></th>
+                <th><spring:message code="label.postManagement.access.header"/></th>
+                <th><spring:message code="label.postManagement.uri.header"/></th>
+                <th><spring:message code="label.postManagement.created.header"/></th>
+                <th><spring:message code="label.postManagement.updated.header"/></th>
+                <th width="60"><spring:message code="label.update.header"/></th>
+                <th width="60"><spring:message code="label.delete.header"/></th>
             </tr>
             <c:forEach items="${posts}" var="post">
                 <tr>

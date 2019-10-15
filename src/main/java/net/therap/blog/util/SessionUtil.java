@@ -18,4 +18,9 @@ public class SessionUtil implements Constants {
             return ACCESS_GUEST;
         }
     }
+
+    private boolean hasAccess(HttpSession session) {
+        String userRole = SessionUtil.getUserRole(session);
+        return userRole.equals(ROLES.ADMIN.name());
+    }
 }

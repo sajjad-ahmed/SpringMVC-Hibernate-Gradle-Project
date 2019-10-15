@@ -21,6 +21,8 @@
 
     <context:component-scan base-package="net.therap"/>
 
+    <mvc:resources mapping="/**" location="/" />
+
     <context:annotation-config/>
 
     <bean id="emailValidator" class="net.therap.blog.web.validator.UniqueEmailValidator"/>
@@ -65,6 +67,10 @@
 
     <bean id="multipartResolver"
           class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+
+    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+        <property name="validationMessageSource" ref="messageSource"/>
+    </bean>
 
 </beans>
 

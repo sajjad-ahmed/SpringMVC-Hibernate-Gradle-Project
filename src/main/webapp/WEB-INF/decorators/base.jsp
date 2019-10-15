@@ -4,8 +4,7 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ page language="java" contentType="text/html; charset=US-ASCII" pageEncoding="US-ASCII" %>
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html >
 
 <head>
     <title><decorator:title/> | O(n)</title>
@@ -14,14 +13,15 @@
     </style>
 
     <div class="row top-nav">
-
         <div class="container" id="navTopRow">
             <nav class="row relative">
                 <div class="span-t8 span-s6">
                     <ul class="hnav pull-left hidden-t" style="background-color: transparent">
-                        <li><a href="/">Home</a></li>
+                        <li><a href="/"><spring:message code="label.home.home.text"/></a></li>
                         <c:forEach items="${availableCategories}" var="category">
-                            <li><a href="/show/category/${category.id}" value="<c:out value="${category.name}"/>"></a>
+                            <li><a href="/category/show/posts/${category.id}">
+                                <c:out value="${category.name}"/>
+                            </a>
                             </li>
                         </c:forEach>
                     </ul>
@@ -32,11 +32,11 @@
                         <c:if test="${sessionScope.userID != null}">
                             <li><a href="/show/dashboard">${sessionScope.userFirstName}'s Dashboard</a></li>
                             <li>
-                                <a href="/auth/logout">Log out</a>
+                                <a href="/auth/logout"><spring:message code="label.home.logout.text"/></a>
                             </li>
                         </c:if>
                         <c:if test="${sessionScope.userID == null}">
-                            <li><a href="/auth/login">Log in</a></li>
+                            <li><a href="/auth/login"><spring:message code="label.home.login.text"/></a></li>
                         </c:if>
                     </ul>
                 </nav>
@@ -52,7 +52,6 @@
     <div style="padding-top:50px;"/>
     <h2 style="color: #880E4F; font-weight: bold;"><decorator:title/></h2>
 </div>
-<%--<h1> <spring:message code="label.home.welcome.text"/>  </h1>--%>
 <div class="card">
     <div class="content">
         <decorator:body/>

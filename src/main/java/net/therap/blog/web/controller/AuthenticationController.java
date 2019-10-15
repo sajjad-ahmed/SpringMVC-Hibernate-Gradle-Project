@@ -3,7 +3,6 @@ package net.therap.blog.web.controller;
 import net.therap.blog.dao.UserDao;
 import net.therap.blog.domain.User;
 import net.therap.blog.util.Constants;
-import net.therap.blog.util.URL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,9 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Objects;
+
+import static net.therap.blog.util.URL.*;
 
 /**
  * @author sajjad.ahmed
@@ -26,44 +26,40 @@ public class AuthenticationController implements Constants {
     public static final int AUTHENTICATION_FAILED_FLAG = -1;
 
     @Autowired
-    UserDao userDao;
+    private UserDao userDao;
 
-    @RequestMapping(value = URL.LOG_IN, method = RequestMethod.GET)
+    @RequestMapping(value = LOG_IN, method = RequestMethod.GET)
     public String showLoginForm(Model model) {
         model.addAttribute("user", new User());
-        return URL.LOG_IN_VIEW;
+        return LOG_IN_VIEW;
     }
 
-    @RequestMapping(value = URL.LOG_IN, method = RequestMethod.POST)
+    @RequestMapping(value = LOG_IN, method = RequestMethod.POST)
     public String loginHandler(@ModelAttribute User targetUser,
                                HttpServletRequest request,
-                               Model model) {
-        try {
-            User user = userDao.findUserByEmail(targetUser.getEmail());
-            if (Objects.nonNull(targetUser.getPassword()) && Objects.nonNull(targetUser.getEmail()) && Objects.nonNull(user)) {
-                if (user.getPassword().equals(targetUser.getPassword()) && user.getEmail().equals(targetUser.getEmail())) {
-                    HttpSession session = request.getSession();
-                    session.setAttribute(USER_ID_PARAMETER, user.getId());
-                    session.setAttribute(USER_EMAIL_PARAMETER, user.getEmail());
-                    session.setAttribute(USER_ROLE_PARAMETER, user.getRole());
-                    session.setAttribute(USER_FIRST_NAME_PARAMETER, user.getFirstName());
-                    return "redirect:" + URL.ROOT;
-                }
+                               Model model) throws IllegalArgumentException {
+
+        User user = userDao.findUserByEmail(targetUser.getEmail());
+        if (Objects.nonNull(targetUser.getPassword()) && Objects.nonNull(targetUser.getEmail()) && Objects.nonNull(user)) {
+            if (user.getPassword().equals(targetUser.getPassword()) && user.getEmail().equals(targetUser.getEmail())) {
+                HttpSession session = request.getSession();
+                session.setAttribute(USER_ID_PARAMETER, user.getId());
+                session.setAttribute(USER_EMAIL_PARAMETER, user.getEmail());
+                session.setAttribute(USER_ROLE_PARAMETER, user.getRole());
+                session.setAttribute(USER_FIRST_NAME_PARAMETER, user.getFirstName());
+                return "redirect:" + ROOT;
             }
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
         }
         model.addAttribute("authFailed", AUTHENTICATION_FAILED_FLAG);
-        return URL.LOG_IN_VIEW;
+        return LOG_IN_VIEW;
     }
 
-    @RequestMapping(value = URL.LOG_OUT, method = RequestMethod.GET)
-    public String logoutHandlerWithView(HttpServletRequest req,
-                                        HttpServletResponse resp) {
+    @RequestMapping(value = LOG_OUT, method = RequestMethod.GET)
+    public String logoutHandlerWithView(HttpServletRequest req) {
         HttpSession session = req.getSession(false);
         if (Objects.nonNull(session)) {
             session.invalidate();
         }
-        return "redirect:" + URL.ROOT;
+        return "redirect:" + ROOT;
     }
 }
