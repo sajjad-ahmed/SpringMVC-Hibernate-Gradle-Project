@@ -52,11 +52,21 @@
                         <tr>
                             <td><c:out value="${category.id}"/></td>
                             <td><c:out value="${category.name}"/></td>
-                            <td><a class="button primary"
-                                   href="<c:url value="/category/update/${category.id}"/>">Update</a>
+                            <td>
+                                <form:form action="/category/update/" method="post"
+                                           modelAttribute="category" class="hform">
+                                    <form:input path="id" type="hidden" value="${category.id}"/>
+                                    <input type="submit" value="<spring:message code="label.update.header"/>"
+                                           class="primary"/>
+                                </form:form>
                             </td>
-                            <td><a class="button danger"
-                                   href="<c:url value='/category/delete/${category.id}'/>">Delete</a>
+                            <td>
+                                <form:form action="/category/delete" method="post"
+                                           modelAttribute="category" class="hform">
+                                    <form:input path="id" type="hidden" value="${category.id}"/>
+                                    <input type="submit" value="<spring:message code="label.delete.header"/>"
+                                           class="primary danger"/>
+                                </form:form>
                             </td>
                         </tr>
                     </c:forEach>

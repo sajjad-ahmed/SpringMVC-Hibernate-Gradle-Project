@@ -31,7 +31,7 @@
             </tr>
             <tr>
                 <c:if test="${user.id == 0}">
-                <td><spring:message code="label.user.field.password"/></td>
+                    <td><spring:message code="label.user.field.password"/></td>
                 </c:if>
                 <c:if test="${user.id != 0}">
                     <td><spring:message code="label.user.field.new.password"/></td>

@@ -12,7 +12,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -49,7 +52,7 @@ public class MessageController implements Constants {
     }
 
     @RequestMapping(value = MESSAGE_SEND, method = RequestMethod.POST)
-    public String sendMessageHandler(@Valid @ModelAttribute("message") Message message,
+    public String sendMessageHandler(@Valid @ModelAttribute Message message,
                                      Errors errors,
                                      Model model,
                                      HttpSession session) {
@@ -66,16 +69,17 @@ public class MessageController implements Constants {
     @RequestMapping(value = MESSAGE_SHOW_INBOX, method = RequestMethod.GET)
     public String showInbox(Model model, HttpSession session) {
         long userId = (long) session.getAttribute(USER_ID_PARAMETER);
+        model.addAttribute("message", new Message());
         model.addAttribute("sentMessages", messageDao.findSentMessages(userId));
         model.addAttribute("receivedMessages", messageDao.findReceivedMessages(userId));
         return MESSAGE_INBOX_VIEW;
     }
 
-    @RequestMapping(value = MESSAGE_DELETE)
-    public String messageDeleteHandler(@PathVariable("id") long id,
+    @RequestMapping(value = MESSAGE_DELETE, method = RequestMethod.POST)
+    public String messageDeleteHandler(@ModelAttribute Message message,
                                        HttpSession session,
                                        Model model) {
-        Message message = messageDao.find(id);
+        message = messageDao.find(message.getId());
         messageDao.delete(message.getId());
         long userId = (long) session.getAttribute(USER_ID_PARAMETER);
         model.addAttribute("sentMessages", messageDao.findSentMessages(userId));

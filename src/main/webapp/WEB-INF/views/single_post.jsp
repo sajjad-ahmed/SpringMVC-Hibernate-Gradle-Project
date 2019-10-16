@@ -49,22 +49,34 @@
 
                     <dd>
                         <c:if test="${sessionScope.userRole == 'ADMIN' }">
-                            <a class="button danger"
-                               href="<c:url value="/comment/delete/${eachComment.id}"/>"><spring:message
-                                    code="label.delete.header"/> </a>
+                            <form:form action="/comment/delete" method="post"
+                                       modelAttribute="comment" class="hform">
+                                <form:input path="id" type="hidden" value="${eachComment.id}"/>
+                                <input type="submit" value="<spring:message code="label.delete.header"/>"
+                                       class="primary danger"/>
+                            </form:form>
                             <c:if test="${sessionScope.userID == eachComment.userId.id}">
-                                <a class="button primary"
-                                   href="<c:url value="/comment/update/${eachComment.id}"/>"><spring:message
-                                        code="label.update.header"/></a>
+                                <form:form action="/comment/update" method="post"
+                                           modelAttribute="comment" class="hform">
+                                    <form:input path="id" type="hidden" value="${eachComment.id}"/>
+                                    <input type="submit" value="<spring:message code="label.update.header"/>"
+                                           class="primary"/>
+                                </form:form>
                             </c:if>
                         </c:if>
                         <c:if test="${sessionScope.userID == eachComment.userId.id && sessionScope.userRole != 'ADMIN'}">
-                            <a class="button danger"
-                               href="<c:url value="/comment/delete/${eachComment.id}"/>"><spring:message
-                                    code="label.delete.header"/></a>
-                            <a class="button primary"
-                               href="<c:url value="/comment/update/${eachComment.id}"/>"><spring:message
-                                    code="label.update.header"/></a>
+                            <form:form action="/comment/delete" method="post"
+                                       modelAttribute="comment" class="hform">
+                                <form:input path="id" type="hidden" value="${eachComment.id}"/>
+                                <input type="submit" value="<spring:message code="label.delete.header"/>"
+                                       class="primary danger"/>
+                            </form:form>
+                            <form:form action="/comment/update" method="post"
+                                       modelAttribute="comment" class="hform">
+                                <form:input path="id" type="hidden" value="${eachComment.id}"/>
+                                <input type="submit" value="<spring:message code="label.update.header"/>"
+                                       class="primary"/>
+                            </form:form>
                         </c:if>
                     </dd>
                 </fieldset>

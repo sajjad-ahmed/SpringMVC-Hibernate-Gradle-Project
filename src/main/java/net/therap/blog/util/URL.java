@@ -18,7 +18,7 @@ public class URL {
 
     public static final String MESSAGE_SEND = "/message/send";
 
-    public static final String MESSAGE_DELETE = "/message/delete/{id}";
+    public static final String MESSAGE_DELETE = "/message/delete";
 
     public static final String DASHBOARD_VIEW = "dashboard";
 
@@ -30,9 +30,9 @@ public class URL {
 
     public static final String USER_ADD = "/user/add";
 
-    public static final String USER_UPDATE = "/user/update/{id}";
+    public static final String USER_UPDATE = "/user/update";
 
-    public static final String USER_DELETE = "/user/delete/{id}";
+    public static final String USER_DELETE = "/user/delete";
 
     public static final String USER_MANAGE = "/user/manage";
 
@@ -46,9 +46,9 @@ public class URL {
 
     public static final String CATEGORY_ADD = "/category/add";
 
-    public static final String CATEGORY_UPDATE = "/category/update/{id}";
+    public static final String CATEGORY_UPDATE = "/category/update/";
 
-    public static final String CATEGORY_DELETE = "/category/delete/{id}";
+    public static final String CATEGORY_DELETE = "/category/delete";
 
     public static final String CATEGORY_MANAGE = "/category/manage";
 
@@ -60,11 +60,11 @@ public class URL {
 
     public static final String POST_CREATE = "/post/create";
 
-    public static final String POST_UPDATE = "/post/update/{id}";
+    public static final String POST_UPDATE = "/post/update";
 
     public static final String POST_SHOW = "/post/show/{uri}";
 
-    public static final String POST_DELETE = "/post/delete/{id}";
+    public static final String POST_DELETE = "/post/delete";
 
     public static final String POST_MANAGE = "/post/manage";
 
@@ -76,9 +76,9 @@ public class URL {
 
     public static final String COMMENT_ADD = "/comment/add";
 
-    public static final String COMMENT_UPDATE = "/comment/update/{id}";
+    public static final String COMMENT_UPDATE = "/comment/update";
 
-    public static final String COMMENT_DELETE = "/comment/delete/{id}";
+    public static final String COMMENT_DELETE = "/comment/delete";
 
     public static final String ACCESS_ERROR_VIEW = "access_error";
 }

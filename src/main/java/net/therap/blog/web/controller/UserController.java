@@ -85,20 +85,22 @@ public class UserController implements Constants {
     public String userManagementHandler(Model model) {
         List<User> posts = this.userService.findAll();
         model.addAttribute("users", posts);
+        model.addAttribute("user", new User());
         return USER_MANAGEMENT_VIEW;
     }
 
-    @RequestMapping(value = USER_UPDATE)
-    public String userUpdateHandler(@PathVariable("id") long id, Model model) {
-        User user = userService.find(id);
+    @RequestMapping(value = USER_UPDATE, method = RequestMethod.POST)
+    public String userUpdateHandler(@ModelAttribute User user,
+                                    Model model) {
+        user = userService.find(user.getId());
         model.addAttribute("user", user);
         model.addAttribute("roles", ROLES.values());
         return USER_ADD_VIEW;
     }
 
-    @RequestMapping(value = USER_DELETE)
-    public String userDeleteHandler(@PathVariable("id") long id) {
-        User user = userService.find(id);
+    @RequestMapping(value = USER_DELETE, method = RequestMethod.POST)
+    public String userDeleteHandler(@ModelAttribute User user) {
+        user = userService.find(user.getId());
         userService.delete(user.getId());
         return "redirect:" + USER_MANAGE;
     }

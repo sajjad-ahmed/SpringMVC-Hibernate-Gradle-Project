@@ -36,11 +36,11 @@ public class Message implements Serializable {
     @Size(min = 4, max = 200)
     private String body;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "sender_id")
     private User sender;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "receiver_id")
     private User receiver;
 

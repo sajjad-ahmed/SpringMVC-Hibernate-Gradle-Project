@@ -52,15 +52,16 @@ public class UserService implements Constants {
     }
 
     public void delete(long id) {
-        commentDao.findAll().forEach(i -> {
-            if (i.getUserId().getId() == id) {
-                commentDao.delete(i.getId());
-            }
-        });
         postService.findAll().forEach(i -> {
             if (i.getCreator().getId() == id) {
                 postService.delete(i.getId());
+
             }
+        });
+        commentDao.findAll().forEach(i -> {
+            if (i.getUserId().getId() == id) {
+                commentDao.delete(i.getId());
+                            }
         });
         messageDao.findAll().forEach(i -> {
             if (i.getSender().getId() == id) {

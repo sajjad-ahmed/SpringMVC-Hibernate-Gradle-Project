@@ -111,10 +111,11 @@ public class PostController implements Constants {
             posts = SessionUtil.filterPostByRole(session, posts);
         }
         model.addAttribute("posts", posts);
+        model.addAttribute("post", new Post());
         return POST_MANAGEMENT_VIEW;
     }
 
-    @RequestMapping(value = POST_SHOW)
+    @RequestMapping(value = POST_SHOW, method = RequestMethod.GET)
     public String showSinglePost(@PathVariable("uri") String uri,
                                  Model model) {
         Post post = postService.findBy(uri);
@@ -124,17 +125,17 @@ public class PostController implements Constants {
         return SINGLE_POST_VIEW;
     }
 
-    @RequestMapping(value = POST_DELETE)
-    public String postDeleteHandler(@PathVariable("id") long id) {
-        Post post = postService.find(id);
+    @RequestMapping(value = POST_DELETE, method = RequestMethod.POST)
+    public String postDeleteHandler(@ModelAttribute Post post) {
+        post = postService.find(post.getId());
         postService.delete(post.getId());
         return "redirect:" + POST_MANAGE;
     }
 
-    @RequestMapping(value = POST_UPDATE)
-    public String postUpdateHandler(@PathVariable("id") long id,
+    @RequestMapping(value = POST_UPDATE, method = RequestMethod.POST)
+    public String postUpdateHandler(@ModelAttribute Post post,
                                     Model model) {
-        Post post = postService.find(id);
+        post = postService.find(post.getId());
         model.addAttribute("post", post);
         model.addAttribute("roles", ROLES.values());
         model.addAttribute("categories", categoryDao.findAll());
@@ -169,12 +170,12 @@ public class PostController implements Constants {
         return SINGLE_POST_VIEW;
     }
 
-    @RequestMapping(value = COMMENT_DELETE)
-    public String commentDeleteHandler(@PathVariable("id") long id,
+    @RequestMapping(value = COMMENT_DELETE, method = RequestMethod.POST)
+    public String commentDeleteHandler(@ModelAttribute Comment comment,
                                        Model model) {
-        Comment comment = commentDao.find(id);
-        Post post = postService.find(comment.getPostId().getId());
-        post.getComments().removeIf(i -> i.getId() == comment.getId());
+        Comment targetComment = commentDao.find(comment.getId());
+        Post post = postService.find(targetComment.getPostId().getId());
+        post.getComments().removeIf(i -> i.getId() == targetComment.getId());
         postService.save(post);
         model.addAttribute("post", post);
         model.addAttribute("comment", new Comment());
@@ -182,16 +183,16 @@ public class PostController implements Constants {
         return SINGLE_POST_VIEW;
     }
 
-    @RequestMapping(value = COMMENT_UPDATE)
-    public String commentUpdateHandler(@PathVariable("id") long id,
+    @RequestMapping(value = COMMENT_UPDATE, method = RequestMethod.POST)
+    public String commentUpdateHandler(@ModelAttribute Comment comment,
                                        Model model) {
-        Comment comment = commentDao.find(id);
-        long postId = comment.getPostId().getId();
+        Comment targetComment = commentDao.find(comment.getId());
+        long postId = targetComment.getPostId().getId();
         Post post = postService.find(postId);
         model.addAttribute("post", post);
-        model.addAttribute("comment", comment);
+        model.addAttribute("comment", targetComment);
         List<Comment> comments = post.getComments();
-        comments.removeIf(i -> i.getId() == comment.getId());
+        comments.removeIf(i -> i.getId() == targetComment.getId());
         model.addAttribute("comments", comments);
         return SINGLE_POST_VIEW;
     }

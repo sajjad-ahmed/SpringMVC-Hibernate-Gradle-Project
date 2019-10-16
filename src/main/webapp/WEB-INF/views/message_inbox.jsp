@@ -27,8 +27,13 @@
                     <td><c:out value="${message.receiver.firstName}"/></td>
                     <td><c:out value="${message.body}"/></td>
                     <td><c:out value="${message.receiver.role}"/></td>
-                    <td><a class="button danger"
-                           href="<c:url value="/message/delete/${message.id}"/>">Delete</a>
+                    <td>
+                        <form:form action="/message/delete" method="post"
+                                   modelAttribute="message" class="hform">
+                            <form:input path="id" type="hidden" value="${message.id}"/>
+                            <input type="submit" value="<spring:message code="label.delete.header"/>"
+                                   class="primary danger"/>
+                        </form:form>
                     </td>
                 </tr>
             </c:forEach>
@@ -58,9 +63,12 @@
                     <td><c:out value="${message.sender.firstName}"/></td>
                     <td><c:out value="${message.body}"/></td>
                     <td><c:out value="${message.sender.role}"/></td>
-                    <td><a class="button danger"
-                           href="<c:url value="/message/delete/${message.id}"/>"> <spring:message
-                            code="label.delete.header"/></a>
+                    <td><form:form action="/message/delete" method="post"
+                                   modelAttribute="message" class="hform">
+                        <form:input path="id" type="hidden" value="${message.id}"/>
+                        <input type="submit" value="<spring:message code="label.delete.header"/>"
+                               class="primary danger"/>
+                    </form:form>
                     </td>
                 </tr>
             </c:forEach>

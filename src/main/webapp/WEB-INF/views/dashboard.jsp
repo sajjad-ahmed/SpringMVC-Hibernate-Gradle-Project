@@ -6,7 +6,7 @@
 
 <html>
 <head>
-    <title><spring:message code="label.dashboard.title"/> </title>
+    <title><spring:message code="label.dashboard.title"/></title>
 </head>
 <body>
 

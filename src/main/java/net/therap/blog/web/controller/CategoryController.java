@@ -11,7 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -57,29 +60,30 @@ public class CategoryController implements Constants {
         return "redirect:" + CATEGORY_MANAGE;
     }
 
-    @RequestMapping(value = CATEGORY_UPDATE)
-    public String updateCategoryHandler(@PathVariable("id") long id,
+    @RequestMapping(value = CATEGORY_UPDATE, method = RequestMethod.POST)
+    public String updateCategoryHandler(@ModelAttribute Category category,
                                         Model model,
                                         HttpSession session) {
         String userRole = SessionUtil.getUserRole(session);
         if (!userRole.equals(ROLES.ADMIN.name())) {
             return ACCESS_ERROR_VIEW;
         }
-        Category category = categoryDao.find(id);
+        long id = category.getId();
+        category = categoryDao.find(id);
         model.addAttribute("category", category);
         model.addAttribute("categories", categoryDao.findAll());
         return CATEGORY_MANAGEMENT_VIEW;
     }
 
-    @RequestMapping(value = CATEGORY_DELETE)
-    public String deleteCategoryHandler(@PathVariable("id") long id,
+    @RequestMapping(value = CATEGORY_DELETE, method = RequestMethod.POST)
+    public String deleteCategoryHandler(@ModelAttribute Category category,
                                         Model model,
                                         HttpSession session) {
         String userRole = SessionUtil.getUserRole(session);
         if (!userRole.equals(ROLES.ADMIN.name())) {
             return ACCESS_ERROR_VIEW;
         }
-        Category category = categoryDao.find(id);
+        category = categoryDao.find(category.getId());
         categoryDao.delete(category.getId());
         model.addAttribute("category", category);
         model.addAttribute("categories", categoryDao.findAll());

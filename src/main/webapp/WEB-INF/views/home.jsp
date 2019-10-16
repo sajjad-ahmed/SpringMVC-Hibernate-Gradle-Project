@@ -6,22 +6,24 @@
 
 <html>
 <head>
-    <title> <spring:message code="label.home.home.text"/> </title>
+    <title><spring:message code="label.home.home.text"/></title>
 </head>
 <body>
 
 <c:if test="${!empty posts}">
-    <c:forEach items="${posts}" var="user">
+    <c:forEach items="${posts}" var="post">
         <section class="card z-depth2">
-            <img src="data:image/*;base64,${user.getImageBase64()}"/>
+            <img src="data:image/*;base64,${post.getImageBase64()}"/>
 
             <div class="content">
-                <h3><c:out value="${user.title}"/></h3>
-                <p>by <strong><c:out value="${user.getAuthorName()}"/></strong> - <c:out
-                        value="${user.formattedDate}"/></p>
+                <h3><c:out value="${post.title}"/></h3>
+
+                <p>by <strong><c:out value="${post.getAuthorName()}"/></strong> - <c:out
+                        value="${post.formattedDate}"/></p>
             </div>
             <div class="footer">
-                <a href="/post/show/${user.uri}" class="button outline primary"><spring:message code="label.post.read.more"/></a>
+                <a href="/post/show/${post.uri}" class="button outline primary"><spring:message
+                        code="label.post.read.more"/></a>
             </div>
         </section>
     </c:forEach>
