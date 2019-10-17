@@ -33,6 +33,22 @@
 
     <div style="padding: 10px"/>
 
+    <c:if test="${confirmation == 'ADDED'}">
+        <br/>
+        <br/>
+        <div class="alert success">
+            <strong><spring:message code="label.success.message.prefix"/></strong>
+            <spring:message code="label.comment"/> <spring:message code="label.success.add.message.suffix"/>
+        </div>
+    </c:if>
+    <c:if test="${confirmation == 'UPDATED'}">
+        <br/>
+        <br/>
+        <div class="alert success">
+            <strong><spring:message code="label.success.message.prefix"/></strong>
+            <spring:message code="label.comment"/> <spring:message code="label.success.update.message.suffix"/>
+        </div>
+    </c:if>
     <c:if test="${!empty post.comments}">
         <c:forEach items="${post.comments}" var="eachComment">
             <form class="hform">
@@ -51,11 +67,13 @@
 
                     <dd>
                         <c:if test="${sessionScope.userRole == 'ADMIN' }">
-                            <form:form action="/comment/delete" method="post"
+                            <form:form action="/comment/delete" method="post" id="id-form-cc-${eachComment.id}"
                                        modelAttribute="comment" class="hform">
                                 <form:input path="id" type="hidden" value="${eachComment.id}"/>
-                                <input type="submit" value="<spring:message code="label.delete.header"/>"
-                                       class="primary danger"/>
+                                <input type="button" onclick="getConfirmation('<spring:message
+                                        code="label.confirmation.prompt.delete"/>', 'id-form-cc-${eachComment.id}')"
+                                       value="<spring:message code="label.delete.header"/>"
+                                       class="danger"/>
                             </form:form>
                             <c:if test="${sessionScope.userID == eachComment.userId.id}">
                                 <form:form action="/comment/update" method="post"
@@ -67,11 +85,13 @@
                             </c:if>
                         </c:if>
                         <c:if test="${sessionScope.userID == eachComment.userId.id && sessionScope.userRole != 'ADMIN'}">
-                            <form:form action="/comment/delete" method="post"
+                            <form:form action="/comment/delete" method="post" id="id-form-ct-${eachComment.id}"
                                        modelAttribute="comment" class="hform">
                                 <form:input path="id" type="hidden" value="${eachComment.id}"/>
-                                <input type="submit" value="<spring:message code="label.delete.header"/>"
-                                       class="primary danger"/>
+                                <input type="button" onclick="getConfirmation('<spring:message
+                                        code="label.confirmation.prompt.delete"/>', 'id-form-ct-${eachComment.id}')"
+                                       value="<spring:message code="label.delete.header"/>"
+                                       class="danger"/>
                             </form:form>
                             <form:form action="/comment/update" method="post"
                                        modelAttribute="comment" class="hform">

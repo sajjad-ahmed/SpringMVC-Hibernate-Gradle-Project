@@ -18,7 +18,6 @@
             </c:if>
             <div class="content">
                 <h3><c:out value="${post.title}"/></h3>
-
                 <p>by <strong><c:out value="${post.getAuthorName()}"/></strong> - <c:out
                         value="${post.formattedDate}"/></p>
             </div>

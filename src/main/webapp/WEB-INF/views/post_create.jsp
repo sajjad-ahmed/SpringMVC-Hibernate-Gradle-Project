@@ -47,23 +47,14 @@
                 </div>
             </dd>
             <dd><form:errors path="access" cssStyle="color: red"/></dd>
-            <c:if test="${post.picture != null}">
-                <dt><label aria-atomic="true" aria-live="polite"><spring:message
-                        code="label.post.createPage.old.cover.prompt"/></label></dt>
-                <dd><img src="data:image/*;base64,${post.imageBase64}"/></dd>
 
-                <dt><spring:message code="label.post.createPage.new.cover.prompt"/></dt>
-                <dd><form:input type="hidden" path="picture"/></dd>
-                <dd><input type="file" name="file"></dd>
-                <dd><form:errors path="picture" name="picture" cssStyle="color: red"/></dd>
-            </c:if>
-            <c:if test="${post.picture == null}">
-                <dt><label aria-atomic="true" aria-live="polite"><spring:message
-                        code="label.post.createPage.cover.prompt"/></label></dt>
-                <dd><form:input type="hidden" path="picture"/></dd>
-                <dd><input type="file" name="file"></dd>
-                <dd><form:errors path="picture" name="picture" cssStyle="color: red"/></dd>
-            </c:if>
+            <dt><label aria-atomic="true" aria-live="polite"><spring:message
+                    code="label.post.createPage.cover.prompt"/> </label></dt>
+            <form:input type="hidden" path="picture"/>
+            <dd>
+                <input type="file" name="file">
+            </dd>
+            <dd><form:errors path="picture" name="picture" cssStyle="color: red"/></dd>
 
             <dt><label aria-atomic="true" aria-live="polite"> <spring:message
                     code="label.post.createPage.category.prompt"/> </label></dt>

@@ -14,6 +14,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -55,15 +56,19 @@ public class UserController implements Constants {
     @RequestMapping(value = USER_ADD, method = RequestMethod.POST)
     public String addUserHandler(@Valid @ModelAttribute User user,
                                  Errors errors,
-                                 @RequestParam("file") MultipartFile file,
+                                 Model model,
                                  HttpSession session,
-                                 Model model) {
+                                 RedirectAttributes redirectAttributes,
+                                 @RequestParam("file") MultipartFile file) {
         String userRole = SessionUtil.getUserRole(session);
         if (!userRole.equals(ROLES.ADMIN.name())) {
             return ACCESS_ERROR_VIEW;
         }
         if (user.getId() == 0) {
             uniqueEmailValidator.validate(user, errors);
+            redirectAttributes.addFlashAttribute(CONFIRMATION, "ADDED");
+        } else {
+            redirectAttributes.addFlashAttribute(CONFIRMATION, "UPDATED");
         }
         if (errors.hasErrors()) {
             model.addAttribute("roles", ROLES.values());
@@ -77,7 +82,7 @@ public class UserController implements Constants {
                 e.printStackTrace();
             }
         }
-        userService.add(user);
+        userService.save(user);
         return "redirect:" + USER_MANAGE;
     }
 
@@ -89,7 +94,7 @@ public class UserController implements Constants {
         return USER_MANAGEMENT_VIEW;
     }
 
-    @RequestMapping(value = USER_UPDATE, method = RequestMethod.POST)
+    @RequestMapping(value = USER_UPDATE, method = RequestMethod.GET)
     public String userUpdateHandler(@ModelAttribute User user,
                                     Model model) {
         user = userService.find(user.getId());

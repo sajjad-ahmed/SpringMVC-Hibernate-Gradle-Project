@@ -23,6 +23,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -73,6 +74,7 @@ public class PostController implements Constants {
                                     Errors errors,
                                     Model model,
                                     HttpSession session,
+                                    RedirectAttributes redirectAttributes,
                                     @RequestParam("file") MultipartFile picture) {
         String userRole = SessionUtil.getUserRole(session);
         if (!(userRole.equals(ROLES.ADMIN.name()) || userRole.equals(ROLES.AUTHOR.name()))) {
@@ -82,6 +84,11 @@ public class PostController implements Constants {
         if (errors.hasErrors()) {
             model.addAttribute("categories", categoryDao.findAll());
             return POST_CREATE_VIEW;
+        }
+        if (post.getId() == 0) {
+            redirectAttributes.addFlashAttribute(CONFIRMATION, "ADDED");
+        } else {
+            redirectAttributes.addFlashAttribute(CONFIRMATION, "UPDATED");
         }
         if (!picture.isEmpty()) {
             try {
@@ -132,7 +139,7 @@ public class PostController implements Constants {
         return "redirect:" + POST_MANAGE;
     }
 
-    @RequestMapping(value = POST_UPDATE, method = RequestMethod.POST)
+    @RequestMapping(value = POST_UPDATE, method = RequestMethod.GET)
     public String postUpdateHandler(@ModelAttribute Post post,
                                     Model model) {
         post = postService.find(post.getId());
@@ -155,7 +162,9 @@ public class PostController implements Constants {
         Post post = comment.getPostId();
         if (comment.getId() == 0) {
             post.getComments().add(comment);
+            model.addAttribute(CONFIRMATION, "ADDED");
         } else {
+            model.addAttribute(CONFIRMATION, "UPDATED");
             post.getComments().forEach(i -> {
                 if (i.getId() == comment.getId()) {
                     i.setBody(comment.getBody());

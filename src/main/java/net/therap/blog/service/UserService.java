@@ -33,7 +33,7 @@ public class UserService implements Constants {
     @Autowired
     private CommentDao commentDao;
 
-    public void add(User user) {
+    public void save(User user) {
             userDao.save(user);
     }
 

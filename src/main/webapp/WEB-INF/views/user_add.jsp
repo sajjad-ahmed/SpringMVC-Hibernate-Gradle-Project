@@ -39,26 +39,12 @@
                 <td><form:password path="password"/></td>
                 <td><form:errors path="password" cssStyle="color: red"/></td>
             </tr>
-            <c:if test="${user.profilePicture != null}">
-                <tr>
-                    <td><spring:message code="label.user.field.old.picture"/></td>
-                    <td><img src="data:image/*;base64,${user.imageBase64}" width="100" height="75"/></td>
-                </tr>
-                <tr>
-                    <td><spring:message code="label.user.new.field.picture"/></td>
-                    <td><form:input type="hidden" path="profilePicture"/></td>
-                    <td><input type="file" name="file"></td>
-                    <td><form:errors path="profilePicture" name="profilePicture" cssStyle="color: red"/></td>
-                </tr>
-            </c:if>
-            <c:if test="${user.profilePicture == null}">
-                <tr>
-                    <td><spring:message code="label.user.field.picture"/></td>
-                    <td><form:input type="hidden" path="profilePicture"/></td>
-                    <td><input type="file" name="file"></td>
-                    <td><form:errors path="profilePicture" name="profilePicture" cssStyle="color: red"/></td>
-                </tr>
-            </c:if>
+            <tr>
+                <td><spring:message code="label.user.field.picture"/></td>
+                <td><form:input type="hidden" path="profilePicture"/></td>
+                <td><input type="file" name="file"></td>
+                <td><form:errors path="profilePicture" name="profilePicture" cssStyle="color: red"/></td>
+            </tr>
             <tr>
                 <td><spring:message code="label.user.field.role"/></td>
                 <td><form:select path="role" name="select-role">
