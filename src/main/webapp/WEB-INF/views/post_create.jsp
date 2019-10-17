@@ -39,12 +39,13 @@
             <dd><form:errors path="uri" cssStyle="color: red"/></dd>
 
             <dt><label aria-atomic="true" aria-live="polite"> <spring:message
-                    code="label.post.createPage.access.prompt"/> </label></dt>
+                    code="label.post.createPage.status.prompt"/> </label></dt>
             <dd>
-                <form:input path="access" type="number" aria-labelledby="code-label" aria-required="true"/>
-                <div class="alert info">
-                    <spring:message code="label.post.createPage.access.note"/>
-                </div>
+                <form:select path='access'>
+                    <c:forEach items="${status}" var="sts">
+                        <option value=" ${sts.value}"> ${sts.key}</option>
+                    </c:forEach>
+                </form:select>
             </dd>
             <dd><form:errors path="access" cssStyle="color: red"/></dd>
 

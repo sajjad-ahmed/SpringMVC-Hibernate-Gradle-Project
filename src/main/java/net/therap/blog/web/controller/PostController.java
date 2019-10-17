@@ -10,6 +10,7 @@ import net.therap.blog.service.PostService;
 import net.therap.blog.service.UserService;
 import net.therap.blog.util.Constants;
 import net.therap.blog.util.ROLES;
+import net.therap.blog.util.STATUS;
 import net.therap.blog.util.SessionUtil;
 import net.therap.blog.web.editor.CategoryEditor;
 import net.therap.blog.web.editor.PostEditor;
@@ -65,6 +66,7 @@ public class PostController implements Constants {
     @RequestMapping(value = POST_CREATE, method = RequestMethod.GET)
     public String cratePostForm(Model model) {
         model.addAttribute("post", new Post());
+        model.addAttribute("status", STATUS.getMap());
         model.addAttribute("categories", categoryDao.findAll());
         return POST_CREATE_VIEW;
     }
@@ -83,6 +85,7 @@ public class PostController implements Constants {
         postValidator.validate(post, errors);
         if (errors.hasErrors()) {
             model.addAttribute("categories", categoryDao.findAll());
+            model.addAttribute("status", STATUS.getMap());
             return POST_CREATE_VIEW;
         }
         if (post.getId() == 0) {
@@ -146,6 +149,7 @@ public class PostController implements Constants {
         model.addAttribute("post", post);
         model.addAttribute("roles", ROLES.values());
         model.addAttribute("categories", categoryDao.findAll());
+        model.addAttribute("status", STATUS.getMap());
         return POST_CREATE_VIEW;
     }
 

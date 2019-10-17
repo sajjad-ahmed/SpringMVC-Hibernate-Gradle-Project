@@ -1,15 +1,14 @@
 package net.therap.blog.domain;
 
+import net.therap.blog.util.STATUS;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author sajjad.ahmed
@@ -59,12 +58,11 @@ public class Post implements Serializable {
     @NotNull
     private byte[] picture;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE},fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinTable(name = "post_category",
             joinColumns = {@JoinColumn(name = "post_id")},
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private List<Category> categories;
-
 
     @OneToMany(mappedBy = "postId", cascade = CascadeType.ALL)
     private List<Comment> comments;
@@ -163,13 +161,24 @@ public class Post implements Serializable {
         return updatedAt;
     }
 
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public String getStatus() {
+        Map<String, Long> map = STATUS.getMap();
+        String status = map.keySet()
+                .stream()
+                .filter(key -> this.access == map.get(key))
+                .findFirst().get();
+        status=status.replace("_"," ");
+        return status;
+    }
+
     public String getFormattedDate() {
         SimpleDateFormat ft =
                 new SimpleDateFormat("MMMMM',' yyyy");
         return ft.format(createdAt);
-    }
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
     }
 
     public String getImageBase64() {

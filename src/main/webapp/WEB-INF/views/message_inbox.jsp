@@ -77,7 +77,6 @@
     <c:if test="${empty receivedMessages}">
         <h3><spring:message code="label.receivedMessage.notFound"/></h3>
     </c:if>
-
 </div>
 </body>
 </html>

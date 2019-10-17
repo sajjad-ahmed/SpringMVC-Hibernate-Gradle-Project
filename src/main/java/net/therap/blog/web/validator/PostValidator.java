@@ -35,7 +35,7 @@ public class PostValidator implements Validator {
             }
         }
         String access = String.valueOf(post.getAccess());
-        String regexp = "^[1,7]{3}$";
+        String regexp = "^[1-7]{3}$";
         Pattern pattern = Pattern.compile(regexp);
         Matcher matcher = pattern.matcher(access);
         if (!matcher.matches()) {

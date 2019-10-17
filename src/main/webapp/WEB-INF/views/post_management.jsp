@@ -36,7 +36,7 @@
             <tr>
                 <th><spring:message code="label.postManagement.title.header"/></th>
                 <th><spring:message code="label.postManagement.author.header"/></th>
-                <th><spring:message code="label.postManagement.access.header"/></th>
+                <th><spring:message code="label.postManagement.status.header"/></th>
                 <th><spring:message code="label.postManagement.uri.header"/></th>
                 <th><spring:message code="label.postManagement.created.header"/></th>
                 <th><spring:message code="label.postManagement.updated.header"/></th>
@@ -47,7 +47,7 @@
                 <tr>
                     <td><c:out value="${post.title}"/></td>
                     <td><c:out value="${post.getAuthorName()}"/></td>
-                    <td><c:out value="${post.access}"/></td>
+                    <td><c:out value="${post.status}"/></td>
                     <td><c:out value="${post.uri}"/></td>
                     <td><c:out value="${post.createdAt}"/></td>
                     <td><c:out value="${post.updatedAt}"/></td>
