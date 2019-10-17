@@ -3,39 +3,29 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ page language="java" contentType="text/html; charset=US-ASCII" pageEncoding="US-ASCII" %>
 <!DOCTYPE html>
-
 <html>
 <head>
     <title><spring:message code="label.category.title"/></title>
 </head>
 <body>
-
 <div class="row">
-
-    <form:form action="/category/add" method="post" modelAttribute="category" class="hform">
-        <table align="center">
-            <fieldset>
-                <form:input path="id" type="hidden"/>
-                <legend><spring:message code="label.category.body.title"/></legend>
-                <dt><label aria-atomic="true" aria-live="polite"><spring:message
-                        code="label.category.body.name"/> </label></dt>
-                <dd>
-                    <form:input path="name"/>
-                    <form:errors cssStyle="color: red" path="name"/>
-                </dd>
-                <c:if test="${category.id == 0}">
-                    <dd><input type="submit" value="<spring:message code="label.add.header"/>" class="primary"></dd>
-                </c:if>
-                <c:if test="${category.id != 0}">
-                    <dd><input type="submit" value="<spring:message code="label.update.header"/>" class="primary"></dd>
-                </c:if>
-            </fieldset>
-        </table>
-    </form:form>
-
-    <br>
-    <br>
-    <br>
+    <a href="/category/add" class="button primary"> <spring:message code="label.category.add.new.title"/></a>
+    <br/>
+    <br/>
+    <c:if test="${confirmation == 'ADDED'}">
+        <div class="alert success">
+            <strong><spring:message code="label.success.message.prefix"/></strong>
+            <spring:message code="label.category"/> <spring:message code="label.success.add.message.suffix"/>
+        </div>
+    </c:if>
+    <c:if test="${confirmation == 'UPDATED'}">
+        <div class="alert success">
+            <strong><spring:message code="label.success.message.prefix"/></strong>
+            <spring:message code="label.category"/> <spring:message code="label.success.update.message.suffix"/>
+        </div>
+    </c:if>
+    <br/>
+    <br/>
 
     <div class="hform" align="center">
         <fieldset>
@@ -43,14 +33,12 @@
             <c:if test="${!empty categories}">
                 <table class="bordered">
                     <tr>
-                        <th><spring:message code="label.id.header"/></th>
                         <th><spring:message code="label.category.header"/></th>
                         <th><spring:message code="label.update.header"/></th>
                         <th><spring:message code="label.delete.header"/></th>
                     </tr>
                     <c:forEach items="${categories}" var="category">
                         <tr>
-                            <td><c:out value="${category.id}"/></td>
                             <td><c:out value="${category.name}"/></td>
                             <td>
                                 <form:form action="/category/update/" method="post"
@@ -62,10 +50,12 @@
                             </td>
                             <td>
                                 <form:form action="/category/delete" method="post"
-                                           modelAttribute="category" class="hform">
+                                           modelAttribute="category" class="hform" id="id-form-delete">
                                     <form:input path="id" type="hidden" value="${category.id}"/>
-                                    <input type="submit" value="<spring:message code="label.delete.header"/>"
-                                           class="primary danger"/>
+                                    <input type="button" onclick="getConfirmation('<spring:message
+                                            code="label.confirmation.prompt.delete"/>', 'id-form-delete')"
+                                           value="<spring:message code="label.delete.header"/>"
+                                           class=" danger"/>
                                 </form:form>
                             </td>
                         </tr>
@@ -78,6 +68,5 @@
         </fieldset>
     </div>
 </div>
-
 </body>
 </html>

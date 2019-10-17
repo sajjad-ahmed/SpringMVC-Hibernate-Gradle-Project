@@ -54,6 +54,24 @@
         <decorator:body/>
     </div>
 </div>
+
+<script type="text/javascript">
+    function getConfirmation(_em, _fid) {
+        var retVal = confirm(_em);
+        if (retVal == true) {
+            var f = document.getElementById(_fid);
+            f.method = "post";
+            f.submit();
+            return true;
+        } else {
+            return false;
+        }
+    }
+    function showSuccessMessage(_msg) {
+        alert(_msg);
+    }
+</script>
+
 </body>
 </html>
 

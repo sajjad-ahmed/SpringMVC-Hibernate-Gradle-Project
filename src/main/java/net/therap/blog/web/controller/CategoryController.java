@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -43,18 +44,34 @@ public class CategoryController implements Constants {
         return CATEGORY_MANAGEMENT_VIEW;
     }
 
+    @RequestMapping(value = CATEGORY_ADD, method = RequestMethod.GET)
+    public String addCategoryView(
+            Model model,
+            HttpSession session) {
+        String userRole = SessionUtil.getUserRole(session);
+        if (!userRole.equals(ROLES.ADMIN.name())) {
+            return ACCESS_ERROR_VIEW;
+        }
+        model.addAttribute("category", new Category());
+        return CATEGORY_ADD_VIEW;
+    }
+
     @RequestMapping(value = CATEGORY_ADD, method = RequestMethod.POST)
     public String addCategoryHandler(@Valid @ModelAttribute Category category,
                                      Errors errors,
-                                     Model model,
+                                     RedirectAttributes redirectAttributes,
                                      HttpSession session) {
         String userRole = SessionUtil.getUserRole(session);
         if (!userRole.equals(ROLES.ADMIN.name())) {
             return ACCESS_ERROR_VIEW;
         }
         if (errors.hasErrors()) {
-            model.addAttribute("categories", categoryDao.findAll());
-            return CATEGORY_MANAGEMENT_VIEW;
+            return CATEGORY_ADD_VIEW;
+        }
+        if (category.getId() == 0) {
+            redirectAttributes.addFlashAttribute(CONFIRMATION, "ADDED");
+        } else {
+            redirectAttributes.addFlashAttribute(CONFIRMATION, "UPDATED");
         }
         categoryDao.save(category);
         return "redirect:" + CATEGORY_MANAGE;
@@ -71,8 +88,7 @@ public class CategoryController implements Constants {
         long id = category.getId();
         category = categoryDao.find(id);
         model.addAttribute("category", category);
-        model.addAttribute("categories", categoryDao.findAll());
-        return CATEGORY_MANAGEMENT_VIEW;
+        return CATEGORY_ADD_VIEW;
     }
 
     @RequestMapping(value = CATEGORY_DELETE, method = RequestMethod.POST)

@@ -46,6 +46,8 @@ public class URL {
 
     public static final String CATEGORY_ADD = "/category/add";
 
+    public static final String CATEGORY_ADD_VIEW = "category_add";
+
     public static final String CATEGORY_UPDATE = "/category/update/";
 
     public static final String CATEGORY_DELETE = "/category/delete";

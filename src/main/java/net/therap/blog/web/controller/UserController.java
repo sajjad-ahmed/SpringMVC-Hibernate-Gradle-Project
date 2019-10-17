@@ -109,24 +109,14 @@ public class UserController implements Constants {
     public String userSignUpHandler(@Valid @ModelAttribute User user,
                                     Errors errors,
                                     Model model,
-                                    @RequestParam("file") MultipartFile file,
                                     HttpSession session) {
         String userRole = SessionUtil.getUserRole(session);
-        if (!userRole.equals(ROLES.ADMIN.name())) {
+        if (!userRole.equals(Constants.ACCESS_GUEST)) {
             return ACCESS_ERROR_VIEW;
         }
         uniqueEmailValidator.validate(user, errors);
         if (errors.hasErrors()) {
-            model.addAttribute("roles", ROLES.values());
             return USER_SIGN_UP_VIEW;
-        }
-        if (!file.isEmpty()) {
-            try {
-                byte[] bytes = file.getBytes();
-                user.setProfilePicture(bytes);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
         userService.signUp(user);
         return "redirect:" + ROOT;

@@ -15,63 +15,38 @@
     <h4><spring:message code="label.user.management.list.title"/></h4>
     <c:if test="${!empty users}">
         <table class="bordered">
-            <c:forEach items="${users}" var="post">
+            <tr>
+                <th><spring:message code="label.user.management.firstName.header"/></th>
+                <th><spring:message code="label.user.management.lastName.header"/></th>
+                <th><spring:message code="label.user.management.email.header"/></th>
+                <th><spring:message code="label.user.management.role.header"/>Role</th>
+                <th><spring:message code="label.user.management.picture.header"/></th>
+                <th width="60"><spring:message code="label.update.header"/></th>
+                <th width="60"><spring:message code="label.delete.header"/></th>
+            </tr>
+            <c:forEach items="${users}" var="user">
                 <tr>
-                    <section class="card">
-                        <div class="header">
-                            <img src="data:image/*;base64,${post.getImageBase64()}" width="100" height="75"/>
-                        </div>
-                        <div class="content">
-                            <table class="bordered">
-                                <tr>
-                                    <td width="200px"><strong><spring:message code="label.user.field.id"/></strong></td>
-                                    <td><c:out value="${post.id}"/></td>
-                                </tr>
-                                <tr>
-                                    <td width="200px"><strong><spring:message
-                                            code="label.user.field.firsName"/></strong></td>
-                                    <td><c:out value="${post.firstName}"/></td>
-                                </tr>
-                                <tr>
-                                    <td width="200px"><strong><spring:message
-                                            code="label.user.field.lastName"/></strong></td>
-                                    <td><c:out value="${post.lastName}"/></td>
-                                </tr>
-                                <tr>
-                                    <td width="200px"><strong><spring:message code="label.user.field.email"/></strong>
-                                    </td>
-                                    <td><c:out value="${post.email}"/></td>
-                                </tr>
-                                <tr>
-                                    <td width="200px"><strong><spring:message
-                                            code="label.user.field.password"/></strong></td>
-                                    <td><c:out value="${post.password}"/></td>
-                                </tr>
-                                <tr>
-                                    <td width="200px"><strong><spring:message code="label.user.field.role"/></strong>
-                                    </td>
-                                    <td><c:out value="${post.role}"/></td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="footer">
-                            <form:form action="/user/update" method="post"
+                    <td><c:out value="${user.firstName}"/></td>
+                    <td><c:out value="${user.lastName}"/></td>
+                    <td><c:out value="${user.email}"/></td>
+                    <td><c:out value="${user.role}"/></td>
+                    <td><img src="data:image/*;base64,${user.imageBase64}" width="70" height="50"/></td>
+                    <td><form:form action="/user/update" method="post"
+                                   modelAttribute="user" class="hform">
+                        <form:input path="id" type="hidden" value="${user.id}"/>
+                        <input type="submit" value="<spring:message code="label.update.header"/>"
+                               class="primary"/>
+                    </form:form></td>
+                    <td>
+                        <c:if test="${sessionScope.userID != user.id}">
+                            <form:form action="/user/delete" method="post"
                                        modelAttribute="user" class="hform">
-                                <form:input path="id" type="hidden" value="${post.id}"/>
-                                <input type="submit" value="<spring:message code="label.update.header"/>"
-                                       class="primary"/>
+                                <form:input path="id" type="hidden" value="${user.id}"/>
+                                <input type="submit" value="<spring:message code="label.delete.header"/>"
+                                       class="primary danger"/>
                             </form:form>
-
-                            <c:if test="${sessionScope.userID != post.id}">
-                                <form:form action="/user/delete" method="post"
-                                           modelAttribute="user" class="hform">
-                                    <form:input path="id" type="hidden" value="${post.id}"/>
-                                    <input type="submit" value="<spring:message code="label.delete.header"/>"
-                                           class="primary"/>
-                                </form:form>
-                            </c:if>
-                        </div>
-                    </section>
+                        </c:if>
+                    </td>
                 </tr>
             </c:forEach>
         </table>

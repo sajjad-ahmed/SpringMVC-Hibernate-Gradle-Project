@@ -6,6 +6,8 @@
 
 <html>
 <head>
+    <link rel="stylesheet" type="text/css" href="src/main/webapp/css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="src/main/webapp/css/style.css"/>
     <title><c:out value="${post.title}"/></title>
 </head>
 <body>
@@ -38,12 +40,12 @@
                     <legend><spring:message code="label.post.comment.legend"/> <strong> <c:out
                             value="${eachComment.userId.fullName}"/> </strong></legend>
 
-                    <dt><label aria-atomic="true" aria-live="polite" style="color: dodgerblue;font-style: italic">
+                    <dt><label aria-atomic="true" aria-live="polite" class="comment-date">
                         <c:out value="${eachComment.commentedOn}"/> </label></dt>
                     <dd>
-                        <p style="font-size: 16px;">"
+                        <p class="comment-bdy">
                             <c:out value="${eachComment.body}"/>
-                            "
+
                         </p>
                     </dd>
 

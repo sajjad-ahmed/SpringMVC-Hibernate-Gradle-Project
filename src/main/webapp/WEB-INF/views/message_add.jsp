@@ -31,7 +31,7 @@
                 <dd>
                     <form:textarea path="body" type="text" placeholder="Type your message here"
                                    cssClass="tht"/>
-                    <form:errors path="body"/>
+                    <form:errors path="body" cssStyle="color: red"/>
                 </dd>
                 <dd><input type="submit" value="<spring:message code="label.message.send.button"/>" class="primary">
                 </dd>

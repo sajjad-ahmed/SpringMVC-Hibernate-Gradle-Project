@@ -1733,7 +1733,7 @@ div.responsiveTableWrapperInner {
     display: block;
     color: #ffffff;
     text-decoration: none;
-    border: 1px solid #212121;
+    border: 1px solid transparent;
 }
 
 .hnav li a:hover,
@@ -3426,4 +3426,71 @@ a {
     padding-bottom: 10px;
     background: #212121;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+}
+
+.comment-date {
+    color: #666;
+    font-size: 12px;
+}
+
+.comment-bdy {
+    color: dodgerblue;
+    font-style: italic;
+    font-size: 18px;
+}
+
+.uploadButton, input[type="button"], button, .button {
+    color: rgba(0, 0, 0, 0.87);
+    background-color: transparent;
+    font-weight: 400;
+    text-transform: uppercase;
+    padding: .5rem 1rem;
+    cursor: pointer;
+    outline: none;
+    border: none;
+    display: inline-block;
+    margin-bottom: .5rem;
+    border-radius: 3px;
+    text-decoration: none;
+    -webkit-appearance: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    transition: all 150ms linear;
+    color: #ffffff;
+    font-size: 1rem;
+}
+
+.uploadButton:hover,
+input[type="button"]:hover,
+button:hover,
+.button:hover {
+    text-decoration: none;
+    background-color: rgba(13, 13, 13, 0);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+.uploadButton.alert,
+input[type="button"].alert,
+button.alert,
+.uploadButton.danger,
+input[type="button"].danger,
+button.danger,
+.button.alert,
+.button.danger {
+    color: #ffffff;
+    background-color: #ef9a9a;
+}
+
+.uploadButton.alert:hover,
+input[type="button"].alert:hover,
+button.alert:hover,
+.uploadButton.danger:hover,
+input[type="button"].danger:hover,
+button.danger:hover,
+.button.alert:hover,
+.button.danger:hover {
+    background-color: #f55a4e;
 }

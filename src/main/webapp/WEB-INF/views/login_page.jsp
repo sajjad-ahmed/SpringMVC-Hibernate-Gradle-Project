@@ -26,7 +26,7 @@
                 <dt><label aria-atomic="true" aria-live="polite"><spring:message
                         code="label.loginPage.email.prompt"/> </label></dt>
                 <dd>
-                    <form:input path="email" type="email" placeholder="Enter your email" aria-labelledby="code-label"
+                    <form:input path="email" placeholder="Enter your email" aria-labelledby="code-label"
                                 aria-required="true"/>
                     <form:errors path="email" cssStyle="color: red"/>
                 </dd>

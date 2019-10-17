@@ -27,7 +27,7 @@
             </tr>
             <tr>
                 <td><spring:message code="label.user.signUp.email"/></td>
-                <td><form:input path="email" name="email" type="email" placeholder="Enter your email"
+                <td><form:input path="email" name="email" placeholder="Enter your email"
                                 aria-labelledby="code-label"
                                 aria-required="true"/></td>
                 <td><form:errors path="email" cssStyle="color: red"/></td>
@@ -37,15 +37,11 @@
                 <td><form:password path="password" placeholder="Choose a password"/></td>
                 <td><form:errors path="password" cssStyle="color: red"/></td>
             </tr>
-            <tr>
-                <td><spring:message code="label.user.signUp.picture"/></td>
-                <td><form:input type="hidden" path="profilePicture"/></td>
-                <td><input type="file" name="file"></td>
-                <td><form:errors path="profilePicture" name="profilePicture" cssStyle="color: red"/></td>
-            </tr>
+            <td><form:input type="hidden" path="profilePicture"/></td>
             <tr>
                 <td><input type="submit" value="<spring:message code="label.user.signUp.button.submit"/>"
-                           class="primary"></td>
+                           class="primary">
+                </td>
             </tr>
         </table>
     </form:form>

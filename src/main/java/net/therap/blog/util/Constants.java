@@ -20,6 +20,8 @@ public interface Constants {
 
     public static final String AVAILABLE_CATEGORIES = "availableCategories";
 
+    public static final String CONFIRMATION = "confirmation";
+
     public static final String AUTHORIZED_URIs = "uris";
 
     public static final char ACCESS_DENY = '1';
