@@ -59,6 +59,7 @@ public class CategoryController implements Constants {
     @RequestMapping(value = CATEGORY_ADD, method = RequestMethod.POST)
     public String addCategoryHandler(@Valid @ModelAttribute Category category,
                                      Errors errors,
+                                     Model model,
                                      RedirectAttributes redirectAttributes,
                                      HttpSession session) {
         String userRole = SessionUtil.getUserRole(session);
@@ -66,6 +67,7 @@ public class CategoryController implements Constants {
             return ACCESS_ERROR_VIEW;
         }
         if (errors.hasErrors()) {
+            model.addAttribute("category", category);
             return CATEGORY_ADD_VIEW;
         }
         if (category.getId() == 0) {
@@ -77,7 +79,7 @@ public class CategoryController implements Constants {
         return "redirect:" + CATEGORY_MANAGE;
     }
 
-    @RequestMapping(value = CATEGORY_UPDATE, method = RequestMethod.POST)
+    @RequestMapping(value = CATEGORY_UPDATE, method = RequestMethod.GET)
     public String updateCategoryHandler(@ModelAttribute Category category,
                                         Model model,
                                         HttpSession session) {

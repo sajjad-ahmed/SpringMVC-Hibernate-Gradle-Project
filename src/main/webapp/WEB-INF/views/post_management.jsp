@@ -26,19 +26,19 @@
                 <th width="60"><spring:message code="label.update.header"/></th>
                 <th width="60"><spring:message code="label.delete.header"/></th>
             </tr>
-            <c:forEach items="${posts}" var="user">
+            <c:forEach items="${posts}" var="post">
                 <tr>
-                    <td><c:out value="${user.id}"/></td>
-                    <td><c:out value="${user.title}"/></td>
-                    <td><c:out value="${user.getAuthorName()}"/></td>
-                    <td><c:out value="${user.access}"/></td>
-                    <td><c:out value="${user.uri}"/></td>
-                    <td><c:out value="${user.createdAt}"/></td>
-                    <td><c:out value="${user.updatedAt}"/></td>
+                    <td><c:out value="${post.id}"/></td>
+                    <td><c:out value="${post.title}"/></td>
+                    <td><c:out value="${post.getAuthorName()}"/></td>
+                    <td><c:out value="${post.access}"/></td>
+                    <td><c:out value="${post.uri}"/></td>
+                    <td><c:out value="${post.createdAt}"/></td>
+                    <td><c:out value="${post.updatedAt}"/></td>
                     <td>
                         <form:form action="/post/update" method="post"
                                    modelAttribute="post" class="hform">
-                            <form:input path="id" type="hidden" value="${user.id}"/>
+                            <form:input path="id" type="hidden" value="${post.id}"/>
                             <input type="submit" value="<spring:message code="label.update.header"/>"
                                    class="primary"/>
                         </form:form>
@@ -46,7 +46,7 @@
                     <td>
                         <form:form action="/post/delete" method="post"
                                    modelAttribute="post" class="hform">
-                            <form:input path="id" type="hidden" value="${user.id}"/>
+                            <form:input path="id" type="hidden" value="${post.id}"/>
                             <input type="submit" value="<spring:message code="label.delete.header"/>"
                                    class="primary danger"/>
                         </form:form>

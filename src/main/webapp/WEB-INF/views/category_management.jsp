@@ -41,7 +41,7 @@
                         <tr>
                             <td><c:out value="${category.name}"/></td>
                             <td>
-                                <form:form action="/category/update/" method="post"
+                                <form:form action="/category/update/" method="get"
                                            modelAttribute="category" class="hform">
                                     <form:input path="id" type="hidden" value="${category.id}"/>
                                     <input type="submit" value="<spring:message code="label.update.header"/>"
@@ -50,12 +50,12 @@
                             </td>
                             <td>
                                 <form:form action="/category/delete" method="post"
-                                           modelAttribute="category" class="hform" id="id-form-delete">
+                                           modelAttribute="category" class="hform" id="form-id-${category.id}">
                                     <form:input path="id" type="hidden" value="${category.id}"/>
                                     <input type="button" onclick="getConfirmation('<spring:message
-                                            code="label.confirmation.prompt.delete"/>', 'id-form-delete')"
+                                            code="label.confirmation.prompt.delete"/>', 'form-id-${category.id}')"
                                            value="<spring:message code="label.delete.header"/>"
-                                           class=" danger"/>
+                                           class="danger"/>
                                 </form:form>
                             </td>
                         </tr>

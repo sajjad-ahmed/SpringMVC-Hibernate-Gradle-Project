@@ -60,15 +60,11 @@
         var retVal = confirm(_em);
         if (retVal == true) {
             var f = document.getElementById(_fid);
-            f.method = "post";
             f.submit();
             return true;
         } else {
             return false;
         }
-    }
-    function showSuccessMessage(_msg) {
-        alert(_msg);
     }
 </script>
 

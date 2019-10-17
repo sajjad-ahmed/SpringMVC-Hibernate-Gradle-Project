@@ -29,10 +29,12 @@
                     <td><c:out value="${message.receiver.role}"/></td>
                     <td>
                         <form:form action="/message/delete" method="post"
-                                   modelAttribute="message" class="hform">
+                                   modelAttribute="message" class="hform" id="id-form-s-${message.id}">
                             <form:input path="id" type="hidden" value="${message.id}"/>
-                            <input type="submit" value="<spring:message code="label.delete.header"/>"
-                                   class="primary danger"/>
+                            <input type="button" onclick="getConfirmation('<spring:message
+                                    code="label.confirmation.prompt.delete"/>', 'id-form-s-${message.id}')"
+                                   value="<spring:message code="label.delete.header"/>"
+                                   class="danger"/>
                         </form:form>
                     </td>
                 </tr>
@@ -64,10 +66,12 @@
                     <td><c:out value="${message.body}"/></td>
                     <td><c:out value="${message.sender.role}"/></td>
                     <td><form:form action="/message/delete" method="post"
-                                   modelAttribute="message" class="hform">
+                                   modelAttribute="message" class="hform" id="id-form-r-${message.id}">
                         <form:input path="id" type="hidden" value="${message.id}"/>
-                        <input type="submit" value="<spring:message code="label.delete.header"/>"
-                               class="primary danger"/>
+                        <input type="button" onclick="getConfirmation('<spring:message
+                                code="label.confirmation.prompt.delete"/>', 'id-form-r-${message.id}')"
+                               value="<spring:message code="label.delete.header"/>"
+                               class="danger"/>
                     </form:form>
                     </td>
                 </tr>
