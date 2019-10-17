@@ -32,6 +32,10 @@ public class URL {
 
     public static final String USER_UPDATE = "/user/update";
 
+    public static final String USER_UPDATE_INFORMATION = "/user/update/self";
+
+    public static final String USER_UPDATE_VIEW = "user_update";
+
     public static final String USER_DELETE = "/user/delete";
 
     public static final String USER_MANAGE = "/user/manage";

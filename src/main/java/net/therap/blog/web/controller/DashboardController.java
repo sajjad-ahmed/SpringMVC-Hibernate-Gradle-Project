@@ -11,9 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static net.therap.blog.util.URL.DASHBOARD_VIEW;
-import static net.therap.blog.util.URL.SHOW_DASHBOARD;
-
+import static net.therap.blog.util.URL.*;
 
 /**
  * @author sajjad.ahmed
@@ -51,11 +49,13 @@ public class DashboardController implements Constants {
             }
             case "AUTHOR": {
                 uriMap.put("/post/manage", "Manage Post");
+                uriMap.put(USER_UPDATE_INFORMATION, "Update Information");
                 uriMap.put("/message/send", "Send A message");
                 uriMap.put("/inbox", "My Inbox");
                 break;
             }
             case "SUBSCRIBER": {
+                uriMap.put(USER_UPDATE_INFORMATION, "Update Information");
                 uriMap.put("/message/send", "Send A message");
                 uriMap.put("/inbox", "My Inbox");
                 break;

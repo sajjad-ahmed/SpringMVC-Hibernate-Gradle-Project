@@ -126,5 +126,42 @@ public class UserController implements Constants {
         userService.signUp(user);
         return "redirect:" + ROOT;
     }
+
+    @RequestMapping(value = USER_UPDATE_INFORMATION, method = RequestMethod.GET)
+    public String updateUserSelf(HttpSession session,
+                                 Model model) {
+        long id = (long) session.getAttribute(USER_ID_PARAMETER);
+        User user = userService.find(id);
+        model.addAttribute("user", user);
+        return USER_UPDATE_VIEW;
+    }
+
+    @RequestMapping(value = USER_UPDATE_INFORMATION, method = RequestMethod.POST)
+    public String updateUserSelf(@Valid @ModelAttribute User user,
+                                 Errors errors,
+                                 Model model,
+                                 HttpSession session,
+                                 RedirectAttributes redirectAttributes,
+                                 @RequestParam("file") MultipartFile file) {
+        String userRole = SessionUtil.getUserRole(session);
+        if (userRole.equals(ROLES.AUTHOR.name())) {
+            return ACCESS_ERROR_VIEW;
+        }
+        if (errors.hasErrors()) {
+            model.addAttribute("user", user);
+            return USER_UPDATE_VIEW;
+        }
+        if (!file.isEmpty()) {
+            try {
+                byte[] bytes = file.getBytes();
+                user.setProfilePicture(bytes);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        userService.save(user);
+        redirectAttributes.addFlashAttribute(CONFIRMATION, "UPDATED");
+        return "redirect:" + SHOW_DASHBOARD;
+    }
 }
 
