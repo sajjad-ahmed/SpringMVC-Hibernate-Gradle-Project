@@ -20,9 +20,9 @@ import java.util.Date;
         @NamedQuery(name = "Message.findAll",
                 query = "FROM Message as m WHERE m.isDeleted = FALSE"),
         @NamedQuery(name = "Message.findSentMessages",
-                query = "FROM Message WHERE sender_id = :senderId AND isDeleted = FALSE"),
+                query = "FROM Message WHERE sender_id = :senderId AND isDeleted = FALSE order by created_at desc"),
         @NamedQuery(name = "Message.findReceivedMessages",
-                query = "FROM Message WHERE receiver_id = :receiverId AND isDeleted = FALSE"),
+                query = "FROM Message WHERE receiver_id = :receiverId AND isDeleted = FALSE order by created_at desc"),
 })
 public class Message implements Serializable {
 
