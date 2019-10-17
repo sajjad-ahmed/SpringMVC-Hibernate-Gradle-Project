@@ -123,7 +123,7 @@ public class UserController implements Constants {
         if (errors.hasErrors()) {
             return USER_SIGN_UP_VIEW;
         }
-        userService.signUp(user);
+        userService.save(user);
         return "redirect:" + ROOT;
     }
 

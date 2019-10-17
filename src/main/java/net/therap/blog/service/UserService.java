@@ -5,12 +5,10 @@ import net.therap.blog.dao.MessageDao;
 import net.therap.blog.dao.UserDao;
 import net.therap.blog.domain.User;
 import net.therap.blog.util.Constants;
-import net.therap.blog.util.ROLES;
-import net.therap.blog.util.SessionUtil;
+import net.therap.blog.util.Encryption;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Objects;
 
@@ -34,15 +32,12 @@ public class UserService implements Constants {
     private CommentDao commentDao;
 
     public void save(User user) {
-            userDao.save(user);
-    }
-
-    public void signUp(User user) {
+        user.setPassword(Encryption.encrypt(user.getPassword()));
         userDao.save(user);
     }
 
     public List<User> findAll() {
-            return userDao.findAll();
+        return userDao.findAll();
     }
 
     public List<User> findAllExceptSelf(long id) {
@@ -61,7 +56,7 @@ public class UserService implements Constants {
         commentDao.findAll().forEach(i -> {
             if (i.getUserId().getId() == id) {
                 commentDao.delete(i.getId());
-                            }
+            }
         });
         messageDao.findAll().forEach(i -> {
             if (i.getSender().getId() == id) {
@@ -77,7 +72,6 @@ public class UserService implements Constants {
     public User find(long id) {
         return userDao.find(id);
     }
-
 
     public boolean isEmailAlreadyInUse(String value) {
         return Objects.nonNull(userDao.findUserByEmail(value));

@@ -115,7 +115,7 @@ public class User implements Serializable {
     }
 
     public String getNameAndRole() {
-        return this.id + ". " + this.firstName + " " + this.lastName + " (" + this.role + ")";
+        return this.firstName + " " + this.lastName + " (" + this.role + ")";
     }
 
     public String getFullName() {

@@ -18,15 +18,13 @@
                 <th><spring:message code="label.sentMessage.sentOn"/></th>
                 <th><spring:message code="label.sentMessage.to"/></th>
                 <th><spring:message code="label.sentMessage.message"/></th>
-                <th><spring:message code="label.sentMessage.role"/></th>
                 <th><spring:message code="label.delete.header"/></th>
             </tr>
             <c:forEach items="${sentMessages}" var="message">
                 <tr>
                     <td><c:out value="${message.createdAt}"/></td>
-                    <td><c:out value="${message.receiver.firstName}"/></td>
+                    <td><c:out value="${message.receiver.nameAndRole}"/></td>
                     <td><c:out value="${message.body}"/></td>
-                    <td><c:out value="${message.receiver.role}"/></td>
                     <td>
                         <form:form action="/message/delete" method="post"
                                    modelAttribute="message" class="hform" id="id-form-s-${message.id}">
@@ -56,15 +54,13 @@
                 <th><spring:message code="label.receivedMessage.receivedOn"/></th>
                 <th><spring:message code="label.receivedMessage.sentBy"/></th>
                 <th><spring:message code="label.receivedMessage.message"/></th>
-                <th><spring:message code="label.receivedMessage.role"/></th>
                 <th><spring:message code="label.delete.header"/></th>
             </tr>
             <c:forEach items="${receivedMessages}" var="message">
                 <tr>
                     <td><c:out value="${message.createdAt}"/></td>
-                    <td><c:out value="${message.sender.firstName}"/></td>
+                    <td><c:out value="${message.sender.nameAndRole}"/></td>
                     <td><c:out value="${message.body}"/></td>
-                    <td><c:out value="${message.sender.role}"/></td>
                     <td><form:form action="/message/delete" method="post"
                                    modelAttribute="message" class="hform" id="id-form-r-${message.id}">
                         <form:input path="id" type="hidden" value="${message.id}"/>

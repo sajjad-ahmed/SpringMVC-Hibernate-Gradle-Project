@@ -3,6 +3,7 @@ package net.therap.blog.web.controller;
 import net.therap.blog.dao.UserDao;
 import net.therap.blog.domain.User;
 import net.therap.blog.util.Constants;
+import net.therap.blog.util.Encryption;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,7 +37,6 @@ public class AuthenticationController implements Constants {
         model.addAttribute("user", new User());
         return LOG_IN_VIEW;
     }
-
     @RequestMapping(value = LOG_IN, method = RequestMethod.POST)
     public String loginHandler(@Valid @ModelAttribute(name = "user") User targetUser,
                                Errors errors,
@@ -51,7 +51,7 @@ public class AuthenticationController implements Constants {
         }
         User user = userDao.findUserByEmail(targetUser.getEmail());
         if (Objects.nonNull(targetUser.getPassword()) && Objects.nonNull(targetUser.getEmail()) && Objects.nonNull(user)) {
-            if (user.getPassword().equals(targetUser.getPassword()) && user.getEmail().equals(targetUser.getEmail())) {
+            if (Encryption.encrypt(targetUser.getPassword()).equals(user.getPassword()) && user.getEmail().equals(targetUser.getEmail())) {
                 HttpSession session = request.getSession();
                 session.setAttribute(USER_ID_PARAMETER, user.getId());
                 session.setAttribute(USER_EMAIL_PARAMETER, user.getEmail());
