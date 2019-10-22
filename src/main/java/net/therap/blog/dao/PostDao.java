@@ -20,7 +20,7 @@ public class PostDao {
 
     @Transactional
     public Post save(Post post) {
-        if (post.getId() == 0) {
+        if (post.isNew()) {
             em.merge(post);
             em.flush();
         } else {

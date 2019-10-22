@@ -1,8 +1,6 @@
 package net.therap.blog.domain;
 
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -27,36 +25,28 @@ import java.util.Date;
 public class Message implements Serializable {
 
     private static final long serialVersionUID = 1l;
-
+    @Column(name = "is_deleted", columnDefinition = "TINYINT")
+    @Type(type = "org.hibernate.type.NumericBooleanType")
+    public boolean isDeleted;
+    @Column(name = "is_seen", columnDefinition = "TINYINT")
+    @Type(type = "org.hibernate.type.NumericBooleanType")
+    public boolean isSeen;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
     @NotNull
     @Size(min = 4, max = 200)
     private String body;
-
     @OneToOne
     @JoinColumn(name = "sender_id")
     private User sender;
-
     @OneToOne
     @JoinColumn(name = "receiver_id")
     private User receiver;
-
     @Column(name = "created_at")
     private Date createdAt;
-
     @Column(name = "updated_at")
     private Date updatedAt;
-
-    @Column(name = "is_deleted",columnDefinition = "TINYINT")
-    @Type(type = "org.hibernate.type.NumericBooleanType")
-    public boolean isDeleted;
-
-    @Column(name = "is_seen",columnDefinition = "TINYINT")
-    @Type(type = "org.hibernate.type.NumericBooleanType")
-    public boolean isSeen;
 
     public Message() {
     }
@@ -137,5 +127,9 @@ public class Message implements Serializable {
                 ", created_at=" + createdAt +
                 ", updated_at=" + updatedAt +
                 '}';
+    }
+
+    public boolean isNew() {
+        return this.id == 0;
     }
 }

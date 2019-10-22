@@ -91,4 +91,8 @@ public class Category implements Serializable {
         return "id=" + this.id + ", name=" + this.name;
 
     }
+
+    public boolean isNew() {
+        return this.id == 0;
+    }
 }

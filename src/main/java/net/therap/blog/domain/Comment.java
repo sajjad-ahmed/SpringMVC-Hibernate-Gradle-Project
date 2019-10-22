@@ -111,4 +111,8 @@ public class Comment implements Serializable {
                 ", updatedAt=" + updatedAt +
                 '}';
     }
+
+    public boolean isNew() {
+        return this.id == 0;
+    }
 }

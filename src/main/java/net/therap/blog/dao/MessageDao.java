@@ -1,6 +1,7 @@
 package net.therap.blog.dao;
 
 import net.therap.blog.domain.Message;
+import net.therap.blog.exception.NotFoundException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -8,9 +9,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,7 +24,7 @@ public class MessageDao {
 
     @Transactional
     public Message save(Message message) {
-        if (message.getId() == 0) {
+        if (message.isNew()) {
             em.persist(message);
             em.flush();
         } else {
@@ -49,6 +47,8 @@ public class MessageDao {
         if (Objects.nonNull(message)) {
             message.setIsDeleted(true);
             em.merge(message);
+        } else {
+            throw new NotFoundException("Message");
         }
     }
 

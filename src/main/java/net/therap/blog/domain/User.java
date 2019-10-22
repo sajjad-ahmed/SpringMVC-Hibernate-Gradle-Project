@@ -137,4 +137,8 @@ public class User implements Serializable {
                 ", role='" + role + '\'' +
                 '}';
     }
+
+    public boolean isNew() {
+        return this.id == 0;
+    }
 }

@@ -1,6 +1,7 @@
 package net.therap.blog.dao;
 
 import net.therap.blog.domain.Comment;
+import net.therap.blog.exception.NotFoundException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +23,7 @@ public class CommentDao {
 
     @Transactional
     public Comment save(Comment comment) {
-        if (comment.getId() == 0) {
+        if (comment.isNew()) {
             em.persist(comment);
             em.flush();
         } else {
@@ -48,6 +49,8 @@ public class CommentDao {
             } catch (IllegalStateException | PersistenceException e) {
                 e.printStackTrace();
             }
+        } else {
+            throw new NotFoundException("Comment");
         }
     }
 }

@@ -171,7 +171,7 @@ public class Post implements Serializable {
                 .stream()
                 .filter(key -> this.access == map.get(key))
                 .findFirst().get();
-        status=status.replace("_"," ");
+        status = status.replace("_", " ");
         return status;
     }
 
@@ -203,5 +203,9 @@ public class Post implements Serializable {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
+    }
+
+    public boolean isNew() {
+        return this.id == 0;
     }
 }

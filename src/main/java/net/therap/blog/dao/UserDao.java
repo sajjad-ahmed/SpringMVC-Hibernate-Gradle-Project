@@ -1,6 +1,7 @@
 package net.therap.blog.dao;
 
 import net.therap.blog.domain.User;
+import net.therap.blog.exception.NotFoundException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +22,7 @@ public class UserDao {
 
     @Transactional
     public User save(User user) {
-        if (user.getId() == 0) {
+        if (user.isNew()) {
             em.persist(user);
             em.flush();
         } else {
@@ -48,6 +49,8 @@ public class UserDao {
                 e.printStackTrace();
                 return Optional.empty();
             }
+        } else {
+            throw new NotFoundException("User");
         }
         return Optional.empty();
     }

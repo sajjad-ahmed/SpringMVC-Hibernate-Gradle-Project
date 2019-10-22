@@ -1,6 +1,7 @@
 package net.therap.blog.dao;
 
 import net.therap.blog.domain.Category;
+import net.therap.blog.exception.NotFoundException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +23,7 @@ public class CategoryDao {
 
     @Transactional
     public Category save(Category category) {
-        if (category.getId() == 0) {
+        if (category.isNew()) {
             em.persist(category);
             em.flush();
         } else {
@@ -48,6 +49,8 @@ public class CategoryDao {
             } catch (IllegalStateException | PersistenceException e) {
                 e.printStackTrace();
             }
+        } else {
+            throw new NotFoundException("Category");
         }
     }
 }
