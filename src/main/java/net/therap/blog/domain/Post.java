@@ -7,8 +7,13 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author sajjad.ahmed
@@ -155,9 +160,8 @@ public class Post extends BaseDomain implements Serializable {
     }
 
     public String getFormattedDate() {
-        SimpleDateFormat ft =
-                new SimpleDateFormat("MMMMM',' yyyy");
-        return ft.format(getCreatedAt());
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(getCreatedAt().toInstant(), ZoneId.systemDefault());
+        return localDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE);
     }
 
     public String getImageBase64() {

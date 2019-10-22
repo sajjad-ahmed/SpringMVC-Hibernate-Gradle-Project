@@ -16,7 +16,8 @@ import java.util.Base64;
         uniqueConstraints = @UniqueConstraint(columnNames = {"email"}))
 @NamedQueries({
         @NamedQuery(name = "User.findAll", query = "FROM User"),
-        @NamedQuery(name = "User.findByEmail", query = "FROM User WHERE email = :email"),
+        @NamedQuery(name = "User.findByEmail", query = "FROM User " +
+                "WHERE email = :email"),
 })
 public class User implements Serializable {
 

@@ -4,7 +4,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 /**
  * @author sajjad.ahmed
@@ -62,9 +64,8 @@ public class Comment extends BaseDomain implements Serializable {
     }
 
     public String getCommentedOn() {
-        SimpleDateFormat ft =
-                new SimpleDateFormat("E yyyy.MM.dd 'at' hh:mm:ss a zzz");
-        return ft.format(getCreatedAt());
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(getCreatedAt().toInstant(), ZoneId.systemDefault());
+        return localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd 'at' hh:mm:ss"));
     }
 
     public Post getPostId() {

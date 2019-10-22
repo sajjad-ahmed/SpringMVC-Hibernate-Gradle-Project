@@ -4,7 +4,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 /**
  * @author sajjad.ahmed
@@ -105,7 +107,10 @@ public class Message extends BaseDomain implements Serializable {
         this.receiver = receiver;
     }
 
-
+    public String getFormattedTime(){
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(getCreatedAt().toInstant(), ZoneId.systemDefault());
+        return localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd 'at' hh:mm:ss"));
+    }
 
     @Override
     public String toString() {
