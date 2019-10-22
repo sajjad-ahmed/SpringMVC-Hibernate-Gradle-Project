@@ -1,5 +1,6 @@
 package net.therap.blog.web.controller;
 
+import net.therap.blog.cmd.LoginCmd;
 import net.therap.blog.dao.UserDao;
 import net.therap.blog.domain.User;
 import net.therap.blog.util.Constants;
@@ -34,11 +35,12 @@ public class AuthenticationController implements Constants {
 
     @RequestMapping(value = LOG_IN, method = RequestMethod.GET)
     public String showLoginForm(Model model) {
-        model.addAttribute("user", new User());
+        model.addAttribute("loginCmd", new LoginCmd());
         return LOG_IN_VIEW;
     }
+
     @RequestMapping(value = LOG_IN, method = RequestMethod.POST)
-    public String loginHandler(@Valid @ModelAttribute(name = "user") User targetUser,
+    public String loginHandler(@Valid @ModelAttribute LoginCmd loginCmd,
                                Errors errors,
                                HttpServletRequest request,
                                Model model) throws IllegalArgumentException {
@@ -49,9 +51,9 @@ public class AuthenticationController implements Constants {
                 }
             }
         }
-        User user = userDao.findUserByEmail(targetUser.getEmail());
-        if (Objects.nonNull(targetUser.getPassword()) && Objects.nonNull(targetUser.getEmail()) && Objects.nonNull(user)) {
-            if (Encryption.encrypt(targetUser.getPassword()).equals(user.getPassword()) && user.getEmail().equals(targetUser.getEmail())) {
+        User user = userDao.findUserByEmail(loginCmd.getEmail());
+        if (Objects.nonNull(loginCmd.getPassword()) && Objects.nonNull(loginCmd.getEmail()) && Objects.nonNull(user)) {
+            if (Encryption.encrypt(loginCmd.getPassword()).equals(user.getPassword()) && user.getEmail().equals(loginCmd.getEmail())) {
                 HttpSession session = request.getSession();
                 session.setAttribute(USER_ID_PARAMETER, user.getId());
                 session.setAttribute(USER_EMAIL_PARAMETER, user.getEmail());

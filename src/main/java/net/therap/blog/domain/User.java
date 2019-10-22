@@ -1,5 +1,7 @@
 package net.therap.blog.domain;
 
+import net.therap.blog.util.ROLES;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -48,9 +50,9 @@ public class User implements Serializable {
     @Column(nullable = false)
     private String password;
 
-    @NotNull
     @Column(nullable = false)
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private ROLES role;
 
     @Lob
     @Column(name = "profile_picture", nullable = false, columnDefinition = "mediumblob")
@@ -96,13 +98,21 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public String getRole() {
+    public ROLES getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(ROLES role) {
         this.role = role;
     }
+
+    //    public String getRole() {
+//        return role;
+//    }
+//
+//    public void setRole(String role) {
+//        this.role = role;
+//    }
 
     public byte[] getProfilePicture() {
         return profilePicture;

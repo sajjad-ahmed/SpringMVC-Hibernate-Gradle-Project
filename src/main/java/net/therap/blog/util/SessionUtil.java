@@ -16,7 +16,7 @@ public class SessionUtil implements Constants {
         Object userIdInSession = session.getAttribute(USER_ID_PARAMETER);
         if (Objects.nonNull(session) && userIdInSession != null) {
             long userId = (Long) session.getAttribute(USER_ID_PARAMETER);
-            return userId == 0 ? ACCESS_GUEST : (String) session.getAttribute(USER_ROLE_PARAMETER);
+            return userId == 0 ? ACCESS_GUEST : ((ROLES) session.getAttribute(USER_ROLE_PARAMETER)).name();
         } else {
             return ACCESS_GUEST;
         }

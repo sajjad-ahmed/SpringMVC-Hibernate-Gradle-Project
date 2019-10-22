@@ -15,12 +15,7 @@
     </c:if>
     <c:if test="${sessionScope.userID == null}">
 
-        <form:form method="post" modelAttribute="user" action="/auth/login" class="hform">
-            <form:input path="id" type="hidden"/>
-            <form:input path="firstName" type="hidden"/>
-            <form:input path="lastName" type="hidden"/>
-            <form:input path="role" type="hidden"/>
-            <form:input path="profilePicture" type="hidden"/>
+        <form:form method="post" modelAttribute="loginCmd" action="/auth/login" class="hform">
             <fieldset>
                 <legend><spring:message code="label.loginPage.legend"/></legend>
                 <dt><label aria-atomic="true" aria-live="polite"><spring:message
