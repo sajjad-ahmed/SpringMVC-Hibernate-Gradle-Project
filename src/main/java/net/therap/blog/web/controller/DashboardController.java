@@ -40,24 +40,24 @@ public class DashboardController implements Constants {
         Map<String, String> uriMap = new HashMap<>();
         switch (role) {
             case "ADMIN": {
-                uriMap.put("/user/manage", "Manage User");
-                uriMap.put("/post/manage", "Manage Post");
-                uriMap.put("/category/manage", "Manage Category");
-                uriMap.put("/message/send", "Send A message");
-                uriMap.put("/inbox", "My Inbox");
+                uriMap.put("Manage User", USER_MANAGE);
+                uriMap.put("Manage Post", POST_MANAGE);
+                uriMap.put("Manage Category", CATEGORY_MANAGE);
+                uriMap.put("Send A message", MESSAGE_SEND);
+                uriMap.put("My Inbox", MESSAGE_SHOW_INBOX);
                 break;
             }
             case "AUTHOR": {
-                uriMap.put("/post/manage", "Manage Post");
-                uriMap.put(USER_UPDATE_INFORMATION, "Update Information");
-                uriMap.put("/message/send", "Send A message");
-                uriMap.put("/inbox", "My Inbox");
+                uriMap.put("Manage Post", POST_MANAGE);
+                uriMap.put("Update Information", USER_UPDATE_INFORMATION);
+                uriMap.put("Send A message", MESSAGE_SEND);
+                uriMap.put("My Inbox", MESSAGE_SHOW_INBOX);
                 break;
             }
             case "SUBSCRIBER": {
-                uriMap.put(USER_UPDATE_INFORMATION, "Update Information");
-                uriMap.put("/message/send", "Send A message");
-                uriMap.put("/inbox", "My Inbox");
+                uriMap.put("Update Information", USER_UPDATE_INFORMATION);
+                uriMap.put("Send A message", MESSAGE_SEND);
+                uriMap.put("My Inbox", MESSAGE_SHOW_INBOX);
                 break;
             }
         }

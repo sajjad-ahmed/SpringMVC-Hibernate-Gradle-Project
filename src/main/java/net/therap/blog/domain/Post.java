@@ -21,9 +21,10 @@ import java.util.*;
         @NamedQuery(name = "Post.findAll",
                 query = "FROM Post"),
         @NamedQuery(name = "Post.findByUri",
-                query = "FROM Post WHERE uri = :uri"),
+                query = "FROM Post " +
+                        "WHERE uri = :uri"),
 })
-public class Post implements Serializable {
+public class Post extends BaseDomain implements Serializable {
 
     private static final long serialVersionUID = 1l;
 
@@ -66,12 +67,6 @@ public class Post implements Serializable {
 
     @OneToMany(mappedBy = "postId", cascade = CascadeType.ALL)
     private List<Comment> comments;
-
-    @Column(name = "created_at")
-    private Date createdAt;
-
-    @Column(name = "updated_at")
-    private Date updatedAt;
 
     public Post() {
         this.categories = new ArrayList<>();
@@ -149,22 +144,6 @@ public class Post implements Serializable {
         this.comments = comments;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Date getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
     public String getStatus() {
         Map<String, Long> map = STATUS.getMap();
         String status = map.keySet()
@@ -178,7 +157,7 @@ public class Post implements Serializable {
     public String getFormattedDate() {
         SimpleDateFormat ft =
                 new SimpleDateFormat("MMMMM',' yyyy");
-        return ft.format(createdAt);
+        return ft.format(getCreatedAt());
     }
 
     public String getImageBase64() {
@@ -200,8 +179,8 @@ public class Post implements Serializable {
                 ", access=" + access +
                 ", categories=" + categories +
                 ", comments=" + comments +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
+                ", createdAt=" + getCreatedAt() +
+                ", updatedAt=" + getUpdatedAt() +
                 '}';
     }
 

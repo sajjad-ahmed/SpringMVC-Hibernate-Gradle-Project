@@ -1,7 +1,5 @@
 package net.therap.blog.domain;
 
-import org.hibernate.annotations.Type;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -16,40 +14,48 @@ import java.util.Date;
 @Table(name = "message")
 @NamedQueries({
         @NamedQuery(name = "Message.findAll",
-                query = "FROM Message as m WHERE m.isDeleted = FALSE"),
+                query = "FROM Message as m " +
+                        "WHERE m.isDeleted = FALSE"),
         @NamedQuery(name = "Message.findSentMessages",
-                query = "FROM Message WHERE sender_id = :senderId AND isDeleted = FALSE order by created_at desc"),
+                query = "FROM Message " +
+                        "WHERE sender_id = :senderId " +
+                        "AND isDeleted = FALSE " +
+                        "ORDER BY created_at " +
+                        "DESC"),
         @NamedQuery(name = "Message.findReceivedMessages",
-                query = "FROM Message WHERE receiver_id = :receiverId AND isDeleted = FALSE order by created_at desc"),
+                query = "FROM Message " +
+                        "WHERE receiver_id = :receiverId " +
+                        "AND isDeleted = FALSE " +
+                        "ORDER BY created_at " +
+                        "DESC"),
 })
-public class Message implements Serializable {
+public class Message extends BaseDomain implements Serializable {
 
     private static final long serialVersionUID = 1l;
-    @Column(name = "is_deleted", columnDefinition = "TINYINT")
-    @Type(type = "org.hibernate.type.NumericBooleanType")
-    public boolean isDeleted;
-    @Column(name = "is_seen", columnDefinition = "TINYINT")
-    @Type(type = "org.hibernate.type.NumericBooleanType")
-    public boolean isSeen;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     @NotNull
     @Size(min = 4, max = 200)
     private String body;
+
     @OneToOne
+    @NotNull
     @JoinColumn(name = "sender_id")
     private User sender;
+
     @OneToOne
+    @NotNull
     @JoinColumn(name = "receiver_id")
     private User receiver;
-    @Column(name = "created_at")
-    private Date createdAt;
-    @Column(name = "updated_at")
-    private Date updatedAt;
 
-    public Message() {
-    }
+    @Column(name = "is_deleted", columnDefinition = "TINYINT")
+    public boolean isDeleted;
+
+    @Column(name = "is_seen", columnDefinition = "TINYINT")
+    public boolean isSeen;
 
     public long getId() {
         return id;
@@ -99,21 +105,7 @@ public class Message implements Serializable {
         this.receiver = receiver;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
-    }
 
-    public void setCreatedAt(Date created_at) {
-        this.createdAt = created_at;
-    }
-
-    public Date getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Date updated_at) {
-        this.updatedAt = updated_at;
-    }
 
     @Override
     public String toString() {
@@ -124,8 +116,8 @@ public class Message implements Serializable {
                 ", is_deleted=" + isDeleted +
                 ", sender=" + sender +
                 ", receiver=" + receiver +
-                ", created_at=" + createdAt +
-                ", updated_at=" + updatedAt +
+                ", created_at=" + getCreatedAt() +
+                ", updated_at=" + getUpdatedAt() +
                 '}';
     }
 

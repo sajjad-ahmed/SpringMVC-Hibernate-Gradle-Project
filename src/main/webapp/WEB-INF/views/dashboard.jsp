@@ -19,7 +19,7 @@
 </c:if>
 <c:forEach items="${uris}" var="uri">
     <br>
-    <a href=" ${uri.key}"> ${uri.value}</a>
+    <a href=" ${uri.value}"> ${uri.key}</a>
     <br>
 </c:forEach>
 

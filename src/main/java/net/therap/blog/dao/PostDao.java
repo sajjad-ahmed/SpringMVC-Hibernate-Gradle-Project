@@ -1,10 +1,14 @@
 package net.therap.blog.dao;
 
 import net.therap.blog.domain.Post;
+import net.therap.blog.exception.NotFoundException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
 import java.util.List;
 import java.util.Objects;
 
@@ -46,14 +50,16 @@ public class PostDao {
             } catch (IllegalStateException | PersistenceException e) {
                 e.printStackTrace();
             }
+        } else {
+            throw new NotFoundException("Post");
         }
     }
 
     public Post findBy(String uri) {
         try {
-            TypedQuery<Post> query = em.createNamedQuery("Post.findByUri", Post.class);
-            query.setParameter("uri", uri);
-            return query.getSingleResult();
+            return em.createNamedQuery("Post.findByUri", Post.class)
+                    .setParameter("uri", uri)
+                    .getSingleResult();
         } catch (NoResultException e) {
             return null;
         }

@@ -18,7 +18,7 @@ import java.util.List;
 @NamedQueries({
         @NamedQuery(name = "Category.findAll", query = "FROM Category"),
 })
-public class Category implements Serializable {
+public class Category extends BaseDomain implements Serializable {
 
     private static final long serialVersionUID = 1l;
 
@@ -29,12 +29,6 @@ public class Category implements Serializable {
     @NotNull
     @Size(min = 3, max = 50)
     private String name;
-
-    @Column(name = "created_at")
-    private Date createdAt;
-
-    @Column(name = "updated_at")
-    private Date updatedAt;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinTable(name = "post_category",
@@ -60,22 +54,6 @@ public class Category implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Date getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
     }
 
     public List<Post> getPosts() {

@@ -55,9 +55,6 @@ public class User implements Serializable {
     @Column(name = "profile_picture", nullable = false, columnDefinition = "mediumblob")
     private byte[] profilePicture;
 
-    public User() {
-    }
-
     public long getId() {
         return id;
     }

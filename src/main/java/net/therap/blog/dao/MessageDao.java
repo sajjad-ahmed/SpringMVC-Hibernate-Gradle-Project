@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Objects;
 
@@ -54,9 +53,9 @@ public class MessageDao {
 
     public List<Message> findSentMessages(long id) {
         try {
-            TypedQuery<Message> query = em.createNamedQuery("Message.findSentMessages", Message.class);
-            query.setParameter("senderId", id);
-            return query.getResultList();
+            return em.createNamedQuery("Message.findSentMessages", Message.class)
+                    .setParameter("senderId", id)
+                    .getResultList();
         } catch (NoResultException e) {
             return null;
         }
@@ -64,9 +63,9 @@ public class MessageDao {
 
     public List<Message> findReceivedMessages(long id) {
         try {
-            TypedQuery<Message> query = em.createNamedQuery("Message.findReceivedMessages", Message.class);
-            query.setParameter("receiverId", id);
-            return query.getResultList();
+            return em.createNamedQuery("Message.findReceivedMessages", Message.class)
+                    .setParameter("receiverId", id)
+                    .getResultList();
         } catch (NoResultException e) {
             return null;
         }

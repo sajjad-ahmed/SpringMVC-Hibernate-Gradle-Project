@@ -5,7 +5,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * @author sajjad.ahmed
@@ -17,7 +16,7 @@ import java.util.Date;
 @NamedQueries({
         @NamedQuery(name = "Comment.findAll", query = "FROM Comment"),
 })
-public class Comment implements Serializable {
+public class Comment extends BaseDomain implements Serializable {
 
     private static final long serialVersionUID = 1l;
 
@@ -34,18 +33,9 @@ public class Comment implements Serializable {
     @Size(min = 1, max = 500)
     private String body;
 
-    @Column(name = "created_at")
-    private Date createdAt;
-
-    @Column(name = "updated_at")
-    private Date updatedAt;
-
     @ManyToOne(optional = false)
     @JoinColumn(name = "post_id")
     private Post postId;
-
-    public Comment() {
-    }
 
     public long getId() {
         return id;
@@ -71,26 +61,10 @@ public class Comment implements Serializable {
         this.body = body;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
     public String getCommentedOn() {
         SimpleDateFormat ft =
                 new SimpleDateFormat("E yyyy.MM.dd 'at' hh:mm:ss a zzz");
-        return ft.format(createdAt);
-    }
-
-    public Date getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
+        return ft.format(getCreatedAt());
     }
 
     public Post getPostId() {
@@ -107,8 +81,8 @@ public class Comment implements Serializable {
                 "id=" + id +
                 ", userId=" + userId +
                 ", body='" + body + '\'' +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
+                ", createdAt=" + getCreatedAt() +
+                ", updatedAt=" + getUpdatedAt() +
                 '}';
     }
 

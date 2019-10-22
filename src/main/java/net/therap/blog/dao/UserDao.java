@@ -5,7 +5,10 @@ import net.therap.blog.exception.NotFoundException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -57,9 +60,9 @@ public class UserDao {
 
     public User findUserByEmail(String email) {
         try {
-            TypedQuery<User> query = em.createNamedQuery("User.findByEmail", User.class);
-            query.setParameter("email", email);
-            return query.getSingleResult();
+            return em.createNamedQuery("User.findByEmail", User.class)
+                    .setParameter("email", email)
+                    .getSingleResult();
         } catch (NoResultException e) {
             return null;
         }
