@@ -41,7 +41,7 @@
                         <tr>
                             <td><c:out value="${category.name}"/></td>
                             <td>
-                                <form:form action="/category/update/" method="get"
+                                <form:form action="/category/add" method="get"
                                            modelAttribute="category" class="hform">
                                     <form:input path="id" type="hidden" value="${category.id}"/>
                                     <input type="submit" value="<spring:message code="label.update.header"/>"

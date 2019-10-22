@@ -18,12 +18,11 @@ import java.util.Objects;
 @WebFilter("/AuthenticationFilter")
 public class AuthenticationFilter implements Filter {
 
-    private FilterConfig config;
-
-    public void init(FilterConfig config) throws ServletException {
-        this.config = config;
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
     }
 
+    @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws ServletException, IOException {
 
@@ -48,6 +47,7 @@ public class AuthenticationFilter implements Filter {
         }
     }
 
+    @Override
     public void destroy() {
     }
 }

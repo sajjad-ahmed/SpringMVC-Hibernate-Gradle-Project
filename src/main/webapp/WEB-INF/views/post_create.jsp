@@ -41,13 +41,13 @@
             <dt><label aria-atomic="true" aria-live="polite"> <spring:message
                     code="label.post.createPage.status.prompt"/> </label></dt>
             <dd>
-                <form:select path='access'>
+                <form:select path='status'>
                     <c:forEach items="${status}" var="sts">
-                        <option value=" ${sts.value}"> ${sts.key}</option>
+                        <option value=" ${sts.key}"> ${sts.value}</option>
                     </c:forEach>
                 </form:select>
             </dd>
-            <dd><form:errors path="access" cssStyle="color: red"/></dd>
+            <dd><form:errors path="status" cssStyle="color: red"/></dd>
 
             <dt><label aria-atomic="true" aria-live="polite"><spring:message
                     code="label.post.createPage.cover.prompt"/> </label></dt>

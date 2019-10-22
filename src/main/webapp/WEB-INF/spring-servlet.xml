@@ -72,5 +72,9 @@
         <property name="validationMessageSource" ref="messageSource"/>
     </bean>
 
+    <mvc:interceptors>
+        <bean class="net.therap.blog.interceptor.ExceptionHandlerInterceptor"/>
+    </mvc:interceptors>
+
 </beans>
 

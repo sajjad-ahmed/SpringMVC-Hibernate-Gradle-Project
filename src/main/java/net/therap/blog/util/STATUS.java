@@ -8,21 +8,21 @@ import java.util.Map;
  * @since 10/13/19.
  */
 public enum STATUS {
-    PUBLIC(777),
-    SUBSCRIBER_ONLY(771),
-    DRAFT(711),
-    RESTRICT_AUTHOR(111);
+    PUBLIC("Public"),
+    SUBSCRIBER_ONLY("Subscriber only"),
+    DRAFT("Draft"),
+    RESTRICT_AUTHOR("Restrict author");
 
-    public long val;
+    public String val;
 
-    STATUS(long val) {
+    STATUS(String val) {
         this.val = val;
     }
 
-    public static Map<String,Long> getMap() {
-        Map<String, Long> statusMap = new HashMap<>();
+    public static Map<String, String> getMap() {
+        Map<String, String> statusMap = new HashMap<>();
         for (STATUS status : STATUS.values()) {
-            statusMap.put(status.name(),status.val);
+            statusMap.put(status.name(), status.val);
         }
         return statusMap;
     }

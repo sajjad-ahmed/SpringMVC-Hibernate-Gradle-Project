@@ -27,14 +27,13 @@ public class SessionUtil implements Constants {
         if (userRole.equals(ROLES.ADMIN.name())) {
             return posts;
         } else if (userRole.equals(ROLES.AUTHOR.name())) {
-            posts.removeIf(i ->
-                    String.valueOf(i.getAccess()).charAt(0) == ACCESS_DENY);
+            posts.removeIf(i -> i.getStatus().name().equals("RESTRICT_AUTHOR"));
         } else if (userRole.equals(ROLES.SUBSCRIBER.name())) {
-            posts.removeIf(i ->
-                    String.valueOf(i.getAccess()).charAt(1) == ACCESS_DENY);
+            posts.removeIf(i -> i.getStatus().name().equals("DRAFT"));
         } else if (userRole.equals(ACCESS_GUEST)) {
-            posts.removeIf(i ->
-                    String.valueOf(i.getAccess()).charAt(2) == ACCESS_DENY);
+            posts.removeIf(i -> i.getStatus().name().equals("SUBSCRIBER_ONLY")
+                    || i.getStatus().name().equals("DRAFT"));
+
         }
         return posts;
     }

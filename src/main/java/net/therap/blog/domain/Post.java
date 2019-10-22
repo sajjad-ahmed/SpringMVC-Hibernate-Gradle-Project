@@ -13,7 +13,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author sajjad.ahmed
@@ -57,7 +56,8 @@ public class Post extends BaseDomain implements Serializable {
     private String body;
 
     @Column(nullable = false)
-    private long access;
+    @Enumerated(EnumType.STRING)
+    private STATUS status;
 
     @Lob
     @Column(nullable = false, columnDefinition = "mediumblob")
@@ -117,12 +117,16 @@ public class Post extends BaseDomain implements Serializable {
         this.body = body;
     }
 
-    public long getAccess() {
-        return access;
+    public STATUS getStatus() {
+        return status;
     }
 
-    public void setAccess(long access) {
-        this.access = access;
+    public void setStatus(STATUS status) {
+        this.status = status;
+    }
+
+    public String getStatusVal() {
+        return status.val;
     }
 
     public byte[] getPicture() {
@@ -149,16 +153,6 @@ public class Post extends BaseDomain implements Serializable {
         this.comments = comments;
     }
 
-    public String getStatus() {
-        Map<String, Long> map = STATUS.getMap();
-        String status = map.keySet()
-                .stream()
-                .filter(key -> this.access == map.get(key))
-                .findFirst().get();
-        status = status.replace("_", " ");
-        return status;
-    }
-
     public String getFormattedDate() {
         LocalDateTime localDateTime = LocalDateTime.ofInstant(getCreatedAt().toInstant(), ZoneId.systemDefault());
         return localDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE);
@@ -180,7 +174,7 @@ public class Post extends BaseDomain implements Serializable {
                 ", uri='" + uri + '\'' +
                 ", title='" + title + '\'' +
                 ", body='" + body + '\'' +
-                ", access=" + access +
+                ", access=" + status +
                 ", categories=" + categories +
                 ", comments=" + comments +
                 ", createdAt=" + getCreatedAt() +

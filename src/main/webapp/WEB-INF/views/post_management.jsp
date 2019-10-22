@@ -47,7 +47,7 @@
                 <tr>
                     <td><c:out value="${post.title}"/></td>
                     <td><c:out value="${post.getAuthorName()}"/></td>
-                    <td><c:out value="${post.status}"/></td>
+                    <td><c:out value="${post.statusVal}"/></td>
                     <td><c:out value="${post.uri}"/></td>
                     <td><c:out value="${post.createdAt}"/></td>
                     <td><c:out value="${post.updatedAt}"/></td>

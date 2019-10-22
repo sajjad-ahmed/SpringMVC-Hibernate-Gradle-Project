@@ -29,18 +29,10 @@ public class PostValidator implements Validator {
     public void validate(Object target, Errors errors) {
         Post post = (Post) target;
         String value = post.getUri();
-        if (post.getId() == 0) {
+        if (post.isNew()) {
             if (Objects.nonNull(value) && postService.isUriAlreadyInUse(value)) {
                 errors.rejectValue("uri", "validator.duplicate.uri", "URI already exists");
             }
-        }
-        String access = String.valueOf(post.getAccess());
-        String regexp = "^[1-7]{3}$";
-        Pattern pattern = Pattern.compile(regexp);
-        Matcher matcher = pattern.matcher(access);
-        if (!matcher.matches()) {
-            errors.rejectValue("access", "validator.post.access.error", "Must be a 3 digit number containing only 1 or 7");
-
         }
     }
 }

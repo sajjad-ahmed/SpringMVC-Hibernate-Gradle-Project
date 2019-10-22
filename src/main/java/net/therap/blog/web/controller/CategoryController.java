@@ -45,14 +45,15 @@ public class CategoryController implements Constants {
     }
 
     @RequestMapping(value = CATEGORY_ADD, method = RequestMethod.GET)
-    public String addCategoryView(
-            Model model,
-            HttpSession session) {
+    public String addCategoryView(@ModelAttribute Category category,
+                                  Model model,
+                                  HttpSession session) {
         String userRole = SessionUtil.getUserRole(session);
         if (!userRole.equals(ROLES.ADMIN.name())) {
             return ACCESS_ERROR_VIEW;
         }
-        model.addAttribute("category", new Category());
+        category = category.isNew() ? category : categoryDao.find(category.getId());
+        model.addAttribute("category", category);
         return CATEGORY_ADD_VIEW;
     }
 
@@ -70,27 +71,9 @@ public class CategoryController implements Constants {
             model.addAttribute("category", category);
             return CATEGORY_ADD_VIEW;
         }
-        if (category.getId() == 0) {
-            redirectAttributes.addFlashAttribute(CONFIRMATION, "ADDED");
-        } else {
-            redirectAttributes.addFlashAttribute(CONFIRMATION, "UPDATED");
-        }
+        redirectAttributes.addFlashAttribute(CONFIRMATION, category.isNew() ? "ADDED" : "UPDATED");
         categoryDao.save(category);
         return "redirect:" + CATEGORY_MANAGE;
-    }
-
-    @RequestMapping(value = CATEGORY_UPDATE, method = RequestMethod.GET)
-    public String updateCategoryHandler(@ModelAttribute Category category,
-                                        Model model,
-                                        HttpSession session) {
-        String userRole = SessionUtil.getUserRole(session);
-        if (!userRole.equals(ROLES.ADMIN.name())) {
-            return ACCESS_ERROR_VIEW;
-        }
-        long id = category.getId();
-        category = categoryDao.find(id);
-        model.addAttribute("category", category);
-        return CATEGORY_ADD_VIEW;
     }
 
     @RequestMapping(value = CATEGORY_DELETE, method = RequestMethod.POST)
