@@ -3,7 +3,6 @@ package net.therap.blog.domain;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -18,13 +17,7 @@ import java.time.format.DateTimeFormatter;
 @NamedQueries({
         @NamedQuery(name = "Comment.findAll", query = "FROM Comment"),
 })
-public class Comment extends BaseDomain implements Serializable {
-
-    private static final long serialVersionUID = 1l;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+public class Comment extends BaseDomain {
 
     @OneToOne
     @JoinColumn(name = "user_id")
@@ -38,14 +31,6 @@ public class Comment extends BaseDomain implements Serializable {
     @ManyToOne(optional = false)
     @JoinColumn(name = "post_id")
     private Post postId;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public User getUserId() {
         return userId;
@@ -79,15 +64,11 @@ public class Comment extends BaseDomain implements Serializable {
     @Override
     public String toString() {
         return "Comment{" +
-                "id=" + id +
+                "id=" + getId() +
                 ", userId=" + userId +
                 ", body='" + body + '\'' +
                 ", createdAt=" + getCreatedAt() +
                 ", updatedAt=" + getUpdatedAt() +
                 '}';
-    }
-
-    public boolean isNew() {
-        return this.id == 0;
     }
 }

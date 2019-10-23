@@ -6,7 +6,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
 import java.util.Base64;
 
 /**
@@ -21,13 +20,7 @@ import java.util.Base64;
         @NamedQuery(name = "User.findByEmail", query = "FROM User " +
                 "WHERE email = :email"),
 })
-public class User implements Serializable {
-
-    private static final long serialVersionUID = 1l;
-
-    @Id
-    @GeneratedValue
-    private long id;
+public class User extends BaseDomain {
 
     @NotNull
     @Size(min = 1, max = 50)
@@ -57,14 +50,6 @@ public class User implements Serializable {
     @Lob
     @Column(name = "profile_picture", nullable = false, columnDefinition = "mediumblob")
     private byte[] profilePicture;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -106,14 +91,6 @@ public class User implements Serializable {
         this.role = role;
     }
 
-    //    public String getRole() {
-//        return role;
-//    }
-//
-//    public void setRole(String role) {
-//        this.role = role;
-//    }
-
     public byte[] getProfilePicture() {
         return profilePicture;
     }
@@ -137,16 +114,12 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
+                "id=" + getId() +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", role='" + role + '\'' +
                 '}';
-    }
-
-    public boolean isNew() {
-        return this.id == 0;
     }
 }

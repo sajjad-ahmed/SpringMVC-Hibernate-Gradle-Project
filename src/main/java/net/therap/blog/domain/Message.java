@@ -3,7 +3,6 @@ package net.therap.blog.domain;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -31,13 +30,7 @@ import java.time.format.DateTimeFormatter;
                         "ORDER BY created_at " +
                         "DESC"),
 })
-public class Message extends BaseDomain implements Serializable {
-
-    private static final long serialVersionUID = 1l;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+public class Message extends BaseDomain {
 
     @NotNull
     @Size(min = 4, max = 200)
@@ -58,14 +51,6 @@ public class Message extends BaseDomain implements Serializable {
 
     @Column(name = "is_seen", columnDefinition = "TINYINT")
     public boolean isSeen;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getBody() {
         return body;
@@ -115,7 +100,7 @@ public class Message extends BaseDomain implements Serializable {
     @Override
     public String toString() {
         return "Message{" +
-                "id=" + id +
+                "id=" + getId() +
                 ", body='" + body + '\'' +
                 ", is_seen=" + isSeen +
                 ", is_deleted=" + isDeleted +
@@ -124,9 +109,5 @@ public class Message extends BaseDomain implements Serializable {
                 ", created_at=" + getCreatedAt() +
                 ", updated_at=" + getUpdatedAt() +
                 '}';
-    }
-
-    public boolean isNew() {
-        return this.id == 0;
     }
 }

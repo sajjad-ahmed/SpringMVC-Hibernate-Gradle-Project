@@ -3,7 +3,6 @@ package net.therap.blog.domain;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,13 +16,7 @@ import java.util.List;
 @NamedQueries({
         @NamedQuery(name = "Category.findAll", query = "FROM Category"),
 })
-public class Category extends BaseDomain implements Serializable {
-
-    private static final long serialVersionUID = 1l;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+public class Category extends BaseDomain {
 
     @NotNull
     @Size(min = 3, max = 50)
@@ -37,14 +30,6 @@ public class Category extends BaseDomain implements Serializable {
 
     public Category() {
         this.posts = new ArrayList<>();
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -65,11 +50,7 @@ public class Category extends BaseDomain implements Serializable {
 
     @Override
     public String toString() {
-        return "id=" + this.id + ", name=" + this.name;
+        return "id=" + getId() + ", name=" + this.name;
 
-    }
-
-    public boolean isNew() {
-        return this.id == 0;
     }
 }

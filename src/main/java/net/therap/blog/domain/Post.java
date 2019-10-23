@@ -6,7 +6,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -28,13 +27,7 @@ import java.util.List;
                 query = "FROM Post " +
                         "WHERE uri = :uri"),
 })
-public class Post extends BaseDomain implements Serializable {
-
-    private static final long serialVersionUID = 1l;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+public class Post extends BaseDomain {
 
     @OneToOne
     @JoinColumn(name = "created_by")
@@ -75,14 +68,6 @@ public class Post extends BaseDomain implements Serializable {
 
     public Post() {
         this.categories = new ArrayList<>();
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public User getCreator() {
@@ -169,7 +154,7 @@ public class Post extends BaseDomain implements Serializable {
     @Override
     public String toString() {
         return "Post{" +
-                "id=" + id +
+                "id=" + getId() +
                 ", creator=" + creator +
                 ", uri='" + uri + '\'' +
                 ", title='" + title + '\'' +
@@ -180,9 +165,5 @@ public class Post extends BaseDomain implements Serializable {
                 ", createdAt=" + getCreatedAt() +
                 ", updatedAt=" + getUpdatedAt() +
                 '}';
-    }
-
-    public boolean isNew() {
-        return this.id == 0;
     }
 }
