@@ -1,6 +1,7 @@
 package net.therap.blog.util;
 
 import net.therap.blog.domain.Post;
+import net.therap.blog.domain.User;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -13,10 +14,10 @@ import java.util.Objects;
 public class SessionUtil implements Constants {
 
     public static String getUserRole(HttpSession session) {
-        Object userIdInSession = session.getAttribute(USER_ID_PARAMETER);
-        if (Objects.nonNull(session) && userIdInSession != null) {
-            long userId = (Long) session.getAttribute(USER_ID_PARAMETER);
-            return userId == 0 ? ACCESS_GUEST : ((ROLES) session.getAttribute(USER_ROLE_PARAMETER)).name();
+        User user = (User) session.getAttribute(SESSION_USER_PARAMETER);
+        if (Objects.nonNull(session) && Objects.nonNull(user)) {
+            long userId = user.getId();
+            return userId == 0 ? ACCESS_GUEST : user.getRole().name();
         } else {
             return ACCESS_GUEST;
         }

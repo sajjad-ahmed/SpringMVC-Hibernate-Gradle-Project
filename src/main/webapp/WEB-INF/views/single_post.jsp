@@ -66,7 +66,7 @@
                     </dd>
 
                     <dd>
-                        <c:if test="${sessionScope.userRole == 'ADMIN' }">
+                        <c:if test="${sessionScope.session_user.role == 'ADMIN' }">
                             <form:form action="/comment/delete" method="post" id="id-form-cc-${eachComment.id}"
                                        modelAttribute="comment" class="hform">
                                 <form:input path="id" type="hidden" value="${eachComment.id}"/>
@@ -75,7 +75,7 @@
                                        value="<spring:message code="label.delete.header"/>"
                                        class="danger"/>
                             </form:form>
-                            <c:if test="${sessionScope.userID == eachComment.userId.id}">
+                            <c:if test="${sessionScope.session_user.id == eachComment.userId.id}">
                                 <form:form action="/comment/update" method="post"
                                            modelAttribute="comment" class="hform">
                                     <form:input path="id" type="hidden" value="${eachComment.id}"/>
@@ -84,7 +84,7 @@
                                 </form:form>
                             </c:if>
                         </c:if>
-                        <c:if test="${sessionScope.userID == eachComment.userId.id && sessionScope.userRole != 'ADMIN'}">
+                        <c:if test="${sessionScope.session_user.id == eachComment.userId.id && sessionScope.session_user.role != 'ADMIN'}">
                             <form:form action="/comment/delete" method="post" id="id-form-ct-${eachComment.id}"
                                        modelAttribute="comment" class="hform">
                                 <form:input path="id" type="hidden" value="${eachComment.id}"/>
@@ -111,11 +111,11 @@
 
     <div style="padding: 30px"/>
 
-    <c:if test="${ !empty sessionScope.userID}">
+    <c:if test="${ !empty sessionScope.session_user.id}">
         <form:form action="/comment/add" method="post" modelAttribute="comment" class="hform">
             <form:input path="id" type="hidden"/>
             <form:input path="postId" type="hidden" value="${post.id}"/>
-            <form:input path="userId" value="${sessionScope.userID}" type="hidden"/>
+            <form:input path="userId" value="${sessionScope.session_user.id}" type="hidden"/>
             <fieldset>
                 <legend><spring:message code="label.post.comment.legend.new"/></legend>
 
@@ -138,7 +138,7 @@
         </form:form>
     </c:if>
 
-    <c:if test="${empty sessionScope.userID}">
+    <c:if test="${empty sessionScope.session_user.id}">
         <h4><spring:message code="label.post.comment.prompt.pref"/> <a href="/auth/login"> <spring:message
                 code="label.home.login.text"/></a> <spring:message code="label.post.comment.login.to.comment"/></h4>
     </c:if>

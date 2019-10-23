@@ -18,7 +18,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.List;
 
 import static net.therap.blog.util.URL.*;
 
@@ -99,7 +98,7 @@ public class UserController implements Constants {
 
     @RequestMapping(value = USER_UPDATE, method = RequestMethod.GET)
     public String showUpdateForm(@ModelAttribute User user,
-                                    Model model) {
+                                 Model model) {
         user = userService.find(user.getId());
         model.addAttribute("user", user);
         model.addAttribute("roles", ROLES.values());
@@ -133,19 +132,19 @@ public class UserController implements Constants {
     @RequestMapping(value = USER_UPDATE_INFORMATION, method = RequestMethod.GET)
     public String updateUserForm(HttpSession session,
                                  Model model) {
-        long id = (long) session.getAttribute(USER_ID_PARAMETER);
-        User user = userService.find(id);
+        User user = (User) session.getAttribute(SESSION_USER_PARAMETER);
+        user = userService.find(user.getId());
         model.addAttribute("user", user);
         return USER_UPDATE_VIEW;
     }
 
     @RequestMapping(value = USER_UPDATE_INFORMATION, method = RequestMethod.POST)
     public String updateUserHandler(@Valid @ModelAttribute User user,
-                                 Errors errors,
-                                 Model model,
-                                 HttpSession session,
-                                 RedirectAttributes redirectAttributes,
-                                 @RequestParam("file") MultipartFile file) {
+                                    Errors errors,
+                                    Model model,
+                                    HttpSession session,
+                                    RedirectAttributes redirectAttributes,
+                                    @RequestParam("file") MultipartFile file) {
         String userRole = SessionUtil.getUserRole(session);
         if (userRole.equals(ROLES.AUTHOR.name())) {
             return ACCESS_ERROR_VIEW;

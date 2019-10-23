@@ -61,7 +61,7 @@
                                class="primary"/>
                     </form:form></td>
                     <td>
-                        <c:if test="${sessionScope.userID != post.id}">
+                        <c:if test="${sessionScope.session_user.id != post.id}">
                             <form:form action="/user/delete" method="post" id="form-id-${post.id}"
                                        modelAttribute="user" class="hform">
                                 <form:input path="id" type="hidden" value="${post.id}"/>

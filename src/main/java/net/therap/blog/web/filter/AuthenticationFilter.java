@@ -1,5 +1,6 @@
 package net.therap.blog.web.filter;
 
+import net.therap.blog.domain.User;
 import net.therap.blog.util.Constants;
 
 import javax.servlet.*;
@@ -16,7 +17,7 @@ import java.util.Objects;
  */
 
 @WebFilter("/AuthenticationFilter")
-public class AuthenticationFilter implements Filter {
+public class AuthenticationFilter implements Filter, Constants {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -35,9 +36,9 @@ public class AuthenticationFilter implements Filter {
         if (uri.contains("auth") || uri.contains("signup") || uri.contains("post/show") || uri.equals("/")) {
             chain.doFilter(req, res);
         } else {
-            if (Objects.nonNull((session.getAttribute(Constants.USER_ID_PARAMETER)))) {
-                long userIdParameter = (long) session.getAttribute(Constants.USER_ID_PARAMETER);
-                if (userIdParameter == 0) {
+            if (Objects.nonNull(session.getAttribute(SESSION_USER_PARAMETER))) {
+                User user = (User) session.getAttribute(SESSION_USER_PARAMETER);
+                if (user.getId() == 0) {
                     RequestDispatcher requestDispatcher = req.getRequestDispatcher("/");
                     requestDispatcher.forward(req, res);
                     chain.doFilter(req, res);

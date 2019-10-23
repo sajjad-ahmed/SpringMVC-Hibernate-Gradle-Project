@@ -16,7 +16,7 @@
 
             <fieldset id="freship-group">
                 <form:input path="id" type="hidden"/>
-                <form:input path="sender" value="${sessionScope.userID}" type="hidden"/>
+                <form:input path="sender" value="${sessionScope.session_user.id}" type="hidden"/>
                 <legend><spring:message code="label.message.send.legend"/></legend>
                 <dt><label aria-atomic="true" aria-live="polite"> <spring:message
                         code="label.message.to.prompt"/> </label></dt>

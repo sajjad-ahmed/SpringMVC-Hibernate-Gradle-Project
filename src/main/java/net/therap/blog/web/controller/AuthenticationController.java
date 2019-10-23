@@ -53,12 +53,10 @@ public class AuthenticationController implements Constants {
         }
         User user = userDao.findUserByEmail(loginCmd.getEmail());
         if (Objects.nonNull(loginCmd.getPassword()) && Objects.nonNull(loginCmd.getEmail()) && Objects.nonNull(user)) {
-            if (Encryption.encrypt(loginCmd.getPassword()).equals(user.getPassword()) && user.getEmail().equals(loginCmd.getEmail())) {
+            if (Encryption.encrypt(loginCmd.getPassword()).equals(user.getPassword()) &&
+                    user.getEmail().equals(loginCmd.getEmail())) {
                 HttpSession session = request.getSession();
-                session.setAttribute(USER_ID_PARAMETER, user.getId());
-                session.setAttribute(USER_EMAIL_PARAMETER, user.getEmail());
-                session.setAttribute(USER_ROLE_PARAMETER, user.getRole());
-                session.setAttribute(USER_FIRST_NAME_PARAMETER, user.getFirstName());
+                session.setAttribute(SESSION_USER_PARAMETER, user);
                 return "redirect:" + ROOT;
             }
         }

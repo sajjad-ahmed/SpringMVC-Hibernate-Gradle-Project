@@ -45,8 +45,8 @@ public class MessageController implements Constants {
     @RequestMapping(value = MESSAGE_SEND, method = RequestMethod.GET)
     public String showNewMessageForm(Model model, HttpSession session) {
         model.addAttribute("message", new Message());
-        long currentUserId = (long) session.getAttribute(USER_ID_PARAMETER);
-        List<User> users = userService.findAllExceptSelf(currentUserId);
+        User user = (User) session.getAttribute(SESSION_USER_PARAMETER);
+        List<User> users = userService.findAllExceptSelf(user.getId());
         model.addAttribute("users", users);
         return MESSAGE_ADD_VIEW;
     }
@@ -57,8 +57,8 @@ public class MessageController implements Constants {
                                      Model model,
                                      HttpSession session) {
         if (errors.hasErrors()) {
-            long currentUserId = (long) session.getAttribute(USER_ID_PARAMETER);
-            List<User> users = userService.findAllExceptSelf(currentUserId);
+            User user = (User) session.getAttribute(SESSION_USER_PARAMETER);
+            List<User> users = userService.findAllExceptSelf(user.getId());
             model.addAttribute("users", users);
             return MESSAGE_ADD_VIEW;
         }
@@ -68,10 +68,10 @@ public class MessageController implements Constants {
 
     @RequestMapping(value = MESSAGE_SHOW_INBOX, method = RequestMethod.GET)
     public String showInbox(Model model, HttpSession session) {
-        long userId = (long) session.getAttribute(USER_ID_PARAMETER);
+        User user = (User) session.getAttribute(SESSION_USER_PARAMETER);
         model.addAttribute("message", new Message());
-        model.addAttribute("sentMessages", messageDao.findSentMessages(userId));
-        model.addAttribute("receivedMessages", messageDao.findReceivedMessages(userId));
+        model.addAttribute("sentMessages", messageDao.findSentMessages(user.getId()));
+        model.addAttribute("receivedMessages", messageDao.findReceivedMessages(user.getId()));
         return MESSAGE_INBOX_VIEW;
     }
 
@@ -81,9 +81,9 @@ public class MessageController implements Constants {
                                        Model model) {
         message = messageDao.find(message.getId());
         messageDao.delete(message.getId());
-        long userId = (long) session.getAttribute(USER_ID_PARAMETER);
-        model.addAttribute("sentMessages", messageDao.findSentMessages(userId));
-        model.addAttribute("receivedMessages", messageDao.findReceivedMessages(userId));
+        User user = (User) session.getAttribute(SESSION_USER_PARAMETER);
+        model.addAttribute("sentMessages", messageDao.findSentMessages(user.getId()));
+        model.addAttribute("receivedMessages", messageDao.findReceivedMessages(user.getId()));
         return MESSAGE_INBOX_VIEW;
     }
 

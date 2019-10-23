@@ -8,6 +8,7 @@ import java.util.Map;
  * @since 10/13/19.
  */
 public enum STATUS {
+
     PUBLIC("Public"),
     SUBSCRIBER_ONLY("Subscriber only"),
     DRAFT("Draft"),

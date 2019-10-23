@@ -1,7 +1,7 @@
 package net.therap.blog.web.controller;
 
+import net.therap.blog.domain.User;
 import net.therap.blog.util.Constants;
-import net.therap.blog.util.ROLES;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,16 +23,13 @@ public class DashboardController implements Constants {
 
     @RequestMapping(value = SHOW_DASHBOARD, method = RequestMethod.GET)
     public String showDashboard(Model model, HttpSession session) {
-        long userId = (Long) session.getAttribute(USER_ID_PARAMETER);
-        String userEmail = (String) session.getAttribute(USER_EMAIL_PARAMETER);
-        String userFirstName = (String) session.getAttribute(USER_FIRST_NAME_PARAMETER);
-        String userRole = ((ROLES) session.getAttribute(USER_ROLE_PARAMETER)).name();
-        if (userId != 0 || Objects.nonNull(userEmail) || Objects.nonNull(userFirstName) || Objects.nonNull(userRole)) {
-            model.addAttribute(USER_ID_PARAMETER, userId);
-            model.addAttribute(USER_EMAIL_PARAMETER, userEmail);
-            model.addAttribute(USER_ROLE_PARAMETER, userRole);
-            model.addAttribute(USER_FIRST_NAME_PARAMETER, userFirstName);
-            model.addAttribute(AUTHORIZED_URIs, getUris(userRole));
+        User user = (User) session.getAttribute(SESSION_USER_PARAMETER);
+        if (Objects.nonNull(session) && Objects.nonNull(user)) {
+            model.addAttribute(USER_ID_PARAMETER, user.getId());
+            model.addAttribute(USER_EMAIL_PARAMETER, user.getEmail());
+            model.addAttribute(USER_ROLE_PARAMETER, user.getEmail());
+            model.addAttribute(USER_FIRST_NAME_PARAMETER, user.getFirstName());
+            model.addAttribute(AUTHORIZED_URIs, getUris(user.getRole().name()));
         }
         return DASHBOARD_VIEW;
     }
