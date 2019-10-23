@@ -1,6 +1,7 @@
 package net.therap.blog.web.controller;
 
 import net.therap.blog.domain.User;
+import net.therap.blog.exception.WebSecurityException;
 import net.therap.blog.service.UserService;
 import net.therap.blog.util.Constants;
 import net.therap.blog.util.ROLES;
@@ -60,7 +61,7 @@ public class UserController implements Constants {
                                  RedirectAttributes redirectAttributes,
                                  @RequestParam("file") MultipartFile file) {
         if (!SessionUtil.isAdmin(session)) {
-            return ACCESS_ERROR_VIEW;
+            throw new WebSecurityException();
         }
         if (user.isNew()) {
             uniqueEmailValidator.validate(user, errors);
@@ -108,7 +109,7 @@ public class UserController implements Constants {
     public String userDeleteHandler(@ModelAttribute User user,
                                     HttpSession session) {
         if (!SessionUtil.isAdmin(session)) {
-            return ACCESS_ERROR_VIEW;
+            throw new WebSecurityException();
         }
         user = userService.find(user.getId());
         userService.delete(user.getId());
@@ -121,7 +122,7 @@ public class UserController implements Constants {
                                     HttpSession session) {
         String userRole = SessionUtil.getUserRole(session);
         if (!userRole.equals(Constants.ACCESS_GUEST)) {
-            return ACCESS_ERROR_VIEW;
+            throw new WebSecurityException();
         }
         uniqueEmailValidator.validate(user, errors);
         if (errors.hasErrors()) {
@@ -149,7 +150,7 @@ public class UserController implements Constants {
                                     @RequestParam("file") MultipartFile file) {
         String userRole = SessionUtil.getUserRole(session);
         if (userRole.equals(ROLES.ADMIN.name())) {
-            return ACCESS_ERROR_VIEW;
+            throw new WebSecurityException();
         }
         if (errors.hasErrors()) {
             model.addAttribute("user", user);

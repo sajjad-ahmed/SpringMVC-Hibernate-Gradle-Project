@@ -2,6 +2,7 @@ package net.therap.blog.web.controller;
 
 import net.therap.blog.dao.CategoryDao;
 import net.therap.blog.domain.Category;
+import net.therap.blog.exception.WebSecurityException;
 import net.therap.blog.util.Constants;
 import net.therap.blog.util.ROLES;
 import net.therap.blog.util.SessionUtil;
@@ -49,7 +50,7 @@ public class CategoryController implements Constants {
                                       Model model,
                                       HttpSession session) {
         if (!SessionUtil.isAdmin(session)) {
-            return ACCESS_ERROR_VIEW;
+            throw new WebSecurityException();
         }
         category = category.isNew() ? category : categoryDao.find(category.getId());
         model.addAttribute("category", category);
@@ -63,7 +64,7 @@ public class CategoryController implements Constants {
                                      RedirectAttributes redirectAttributes,
                                      HttpSession session) {
         if (!SessionUtil.isAdmin(session)) {
-            return ACCESS_ERROR_VIEW;
+            throw new WebSecurityException();
         }
         if (errors.hasErrors()) {
             model.addAttribute("category", category);
@@ -79,7 +80,7 @@ public class CategoryController implements Constants {
                                         Model model,
                                         HttpSession session) {
         if (!SessionUtil.isAdmin(session)) {
-            return ACCESS_ERROR_VIEW;
+            throw new WebSecurityException();
         }
         category = categoryDao.find(category.getId());
         categoryDao.delete(category.getId());

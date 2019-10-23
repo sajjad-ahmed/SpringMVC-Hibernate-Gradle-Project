@@ -6,11 +6,11 @@
 
 <html>
 <head>
-    <title><spring:message code="label.access.error.page.title"/></title>
+    <title><spring:message code="label.error.page.title"/></title>
 </head>
 <body>
+<h4 style="color: red">Exception: <b>${exceptionType}</b></h4>
 
-<h3 style="color: red"><spring:message code="label.access.error.message"/></h3>
-
+<h1 style="color: #454545">Handler method: <b> ${exceptionMessage}</b></h1>
 </body>
 </html>

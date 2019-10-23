@@ -6,6 +6,7 @@ import net.therap.blog.domain.Category;
 import net.therap.blog.domain.Comment;
 import net.therap.blog.domain.Post;
 import net.therap.blog.domain.User;
+import net.therap.blog.exception.WebSecurityException;
 import net.therap.blog.service.PostService;
 import net.therap.blog.service.UserService;
 import net.therap.blog.util.Constants;
@@ -80,7 +81,7 @@ public class PostController implements Constants {
                                     @RequestParam("file") MultipartFile picture) {
         String userRole = SessionUtil.getUserRole(session);
         if (!(userRole.equals(ROLES.ADMIN.name()) || userRole.equals(ROLES.AUTHOR.name()))) {
-            return ACCESS_ERROR_VIEW;
+            throw new WebSecurityException();
         }
         postValidator.validate(post, errors);
         if (errors.hasErrors()) {
@@ -114,7 +115,7 @@ public class PostController implements Constants {
     @RequestMapping(value = POST_MANAGE, method = RequestMethod.GET)
     public String showPostManagementPage(Model model, HttpSession session) {
         if (!SessionUtil.isAdmin(session)) {
-            return ACCESS_ERROR_VIEW;
+            throw new WebSecurityException();
         }
         List<Post> posts = postService.findAll();
         if (Objects.nonNull(posts)) {
@@ -139,7 +140,7 @@ public class PostController implements Constants {
     public String postDeleteHandler(@ModelAttribute Post post, HttpSession session) {
         String userRole = SessionUtil.getUserRole(session);
         if (!(userRole.equals(ROLES.ADMIN.name()) || userRole.equals(ROLES.AUTHOR.name()))) {
-            return ACCESS_ERROR_VIEW;
+            throw new WebSecurityException();
         }
         post = postService.find(post.getId());
         postService.delete(post.getId());
@@ -164,7 +165,7 @@ public class PostController implements Constants {
                              HttpSession session) {
         String userRole = SessionUtil.getUserRole(session);
         if (userRole.equals(Constants.ACCESS_GUEST)) {
-            return ACCESS_ERROR_VIEW;
+            throw new WebSecurityException();
         }
         if (errors.hasErrors()) {
             Post post = comment.getPostId();
