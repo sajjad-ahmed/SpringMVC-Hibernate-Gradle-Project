@@ -1,11 +1,12 @@
 package net.therap.blog.web.controller;
 
 import net.therap.blog.domain.User;
+import net.therap.blog.exception.NotFoundException;
 import net.therap.blog.exception.WebSecurityException;
 import net.therap.blog.service.UserService;
 import net.therap.blog.util.Constants;
 import net.therap.blog.util.ROLES;
-import net.therap.blog.util.SessionUtil;
+import net.therap.blog.util.Util;
 import net.therap.blog.web.validator.UniqueEmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
@@ -19,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.Objects;
 
 import static net.therap.blog.util.URL.*;
 
@@ -41,8 +43,17 @@ public class UserController implements Constants {
     }
 
     @RequestMapping(value = USER_ADD, method = RequestMethod.GET)
-    public String showAddUserForm(Model model) {
-        model.addAttribute("user", new User());
+    public String showAddUserForm(@ModelAttribute User user,
+                                  Model model,
+                                  HttpSession session) {
+        if (!Util.isAdmin(session)) {
+            throw new WebSecurityException();
+        }
+        user = user.isNew() ? user : userService.find(user.getId());
+        if (Objects.isNull(user)) {
+            throw new NotFoundException("User");
+        }
+        model.addAttribute("user", user);
         model.addAttribute("roles", ROLES.values());
         return USER_ADD_VIEW;
     }
@@ -60,7 +71,7 @@ public class UserController implements Constants {
                                  HttpSession session,
                                  RedirectAttributes redirectAttributes,
                                  @RequestParam("file") MultipartFile file) {
-        if (!SessionUtil.isAdmin(session)) {
+        if (!Util.isAdmin(session)) {
             throw new WebSecurityException();
         }
         if (user.isNew()) {
@@ -96,19 +107,10 @@ public class UserController implements Constants {
         return USER_MANAGEMENT_VIEW;
     }
 
-    @RequestMapping(value = USER_UPDATE, method = RequestMethod.GET)
-    public String showUpdateForm(@ModelAttribute User user,
-                                 Model model) {
-        user = userService.find(user.getId());
-        model.addAttribute("user", user);
-        model.addAttribute("roles", ROLES.values());
-        return USER_ADD_VIEW;
-    }
-
     @RequestMapping(value = USER_DELETE, method = RequestMethod.POST)
     public String userDeleteHandler(@ModelAttribute User user,
                                     HttpSession session) {
-        if (!SessionUtil.isAdmin(session)) {
+        if (!Util.isAdmin(session)) {
             throw new WebSecurityException();
         }
         user = userService.find(user.getId());
@@ -120,7 +122,7 @@ public class UserController implements Constants {
     public String userSignUpHandler(@Valid @ModelAttribute User user,
                                     Errors errors,
                                     HttpSession session) {
-        String userRole = SessionUtil.getUserRole(session);
+        String userRole = Util.getUserRole(session);
         if (!userRole.equals(Constants.ACCESS_GUEST)) {
             throw new WebSecurityException();
         }
@@ -148,7 +150,7 @@ public class UserController implements Constants {
                                     HttpSession session,
                                     RedirectAttributes redirectAttributes,
                                     @RequestParam("file") MultipartFile file) {
-        String userRole = SessionUtil.getUserRole(session);
+        String userRole = Util.getUserRole(session);
         if (userRole.equals(ROLES.ADMIN.name())) {
             throw new WebSecurityException();
         }

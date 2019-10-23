@@ -6,13 +6,14 @@ import net.therap.blog.domain.Category;
 import net.therap.blog.domain.Comment;
 import net.therap.blog.domain.Post;
 import net.therap.blog.domain.User;
+import net.therap.blog.exception.NotFoundException;
 import net.therap.blog.exception.WebSecurityException;
 import net.therap.blog.service.PostService;
 import net.therap.blog.service.UserService;
 import net.therap.blog.util.Constants;
 import net.therap.blog.util.ROLES;
 import net.therap.blog.util.STATUS;
-import net.therap.blog.util.SessionUtil;
+import net.therap.blog.util.Util;
 import net.therap.blog.web.editor.CategoryEditor;
 import net.therap.blog.web.editor.PostEditor;
 import net.therap.blog.web.editor.UserEditor;
@@ -65,11 +66,15 @@ public class PostController implements Constants {
     }
 
     @RequestMapping(value = POST_CREATE, method = RequestMethod.GET)
-    public String showPostForm(Model model) {
-        model.addAttribute("post", new Post());
+    public String showPostForm(@ModelAttribute Post post,
+                               Model model) {
+        post = post.isNew() ? post : postService.find(post.getId());
+        model.addAttribute("post", post);
+        model.addAttribute("roles", ROLES.values());
         model.addAttribute("status", STATUS.getMap());
         model.addAttribute("categories", categoryDao.findAll());
         return POST_CREATE_VIEW;
+
     }
 
     @RequestMapping(value = POST_CREATE, method = RequestMethod.POST)
@@ -79,7 +84,7 @@ public class PostController implements Constants {
                                     HttpSession session,
                                     RedirectAttributes redirectAttributes,
                                     @RequestParam("file") MultipartFile picture) {
-        String userRole = SessionUtil.getUserRole(session);
+        String userRole = Util.getUserRole(session);
         if (!(userRole.equals(ROLES.ADMIN.name()) || userRole.equals(ROLES.AUTHOR.name()))) {
             throw new WebSecurityException();
         }
@@ -90,13 +95,19 @@ public class PostController implements Constants {
             return POST_CREATE_VIEW;
         }
         redirectAttributes.addFlashAttribute(CONFIRMATION, post.isNew() ? "ADDED" : "UPDATED");
-        if (setPostCover(post, picture)) return null;
+        if (!setPostCover(post, picture)) {
+            throw new NotFoundException("image");
+        }
+        setCategoryNames(post);
+        postService.save(post);
+        return "redirect:" + POST_MANAGE;
+    }
+
+    private void setCategoryNames(Post post) {
         post.getCategories().forEach(i -> {
             Category category = categoryDao.find(i.getId());
             i.setName(category.getName());
         });
-        postService.save(post);
-        return "redirect:" + POST_MANAGE;
     }
 
     private boolean setPostCover(Post post, MultipartFile picture) {
@@ -104,9 +115,9 @@ public class PostController implements Constants {
             try {
                 byte[] bytes = picture.getBytes();
                 post.setPicture(bytes);
+                return true;
             } catch (Exception e) {
                 e.printStackTrace();
-                return true;
             }
         }
         return false;
@@ -114,12 +125,12 @@ public class PostController implements Constants {
 
     @RequestMapping(value = POST_MANAGE, method = RequestMethod.GET)
     public String showPostManagementPage(Model model, HttpSession session) {
-        if (!SessionUtil.isAdmin(session)) {
+        if (!Util.isAdmin(session)) {
             throw new WebSecurityException();
         }
         List<Post> posts = postService.findAll();
         if (Objects.nonNull(posts)) {
-            posts = SessionUtil.filterPostByRole(session, posts);
+            posts = Util.getPostByRole(session, postService);
         }
         model.addAttribute("posts", posts);
         model.addAttribute("post", new Post());
@@ -130,6 +141,9 @@ public class PostController implements Constants {
     public String showSinglePost(@PathVariable("uri") String uri,
                                  Model model) {
         Post post = postService.findBy(uri);
+        if (Objects.isNull(post)) {
+            throw new NotFoundException("Post");
+        }
         model.addAttribute("post", post);
         model.addAttribute("comment", new Comment());
         model.addAttribute("comments", post.getComments());
@@ -138,24 +152,16 @@ public class PostController implements Constants {
 
     @RequestMapping(value = POST_DELETE, method = RequestMethod.POST)
     public String postDeleteHandler(@ModelAttribute Post post, HttpSession session) {
-        String userRole = SessionUtil.getUserRole(session);
+        String userRole = Util.getUserRole(session);
         if (!(userRole.equals(ROLES.ADMIN.name()) || userRole.equals(ROLES.AUTHOR.name()))) {
             throw new WebSecurityException();
         }
         post = postService.find(post.getId());
+        if (Objects.isNull(post)) {
+            throw new NotFoundException("Post");
+        }
         postService.delete(post.getId());
         return "redirect:" + POST_MANAGE;
-    }
-
-    @RequestMapping(value = POST_UPDATE, method = RequestMethod.GET)
-    public String postUpdateHandler(@ModelAttribute Post post,
-                                    Model model) {
-        post = postService.find(post.getId());
-        model.addAttribute("post", post);
-        model.addAttribute("roles", ROLES.values());
-        model.addAttribute("categories", categoryDao.findAll());
-        model.addAttribute("status", STATUS.getMap());
-        return POST_CREATE_VIEW;
     }
 
     @RequestMapping(value = COMMENT_ADD, method = RequestMethod.POST)
@@ -163,17 +169,17 @@ public class PostController implements Constants {
                              Errors errors,
                              Model model,
                              HttpSession session) {
-        String userRole = SessionUtil.getUserRole(session);
+        String userRole = Util.getUserRole(session);
         if (userRole.equals(Constants.ACCESS_GUEST)) {
             throw new WebSecurityException();
         }
         if (errors.hasErrors()) {
-            Post post = comment.getPostId();
+            Post post = comment.getPost();
             model.addAttribute("post", post);
             model.addAttribute("comments", post.getComments());
             return SINGLE_POST_VIEW;
         }
-        Post post = comment.getPostId();
+        Post post = comment.getPost();
         if (comment.getId() == 0) {
             post.getComments().add(comment);
             model.addAttribute(CONFIRMATION, "ADDED");
@@ -185,8 +191,7 @@ public class PostController implements Constants {
                 }
             });
         }
-        postService.save(post);
-        post = postService.find(post.getId());
+        post = postService.save(post);
         model.addAttribute("post", post);
         model.addAttribute("comment", new Comment());
         model.addAttribute("comments", post.getComments());
@@ -197,7 +202,7 @@ public class PostController implements Constants {
     public String commentDeleteHandler(@ModelAttribute Comment comment,
                                        Model model) {
         Comment targetComment = commentDao.find(comment.getId());
-        Post post = postService.find(targetComment.getPostId().getId());
+        Post post = postService.find(targetComment.getPost().getId());
         post.getComments().removeIf(i -> i.getId() == targetComment.getId());
         postService.save(post);
         model.addAttribute("post", post);
@@ -210,8 +215,7 @@ public class PostController implements Constants {
     public String commentUpdateHandler(@ModelAttribute Comment comment,
                                        Model model) {
         Comment targetComment = commentDao.find(comment.getId());
-        long postId = targetComment.getPostId().getId();
-        Post post = postService.find(postId);
+        Post post = targetComment.getPost();
         model.addAttribute("post", post);
         model.addAttribute("comment", targetComment);
         List<Comment> comments = post.getComments();
@@ -224,12 +228,7 @@ public class PostController implements Constants {
     public String showPostByCategory(@PathVariable("id") long id,
                                      Model model,
                                      HttpSession session) {
-        Category category = categoryDao.find(id);
-        List<Post> posts = category.getPosts();
-        if (Objects.nonNull(posts)) {
-            posts = SessionUtil.filterPostByRole(session, posts);
-        }
-        model.addAttribute("posts", posts);
+        model.addAttribute("posts", Util.getPostByRoleAndCategory(session, postService, id));
         model.addAttribute(AVAILABLE_CATEGORIES, categoryDao.findAll());
         return HOME_VIEW;
     }

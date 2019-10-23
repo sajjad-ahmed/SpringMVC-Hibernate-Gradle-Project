@@ -43,28 +43,28 @@
                 <th width="60"><spring:message code="label.update.header"/></th>
                 <th width="60"><spring:message code="label.delete.header"/></th>
             </tr>
-            <c:forEach items="${posts}" var="post">
+            <c:forEach items="${posts}" var="user">
                 <tr>
-                    <td><c:out value="${post.title}"/></td>
-                    <td><c:out value="${post.getAuthorName()}"/></td>
-                    <td><c:out value="${post.statusVal}"/></td>
-                    <td><c:out value="${post.uri}"/></td>
-                    <td><c:out value="${post.createdAt}"/></td>
-                    <td><c:out value="${post.updatedAt}"/></td>
+                    <td><c:out value="${user.title}"/></td>
+                    <td><c:out value="${user.getAuthorName()}"/></td>
+                    <td><c:out value="${user.statusVal}"/></td>
+                    <td><c:out value="${user.uri}"/></td>
+                    <td><c:out value="${user.createdAt}"/></td>
+                    <td><c:out value="${user.updatedAt}"/></td>
                     <td>
-                        <form:form action="/post/update" method="get"
+                        <form:form action="/post/create" method="get"
                                    modelAttribute="post" class="hform">
-                            <form:input path="id" type="hidden" value="${post.id}"/>
+                            <form:input path="id" type="hidden" value="${user.id}"/>
                             <input type="submit" value="<spring:message code="label.update.header"/>"
                                    class="primary"/>
                         </form:form>
                     </td>
                     <td>
-                        <form:form action="/post/delete" method="post" id="form-id-${post.id}"
+                        <form:form action="/post/delete" method="post" id="form-id-${user.id}"
                                    modelAttribute="post" class="hform">
-                            <form:input path="id" type="hidden" value="${post.id}"/>
+                            <form:input path="id" type="hidden" value="${user.id}"/>
                             <input type="button" onclick="getConfirmation('<spring:message
-                                    code="label.confirmation.prompt.delete"/>', 'form-id-${post.id}')"
+                                    code="label.confirmation.prompt.delete"/>', 'form-id-${user.id}')"
                                    value="<spring:message code="label.delete.header"/>"
                                    class="danger"/>
                         </form:form>

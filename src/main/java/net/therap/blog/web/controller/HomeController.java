@@ -4,7 +4,7 @@ import net.therap.blog.dao.CategoryDao;
 import net.therap.blog.domain.Post;
 import net.therap.blog.service.PostService;
 import net.therap.blog.util.Constants;
-import net.therap.blog.util.SessionUtil;
+import net.therap.blog.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,7 +32,7 @@ public class HomeController implements Constants {
 
     @RequestMapping(value = ROOT, method = RequestMethod.GET)
     public String showHomePage(Model model, HttpSession session) {
-        List<Post> posts = SessionUtil.filterPostByRole(session, postService.findAll());
+        List<Post> posts = Util.getPostByRole(session, postService);
         model.addAttribute(AVAILABLE_CATEGORIES, categoryDao.findAll());
         model.addAttribute("posts", posts);
         return HOME_VIEW;

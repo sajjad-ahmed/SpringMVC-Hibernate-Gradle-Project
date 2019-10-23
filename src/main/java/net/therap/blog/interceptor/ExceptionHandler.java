@@ -17,7 +17,7 @@ public class ExceptionHandler implements HandlerExceptionResolver {
     @Override
     public ModelAndView resolveException(HttpServletRequest request,
                                          HttpServletResponse response,
-                                         @Nullable Object handler,
+                                         Object handler,
                                          Exception ex) {
         ModelAndView modelAndView = new ModelAndView(URL.ERROR_VIEW);
         modelAndView.addObject("exceptionType", ex.getClass().getSimpleName() );

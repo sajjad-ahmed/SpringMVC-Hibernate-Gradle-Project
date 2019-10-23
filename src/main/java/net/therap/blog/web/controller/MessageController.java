@@ -3,6 +3,7 @@ package net.therap.blog.web.controller;
 import net.therap.blog.dao.MessageDao;
 import net.therap.blog.domain.Message;
 import net.therap.blog.domain.User;
+import net.therap.blog.exception.NotFoundException;
 import net.therap.blog.service.UserService;
 import net.therap.blog.util.Constants;
 import net.therap.blog.web.editor.UserEditor;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Objects;
 
 import static net.therap.blog.util.URL.*;
 
@@ -44,9 +46,9 @@ public class MessageController implements Constants {
 
     @RequestMapping(value = MESSAGE_SEND, method = RequestMethod.GET)
     public String showNewMessageForm(Model model, HttpSession session) {
-        model.addAttribute("message", new Message());
         User user = (User) session.getAttribute(SESSION_USER_PARAMETER);
         List<User> users = userService.findAllExceptSelf(user.getId());
+        model.addAttribute("message", new Message());
         model.addAttribute("users", users);
         return MESSAGE_ADD_VIEW;
     }
@@ -80,6 +82,9 @@ public class MessageController implements Constants {
                                        HttpSession session,
                                        Model model) {
         message = messageDao.find(message.getId());
+        if (Objects.isNull(message)) {
+            throw new NotFoundException("Message");
+        }
         messageDao.delete(message.getId());
         User user = (User) session.getAttribute(SESSION_USER_PARAMETER);
         model.addAttribute("sentMessages", messageDao.findSentMessages(user.getId()));

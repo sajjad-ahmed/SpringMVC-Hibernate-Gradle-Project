@@ -2,10 +2,10 @@ package net.therap.blog.web.controller;
 
 import net.therap.blog.dao.CategoryDao;
 import net.therap.blog.domain.Category;
+import net.therap.blog.exception.NotFoundException;
 import net.therap.blog.exception.WebSecurityException;
 import net.therap.blog.util.Constants;
-import net.therap.blog.util.ROLES;
-import net.therap.blog.util.SessionUtil;
+import net.therap.blog.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
@@ -20,6 +20,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+
+import java.util.Objects;
 
 import static net.therap.blog.util.URL.*;
 
@@ -49,10 +51,13 @@ public class CategoryController implements Constants {
     public String showAddCategoryView(@ModelAttribute Category category,
                                       Model model,
                                       HttpSession session) {
-        if (!SessionUtil.isAdmin(session)) {
+        if (!Util.isAdmin(session)) {
             throw new WebSecurityException();
         }
         category = category.isNew() ? category : categoryDao.find(category.getId());
+        if (Objects.isNull(category)){
+            throw new NotFoundException("Category");
+        }
         model.addAttribute("category", category);
         return CATEGORY_ADD_VIEW;
     }
@@ -63,12 +68,15 @@ public class CategoryController implements Constants {
                                      Model model,
                                      RedirectAttributes redirectAttributes,
                                      HttpSession session) {
-        if (!SessionUtil.isAdmin(session)) {
+        if (!Util.isAdmin(session)) {
             throw new WebSecurityException();
         }
         if (errors.hasErrors()) {
             model.addAttribute("category", category);
             return CATEGORY_ADD_VIEW;
+        }
+        if (Objects.isNull(category)){
+            throw new NotFoundException("Category");
         }
         redirectAttributes.addFlashAttribute(CONFIRMATION, category.isNew() ? "ADDED" : "UPDATED");
         categoryDao.save(category);
@@ -79,12 +87,14 @@ public class CategoryController implements Constants {
     public String deleteCategoryHandler(@ModelAttribute Category category,
                                         Model model,
                                         HttpSession session) {
-        if (!SessionUtil.isAdmin(session)) {
+        if (!Util.isAdmin(session)) {
             throw new WebSecurityException();
         }
         category = categoryDao.find(category.getId());
+        if (Objects.isNull(category)){
+            throw new NotFoundException("Category");
+        }
         categoryDao.delete(category.getId());
-        model.addAttribute("category", category);
         model.addAttribute("categories", categoryDao.findAll());
         return "redirect:" + CATEGORY_MANAGE;
     }

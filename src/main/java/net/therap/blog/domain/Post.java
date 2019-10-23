@@ -26,6 +26,14 @@ import java.util.List;
         @NamedQuery(name = "Post.findByUri",
                 query = "FROM Post " +
                         "WHERE uri = :uri"),
+        @NamedQuery(name = "Post.findAllByStatus",
+                query = "FROM Post p " +
+                        "WHERE p.status IN :status"),
+        @NamedQuery(name = "Post.findAllByStatusAndCategory",
+                query = "SELECT p FROM Post p  " +
+                        "JOIN p.categories a " +
+                        "WHERE a.id = :categoryId " +
+                        "AND p.status IN :status"),
 })
 public class Post extends BaseDomain {
 

@@ -2,6 +2,7 @@ package net.therap.blog.dao;
 
 import net.therap.blog.domain.BaseDomain;
 import net.therap.blog.exception.NotFoundException;
+import net.therap.blog.util.STATUS;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;

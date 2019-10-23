@@ -61,6 +61,10 @@ public class Comment extends BaseDomain {
         this.postId = postId;
     }
 
+    public Post getPost() {
+        return postId;
+    }
+
     @Override
     public String toString() {
         return "Comment{" +

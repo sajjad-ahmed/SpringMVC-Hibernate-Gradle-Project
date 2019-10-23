@@ -30,8 +30,6 @@ public class URL {
 
     public static final String USER_ADD = "/user/add";
 
-    public static final String USER_UPDATE = "/user/update";
-
     public static final String USER_UPDATE_INFORMATION = "/user/update/self";
 
     public static final String USER_UPDATE_VIEW = "user_update";
@@ -52,8 +50,6 @@ public class URL {
 
     public static final String CATEGORY_ADD_VIEW = "category_add";
 
-    public static final String CATEGORY_UPDATE = "/category/update/";
-
     public static final String CATEGORY_DELETE = "/category/delete";
 
     public static final String CATEGORY_MANAGE = "/category/manage";
@@ -65,8 +61,6 @@ public class URL {
     public static final String POST_CREATE_VIEW = "post_create";
 
     public static final String POST_CREATE = "/post/create";
-
-    public static final String POST_UPDATE = "/post/update";
 
     public static final String POST_SHOW = "/post/show/{uri}";
 

@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -45,11 +44,7 @@ public class AuthenticationController implements Constants {
                                HttpServletRequest request,
                                Model model) throws IllegalArgumentException {
         if (errors.hasErrors()) {
-            for (FieldError error : errors.getFieldErrors()) {
-                if (error.getField().equals("email") || error.getField().equals("password")) {
-                    return LOG_IN_VIEW;
-                }
-            }
+            return LOG_IN_VIEW;
         }
         User user = userDao.findUserByEmail(loginCmd.getEmail());
         if (Objects.nonNull(loginCmd.getPassword()) && Objects.nonNull(loginCmd.getEmail()) && Objects.nonNull(user)) {
@@ -60,6 +55,7 @@ public class AuthenticationController implements Constants {
                 return "redirect:" + ROOT;
             }
         }
+
         model.addAttribute("authFailed", AUTHENTICATION_FAILED_FLAG);
         return LOG_IN_VIEW;
     }
