@@ -113,8 +113,7 @@ public class PostController implements Constants {
 
     @RequestMapping(value = POST_MANAGE, method = RequestMethod.GET)
     public String showPostManagementPage(Model model, HttpSession session) {
-        String userRole = SessionUtil.getUserRole(session);
-        if (userRole.equals(ROLES.SUBSCRIBER.name())) {
+        if (!SessionUtil.isAdmin(session)) {
             return ACCESS_ERROR_VIEW;
         }
         List<Post> posts = postService.findAll();
@@ -137,7 +136,11 @@ public class PostController implements Constants {
     }
 
     @RequestMapping(value = POST_DELETE, method = RequestMethod.POST)
-    public String postDeleteHandler(@ModelAttribute Post post) {
+    public String postDeleteHandler(@ModelAttribute Post post, HttpSession session) {
+        String userRole = SessionUtil.getUserRole(session);
+        if (!(userRole.equals(ROLES.ADMIN.name()) || userRole.equals(ROLES.AUTHOR.name()))) {
+            return ACCESS_ERROR_VIEW;
+        }
         post = postService.find(post.getId());
         postService.delete(post.getId());
         return "redirect:" + POST_MANAGE;
@@ -155,9 +158,14 @@ public class PostController implements Constants {
     }
 
     @RequestMapping(value = COMMENT_ADD, method = RequestMethod.POST)
-    public String addCommentForm(@Valid @ModelAttribute Comment comment,
-                                 Errors errors,
-                                 Model model) {
+    public String addComment(@Valid @ModelAttribute Comment comment,
+                             Errors errors,
+                             Model model,
+                             HttpSession session) {
+        String userRole = SessionUtil.getUserRole(session);
+        if (userRole.equals(Constants.ACCESS_GUEST)) {
+            return ACCESS_ERROR_VIEW;
+        }
         if (errors.hasErrors()) {
             Post post = comment.getPostId();
             model.addAttribute("post", post);

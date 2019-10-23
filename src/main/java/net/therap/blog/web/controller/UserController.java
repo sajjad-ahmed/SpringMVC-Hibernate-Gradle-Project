@@ -59,11 +59,10 @@ public class UserController implements Constants {
                                  HttpSession session,
                                  RedirectAttributes redirectAttributes,
                                  @RequestParam("file") MultipartFile file) {
-        String userRole = SessionUtil.getUserRole(session);
-        if (!userRole.equals(ROLES.ADMIN.name())) {
+        if (!SessionUtil.isAdmin(session)) {
             return ACCESS_ERROR_VIEW;
         }
-        if (user.getId() == 0) {
+        if (user.isNew()) {
             uniqueEmailValidator.validate(user, errors);
             redirectAttributes.addFlashAttribute(CONFIRMATION, "ADDED");
         } else {
@@ -106,7 +105,11 @@ public class UserController implements Constants {
     }
 
     @RequestMapping(value = USER_DELETE, method = RequestMethod.POST)
-    public String userDeleteHandler(@ModelAttribute User user) {
+    public String userDeleteHandler(@ModelAttribute User user,
+                                    HttpSession session) {
+        if (!SessionUtil.isAdmin(session)) {
+            return ACCESS_ERROR_VIEW;
+        }
         user = userService.find(user.getId());
         userService.delete(user.getId());
         return "redirect:" + USER_MANAGE;
@@ -115,7 +118,6 @@ public class UserController implements Constants {
     @RequestMapping(value = USER_SIGN_UP, method = RequestMethod.POST)
     public String userSignUpHandler(@Valid @ModelAttribute User user,
                                     Errors errors,
-                                    Model model,
                                     HttpSession session) {
         String userRole = SessionUtil.getUserRole(session);
         if (!userRole.equals(Constants.ACCESS_GUEST)) {
@@ -146,7 +148,7 @@ public class UserController implements Constants {
                                     RedirectAttributes redirectAttributes,
                                     @RequestParam("file") MultipartFile file) {
         String userRole = SessionUtil.getUserRole(session);
-        if (userRole.equals(ROLES.AUTHOR.name())) {
+        if (userRole.equals(ROLES.ADMIN.name())) {
             return ACCESS_ERROR_VIEW;
         }
         if (errors.hasErrors()) {

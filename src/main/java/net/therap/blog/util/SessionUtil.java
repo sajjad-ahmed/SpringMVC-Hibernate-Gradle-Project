@@ -38,4 +38,8 @@ public class SessionUtil implements Constants {
         }
         return posts;
     }
+
+    public static boolean isAdmin(HttpSession session) {
+        return getUserRole(session).equals(ROLES.ADMIN.name());
+    }
 }

@@ -46,10 +46,9 @@ public class CategoryController implements Constants {
 
     @RequestMapping(value = CATEGORY_ADD, method = RequestMethod.GET)
     public String showAddCategoryView(@ModelAttribute Category category,
-                                  Model model,
-                                  HttpSession session) {
-        String userRole = SessionUtil.getUserRole(session);
-        if (!userRole.equals(ROLES.ADMIN.name())) {
+                                      Model model,
+                                      HttpSession session) {
+        if (!SessionUtil.isAdmin(session)) {
             return ACCESS_ERROR_VIEW;
         }
         category = category.isNew() ? category : categoryDao.find(category.getId());
@@ -63,8 +62,7 @@ public class CategoryController implements Constants {
                                      Model model,
                                      RedirectAttributes redirectAttributes,
                                      HttpSession session) {
-        String userRole = SessionUtil.getUserRole(session);
-        if (!userRole.equals(ROLES.ADMIN.name())) {
+        if (!SessionUtil.isAdmin(session)) {
             return ACCESS_ERROR_VIEW;
         }
         if (errors.hasErrors()) {
@@ -80,8 +78,7 @@ public class CategoryController implements Constants {
     public String deleteCategoryHandler(@ModelAttribute Category category,
                                         Model model,
                                         HttpSession session) {
-        String userRole = SessionUtil.getUserRole(session);
-        if (!userRole.equals(ROLES.ADMIN.name())) {
+        if (!SessionUtil.isAdmin(session)) {
             return ACCESS_ERROR_VIEW;
         }
         category = categoryDao.find(category.getId());
