@@ -74,6 +74,12 @@ public class UserController implements Constants {
             model.addAttribute("roles", ROLES.values());
             return USER_ADD_VIEW;
         }
+        setProfilePicture(user, file);
+        userService.save(user);
+        return "redirect:" + USER_MANAGE;
+    }
+
+    private void setProfilePicture(User user, MultipartFile file) {
         if (!file.isEmpty()) {
             try {
                 byte[] bytes = file.getBytes();
@@ -82,20 +88,17 @@ public class UserController implements Constants {
                 e.printStackTrace();
             }
         }
-        userService.save(user);
-        return "redirect:" + USER_MANAGE;
     }
 
     @RequestMapping(value = USER_MANAGE, method = RequestMethod.GET)
-    public String userManagementHandler(Model model) {
-        List<User> posts = this.userService.findAll();
-        model.addAttribute("users", posts);
+    public String showUserManagementView(Model model) {
+        model.addAttribute("users", this.userService.findAll());
         model.addAttribute("user", new User());
         return USER_MANAGEMENT_VIEW;
     }
 
     @RequestMapping(value = USER_UPDATE, method = RequestMethod.GET)
-    public String userUpdateHandler(@ModelAttribute User user,
+    public String showUpdateForm(@ModelAttribute User user,
                                     Model model) {
         user = userService.find(user.getId());
         model.addAttribute("user", user);
@@ -128,7 +131,7 @@ public class UserController implements Constants {
     }
 
     @RequestMapping(value = USER_UPDATE_INFORMATION, method = RequestMethod.GET)
-    public String updateUserSelf(HttpSession session,
+    public String updateUserForm(HttpSession session,
                                  Model model) {
         long id = (long) session.getAttribute(USER_ID_PARAMETER);
         User user = userService.find(id);
@@ -137,7 +140,7 @@ public class UserController implements Constants {
     }
 
     @RequestMapping(value = USER_UPDATE_INFORMATION, method = RequestMethod.POST)
-    public String updateUserSelf(@Valid @ModelAttribute User user,
+    public String updateUserHandler(@Valid @ModelAttribute User user,
                                  Errors errors,
                                  Model model,
                                  HttpSession session,
@@ -151,14 +154,7 @@ public class UserController implements Constants {
             model.addAttribute("user", user);
             return USER_UPDATE_VIEW;
         }
-        if (!file.isEmpty()) {
-            try {
-                byte[] bytes = file.getBytes();
-                user.setProfilePicture(bytes);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        setProfilePicture(user, file);
         userService.save(user);
         redirectAttributes.addFlashAttribute(CONFIRMATION, "UPDATED");
         return "redirect:" + SHOW_DASHBOARD;

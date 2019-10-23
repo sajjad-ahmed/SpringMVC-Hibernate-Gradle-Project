@@ -67,7 +67,7 @@ public class AuthenticationController implements Constants {
     }
 
     @RequestMapping(value = LOG_OUT, method = RequestMethod.GET)
-    public String logoutHandlerWithView(HttpServletRequest req) {
+    public String logoutHandler(HttpServletRequest req) {
         HttpSession session = req.getSession(false);
         if (Objects.nonNull(session)) {
             session.invalidate();

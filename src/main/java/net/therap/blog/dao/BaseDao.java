@@ -9,6 +9,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * @author sajjad.ahmed
@@ -45,7 +46,7 @@ public abstract class BaseDao<T extends BaseDomain> {
     }
 
     @Transactional
-    public void delete(long id) {
+    public Optional<T> delete(long id) {
         T item = em.find(clazz, id);
         if (Objects.nonNull(item)) {
             try {
@@ -56,5 +57,6 @@ public abstract class BaseDao<T extends BaseDomain> {
         } else {
             throw new NotFoundException(clazz.getSimpleName());
         }
+        return Optional.of(item);
     }
 }

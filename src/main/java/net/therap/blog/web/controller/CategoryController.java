@@ -45,7 +45,7 @@ public class CategoryController implements Constants {
     }
 
     @RequestMapping(value = CATEGORY_ADD, method = RequestMethod.GET)
-    public String addCategoryView(@ModelAttribute Category category,
+    public String showAddCategoryView(@ModelAttribute Category category,
                                   Model model,
                                   HttpSession session) {
         String userRole = SessionUtil.getUserRole(session);

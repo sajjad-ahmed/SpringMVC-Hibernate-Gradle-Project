@@ -32,8 +32,8 @@ public class HomeController implements Constants {
 
     @RequestMapping(value = ROOT, method = RequestMethod.GET)
     public String showHomePage(Model model, HttpSession session) {
-        model.addAttribute(AVAILABLE_CATEGORIES, categoryDao.findAll());
         List<Post> posts = SessionUtil.filterPostByRole(session, postService.findAll());
+        model.addAttribute(AVAILABLE_CATEGORIES, categoryDao.findAll());
         model.addAttribute("posts", posts);
         return HOME_VIEW;
     }

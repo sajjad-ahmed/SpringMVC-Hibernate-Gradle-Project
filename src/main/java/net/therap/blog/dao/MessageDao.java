@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.NoResultException;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * @author sajjad.ahmed
@@ -20,7 +21,7 @@ public class MessageDao extends BaseDao<Message> {
     }
 
     @Override
-    public void delete(long id) {
+    public Optional<Message> delete(long id) {
         Message message = em.find(Message.class, id);
         if (Objects.nonNull(message)) {
             message.setIsDeleted(true);
@@ -28,6 +29,7 @@ public class MessageDao extends BaseDao<Message> {
         } else {
             throw new NotFoundException("Message");
         }
+        return Optional.of(message);
     }
 
     public List<Message> findSentMessages(long id) {

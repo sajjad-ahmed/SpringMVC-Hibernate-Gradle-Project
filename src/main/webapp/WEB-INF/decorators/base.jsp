@@ -56,10 +56,10 @@
 </div>
 
 <script type="text/javascript">
-    function getConfirmation(_em, _fid) {
-        var retVal = confirm(_em);
+    function getConfirmation(message, fieldId) {
+        var retVal = confirm(message);
         if (retVal == true) {
-            var f = document.getElementById(_fid);
+            var f = document.getElementById(fieldId);
             f.submit();
             return true;
         } else {

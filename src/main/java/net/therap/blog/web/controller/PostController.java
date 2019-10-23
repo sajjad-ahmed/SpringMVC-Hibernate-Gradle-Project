@@ -64,7 +64,7 @@ public class PostController implements Constants {
     }
 
     @RequestMapping(value = POST_CREATE, method = RequestMethod.GET)
-    public String cratePostForm(Model model) {
+    public String showPostForm(Model model) {
         model.addAttribute("post", new Post());
         model.addAttribute("status", STATUS.getMap());
         model.addAttribute("categories", categoryDao.findAll());
@@ -88,20 +88,8 @@ public class PostController implements Constants {
             model.addAttribute("status", STATUS.getMap());
             return POST_CREATE_VIEW;
         }
-        if (post.getId() == 0) {
-            redirectAttributes.addFlashAttribute(CONFIRMATION, "ADDED");
-        } else {
-            redirectAttributes.addFlashAttribute(CONFIRMATION, "UPDATED");
-        }
-        if (!picture.isEmpty()) {
-            try {
-                byte[] bytes = picture.getBytes();
-                post.setPicture(bytes);
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
+        redirectAttributes.addFlashAttribute(CONFIRMATION, post.isNew() ? "ADDED" : "UPDATED");
+        if (setPostCover(post, picture)) return null;
         post.getCategories().forEach(i -> {
             Category category = categoryDao.find(i.getId());
             i.setName(category.getName());
@@ -110,8 +98,21 @@ public class PostController implements Constants {
         return "redirect:" + POST_MANAGE;
     }
 
+    private boolean setPostCover(Post post, MultipartFile picture) {
+        if (!picture.isEmpty()) {
+            try {
+                byte[] bytes = picture.getBytes();
+                post.setPicture(bytes);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return true;
+            }
+        }
+        return false;
+    }
+
     @RequestMapping(value = POST_MANAGE, method = RequestMethod.GET)
-    public String postManagementHandler(Model model, HttpSession session) {
+    public String showPostManagementPage(Model model, HttpSession session) {
         String userRole = SessionUtil.getUserRole(session);
         if (userRole.equals(ROLES.SUBSCRIBER.name())) {
             return ACCESS_ERROR_VIEW;
