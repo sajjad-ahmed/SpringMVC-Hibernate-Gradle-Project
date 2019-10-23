@@ -13,7 +13,7 @@
 <div>
     <form:form action="/post/create" method="post" modelAttribute="post" enctype="multipart/form-data" class="hform">
         <form:input path="id" type="hidden"/>
-        <form:input path="creator" value="${sessionScope.session_user.id}" type="hidden"/>
+        <form:input path="creator" value="${sessionScope.sessionUser.id}" type="hidden"/>
         <fieldset>
             <legend><spring:message code="label.post.createPage.legend"/></legend>
 

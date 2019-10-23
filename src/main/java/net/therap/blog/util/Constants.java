@@ -24,7 +24,7 @@ public interface Constants {
 
     public static final String AUTHORIZED_URIs = "uris";
 
-    public static final String SESSION_USER_PARAMETER = "session_user";
+    public static final String SESSION_USER_PARAMETER = "sessionUser";
 
     public static final char ACCESS_DENY = '1';
 

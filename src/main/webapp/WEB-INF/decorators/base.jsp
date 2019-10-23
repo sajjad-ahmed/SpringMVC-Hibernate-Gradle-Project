@@ -27,13 +27,13 @@
 
                 <nav class="span-t4 span-s6">
                     <ul class="hnav pull-right hidden-t" style="background-color: transparent">
-                        <c:if test="${sessionScope.session_user != null}">
-                            <li><a href="/show/dashboard">${sessionScope.session_user.firstName}'s Dashboard</a></li>
+                        <c:if test="${sessionScope.sessionUser != null}">
+                            <li><a href="/show/dashboard">${sessionScope.sessionUser.firstName}'s Dashboard</a></li>
                             <li>
                                 <a href="/auth/logout"><spring:message code="label.home.logout.text"/></a>
                             </li>
                         </c:if>
-                        <c:if test="${sessionScope.session_user == null}">
+                        <c:if test="${sessionScope.sessionUser == null}">
                             <li><a href="/auth/login"><spring:message code="label.home.login.text"/></a></li>
                         </c:if>
                     </ul>

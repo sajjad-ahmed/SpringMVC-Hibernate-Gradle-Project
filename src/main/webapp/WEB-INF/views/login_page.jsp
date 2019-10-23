@@ -10,10 +10,10 @@
 </head>
 <body>
 <div class="row">
-    <c:if test="${sessionScope.session_user!= null}">
+    <c:if test="${sessionScope.sessionUser!= null}">
         <h3> You are already logged in</h3>
     </c:if>
-    <c:if test="${sessionScope.session_user == null}">
+    <c:if test="${sessionScope.sessionUser == null}">
 
         <form:form method="post" modelAttribute="loginCmd" action="/auth/login" class="hform">
             <fieldset>
