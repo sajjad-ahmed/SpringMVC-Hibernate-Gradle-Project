@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 
 import static net.therap.blog.util.URL.*;
 
@@ -81,8 +81,8 @@ public class MessageController implements Constants {
     public String messageDeleteHandler(@ModelAttribute Message message,
                                        HttpSession session,
                                        Model model) {
-        message = messageDao.find(message.getId());
-        if (Objects.isNull(message)) {
+        Optional<Message> messageOptional = messageDao.find(message.getId());
+        if (!messageOptional.isPresent()) {
             throw new NotFoundException("Message");
         }
         messageDao.delete(message.getId());

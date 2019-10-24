@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * @author sajjad.ahmed
@@ -20,7 +21,7 @@ public class PostService implements Constants {
     @Autowired
     private PostDao postDao;
 
-    public Post save(Post post) {
+    public Optional<Post> save(Post post) {
         return postDao.save(post);
     }
 
@@ -32,7 +33,7 @@ public class PostService implements Constants {
         postDao.delete(id);
     }
 
-    public Post find(long id) {
+    public Optional<Post> find(long id) {
         return postDao.find(id);
     }
 

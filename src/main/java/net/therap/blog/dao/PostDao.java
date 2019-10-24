@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author sajjad.ahmed
@@ -19,10 +20,10 @@ public class PostDao extends BaseDao<Post> {
     }
 
     @Override
-    public Post save(Post post) {
+    public Optional<Post> save(Post post) {
         em.merge(post);
         em.flush();
-        return post;
+        return Optional.of(post);
     }
 
     public Post findBy(String uri) {

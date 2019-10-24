@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * @author sajjad.ahmed
@@ -31,9 +32,9 @@ public class UserService implements Constants {
     @Autowired
     private CommentDao commentDao;
 
-    public void save(User user) {
+    public Optional<User> save(User user) {
         user.setPassword(Encryption.encrypt(user.getPassword()));
-        userDao.save(user);
+        return userDao.save(user);
     }
 
     public List<User> findAll() {
@@ -69,7 +70,7 @@ public class UserService implements Constants {
         userDao.delete(id);
     }
 
-    public User find(long id) {
+    public Optional<User> find(long id) {
         return userDao.find(id);
     }
 

@@ -42,8 +42,12 @@
                     </dd>
                 </c:if>
                 <dd><input type="submit" value="Log in" class="primary"></dd>
-                <dd><spring:message code="label.loginPage.newHere.prompt"/> <a href="/user/signup"> <spring:message
-                        code="label.signUp.header"/> </a></dd>
+                <dd><spring:message code="label.loginPage.newHere.prompt"/>
+                    <c:url value="/user/signup" var="signUpUrl"/>
+                    <a href="${signUpUrl}">
+                        <spring:message code="label.signUp.header"/>
+                    </a>
+                </dd>
             </fieldset>
         </form:form>
     </c:if>

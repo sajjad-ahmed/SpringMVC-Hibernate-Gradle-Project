@@ -11,10 +11,14 @@
 
 <body>
 <div>
-    <a href="/post/create" class="button primary"> <spring:message code="label.postManagement.new.post.button"/> </a>
+    <c:url value="/post/create" var="postCreateUrl"/>
+    <a href="${postCreateUrl}" class="button primary">
+        <spring:message code="label.postManagement.new.post.button"/>
+    </a>
     <c:if test="${confirmation == 'ADDED'}">
         <br/>
         <br/>
+
         <div class="alert success">
             <strong><spring:message code="label.success.message.prefix"/></strong>
             <spring:message code="label.post"/> <spring:message code="label.success.add.message.suffix"/>
@@ -23,6 +27,7 @@
     <c:if test="${confirmation == 'UPDATED'}">
         <br/>
         <br/>
+
         <div class="alert success">
             <strong><spring:message code="label.success.message.prefix"/></strong>
             <spring:message code="label.post"/> <spring:message code="label.success.update.message.suffix"/>

@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.Objects;
+import java.util.Optional;
 
 import static net.therap.blog.util.URL.*;
 
@@ -49,7 +50,7 @@ public class UserController implements Constants {
         if (!Util.isAdmin(session)) {
             throw new WebSecurityException();
         }
-        user = user.isNew() ? user : userService.find(user.getId());
+        user = user.isNew() ? user : userService.find(user.getId()).get();
         if (Objects.isNull(user)) {
             throw new NotFoundException("User");
         }
@@ -113,7 +114,11 @@ public class UserController implements Constants {
         if (!Util.isAdmin(session)) {
             throw new WebSecurityException();
         }
-        user = userService.find(user.getId());
+        Optional<User> userOptional = userService.find(user.getId());
+        if (!userOptional.isPresent()) {
+            throw new NotFoundException("User");
+        }
+        user = userOptional.get();
         userService.delete(user.getId());
         return "redirect:" + USER_MANAGE;
     }
@@ -138,7 +143,11 @@ public class UserController implements Constants {
     public String updateUserForm(HttpSession session,
                                  Model model) {
         User user = (User) session.getAttribute(SESSION_USER_PARAMETER);
-        user = userService.find(user.getId());
+        Optional<User> userOptional = userService.find(user.getId());
+        if (!userOptional.isPresent()) {
+            throw new NotFoundException("User");
+        }
+        user = userOptional.get();
         model.addAttribute("user", user);
         return USER_UPDATE_VIEW;
     }

@@ -1,7 +1,6 @@
 package net.therap.blog.exception;
 
 import net.therap.blog.util.URL;
-import org.springframework.lang.Nullable;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -20,8 +19,8 @@ public class ExceptionHandler implements HandlerExceptionResolver {
                                          Object handler,
                                          Exception ex) {
         ModelAndView modelAndView = new ModelAndView(URL.ERROR_VIEW);
-        modelAndView.addObject("exceptionType", ex.getClass().getSimpleName() );
-        modelAndView.addObject("exceptionMessage",  ex.getMessage());
+        modelAndView.addObject("exceptionType", ex.getClass().getSimpleName());
+        modelAndView.addObject("exceptionMessage", ex.getMessage());
         return modelAndView;
     }
 }

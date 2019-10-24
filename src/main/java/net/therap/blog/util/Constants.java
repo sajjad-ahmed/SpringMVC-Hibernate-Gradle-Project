@@ -1,7 +1,5 @@
 package net.therap.blog.util;
 
-import java.util.ArrayList;
-
 /**
  * @author sajjad.ahmed
  * @since 9/30/19.

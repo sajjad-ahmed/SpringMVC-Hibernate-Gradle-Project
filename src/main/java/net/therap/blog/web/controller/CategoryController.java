@@ -20,8 +20,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-
 import java.util.Objects;
+import java.util.Optional;
 
 import static net.therap.blog.util.URL.*;
 
@@ -54,8 +54,8 @@ public class CategoryController implements Constants {
         if (!Util.isAdmin(session)) {
             throw new WebSecurityException();
         }
-        category = category.isNew() ? category : categoryDao.find(category.getId());
-        if (Objects.isNull(category)){
+        category = category.isNew() ? category : categoryDao.find(category.getId()).get();
+        if (Objects.isNull(category)) {
             throw new NotFoundException("Category");
         }
         model.addAttribute("category", category);
@@ -75,7 +75,7 @@ public class CategoryController implements Constants {
             model.addAttribute("category", category);
             return CATEGORY_ADD_VIEW;
         }
-        if (Objects.isNull(category)){
+        if (Objects.isNull(category)) {
             throw new NotFoundException("Category");
         }
         redirectAttributes.addFlashAttribute(CONFIRMATION, category.isNew() ? "ADDED" : "UPDATED");
@@ -90,10 +90,11 @@ public class CategoryController implements Constants {
         if (!Util.isAdmin(session)) {
             throw new WebSecurityException();
         }
-        category = categoryDao.find(category.getId());
-        if (Objects.isNull(category)){
+        Optional<Category> categoryOptional = categoryDao.find(category.getId());
+        if (!categoryOptional.isPresent()) {
             throw new NotFoundException("Category");
         }
+        category = categoryOptional.get();
         categoryDao.delete(category.getId());
         model.addAttribute("categories", categoryDao.findAll());
         return "redirect:" + CATEGORY_MANAGE;

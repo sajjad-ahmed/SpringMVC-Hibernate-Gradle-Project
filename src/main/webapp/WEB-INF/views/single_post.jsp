@@ -36,6 +36,7 @@
     <c:if test="${confirmation == 'ADDED'}">
         <br/>
         <br/>
+
         <div class="alert success">
             <strong><spring:message code="label.success.message.prefix"/></strong>
             <spring:message code="label.comment"/> <spring:message code="label.success.add.message.suffix"/>
@@ -44,6 +45,7 @@
     <c:if test="${confirmation == 'UPDATED'}">
         <br/>
         <br/>
+
         <div class="alert success">
             <strong><spring:message code="label.success.message.prefix"/></strong>
             <spring:message code="label.comment"/> <spring:message code="label.success.update.message.suffix"/>
@@ -84,7 +86,8 @@
                                 </form:form>
                             </c:if>
                         </c:if>
-                        <c:if test="${sessionScope.sessionUser.id == eachComment.userId.id && sessionScope.sessionUser.role != 'ADMIN'}">
+                        <c:if test="${sessionScope.sessionUser.id == eachComment.userId.id
+                        && sessionScope.sessionUser.role != 'ADMIN'}">
                             <form:form action="/comment/delete" method="post" id="id-form-ct-${eachComment.id}"
                                        modelAttribute="comment" class="hform">
                                 <form:input path="id" type="hidden" value="${eachComment.id}"/>
@@ -139,7 +142,8 @@
     </c:if>
 
     <c:if test="${empty sessionScope.sessionUser.id}">
-        <h4><spring:message code="label.post.comment.prompt.pref"/> <a href="/auth/login"> <spring:message
+        <c:url value="/auth/login" var="loginUrl"/>
+        <h4><spring:message code="label.post.comment.prompt.pref"/> <a href="${loginUrl}"> <spring:message
                 code="label.home.login.text"/></a> <spring:message code="label.post.comment.login.to.comment"/></h4>
     </c:if>
 </c:if>

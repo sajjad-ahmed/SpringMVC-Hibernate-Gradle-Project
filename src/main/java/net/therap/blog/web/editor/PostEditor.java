@@ -26,7 +26,7 @@ public class PostEditor extends PropertyEditorSupport {
     }
 
     public void setAsText(String text) {
-        Post post = postService.find(Long.parseLong(text));
+        Post post = postService.find(Long.parseLong(text)).get();
         setValue(post);
     }
 }

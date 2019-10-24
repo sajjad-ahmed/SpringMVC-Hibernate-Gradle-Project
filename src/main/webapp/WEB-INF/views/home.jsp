@@ -22,7 +22,8 @@
                         value="${user.formattedDate}"/></p>
             </div>
             <div class="footer">
-                <a href="/post/show/${user.uri}" class="button outline primary"><spring:message
+                <c:url value="/post/show/${user.uri}" var="showPostUrl"/>
+                <a href="${showPostUrl}" class="button outline primary"><spring:message
                         code="label.post.read.more"/></a>
             </div>
         </section>

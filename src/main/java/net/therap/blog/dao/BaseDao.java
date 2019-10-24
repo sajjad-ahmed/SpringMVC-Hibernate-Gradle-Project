@@ -30,19 +30,19 @@ public abstract class BaseDao<T extends BaseDomain> {
         return em.createNamedQuery(clazz.getSimpleName() + ".findAll", clazz).getResultList();
     }
 
-    public T find(long id) {
-        return em.find(clazz, id);
+    public Optional<T> find(long id) {
+        return Optional.of(em.find(clazz, id));
     }
 
     @Transactional
-    public T save(T entity) {
+    public Optional<T> save(T entity) {
         if (entity.isNew()) {
             em.persist(entity);
             em.flush();
         } else {
             em.merge(entity);
         }
-        return entity;
+        return Optional.of(entity);
     }
 
     @Transactional

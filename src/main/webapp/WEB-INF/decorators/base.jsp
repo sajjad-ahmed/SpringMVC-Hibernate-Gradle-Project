@@ -18,7 +18,8 @@
             <nav class="row relative">
                 <div class="span-t8 span-s6">
                     <ul class="hnav pull-left hidden-t" style="background-color: transparent">
-                        <li><a href="/"><spring:message code="label.home.blogName.text"/></a></li>
+                        <c:url value="/" var="rootUrl"/>
+                        <li><a href="${rootUrl}"><spring:message code="label.home.blogName.text"/></a></li>
                         <c:forEach items="${availableCategories}" var="category">
                             <c:url value="/category/post/show/${category.id}" var="categoryUrl"/>
                             <li>
@@ -33,13 +34,26 @@
                 <nav class="span-t4 span-s6">
                     <ul class="hnav pull-right hidden-t" style="background-color: transparent">
                         <c:if test="${sessionScope.sessionUser != null}">
-                            <li><a href="/show/dashboard">${sessionScope.sessionUser.firstName}'s Dashboard</a></li>
                             <li>
-                                <a href="/auth/logout"><spring:message code="label.home.logout.text"/></a>
+                                <c:url value="/show/dashboard" var="showDashboardUrl"/>
+                                <a href="${showDashboardUrl}">
+                                        ${sessionScope.sessionUser.firstName}'s Dashboard</a>
+                            </li>
+                            <li>
+                                <c:url value="/auth/logout" var="logOutUrl"/>
+                                <a href="${logOutUrl}">
+                                    <spring:message code="label.home.logout.text"/>
+                                </a>
                             </li>
                         </c:if>
                         <c:if test="${sessionScope.sessionUser == null}">
-                            <li><a href="/auth/login"><spring:message code="label.home.login.text"/></a></li>
+                            <li>
+                                <c:url value="/auth/login" var="logInUrl"/>
+
+                                <a href="${logInUrl}">
+                                    <spring:message code="label.home.login.text"/>
+                                </a>
+                            </li>
                         </c:if>
                     </ul>
                 </nav>

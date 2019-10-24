@@ -4,6 +4,7 @@ import net.therap.blog.domain.User;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;
+import java.util.Optional;
 
 /**
  * @author sajjad.ahmed
@@ -16,22 +17,24 @@ public class UserDao extends BaseDao<User> {
         super(User.class);
     }
 
-    public User findUserByEmail(String email) {
+    public Optional<User> findUserByEmail(String email) {
         try {
-            return em.createNamedQuery("User.findByEmail", User.class)
-                    .setParameter("email", email)
-                    .getSingleResult();
+            return Optional.of(
+                    em.createNamedQuery("User.findByEmail", User.class)
+                            .setParameter("email", email)
+                            .getSingleResult());
         } catch (NoResultException e) {
             return null;
         }
     }
 
-    public User findUserByEmailAndPassword(String email, String password) {
+    public Optional<User> findUserByEmailAndPassword(String email, String password) {
         try {
-            return em.createNamedQuery("User.findByEmailAndPassword", User.class)
-                    .setParameter("email", email)
-                    .setParameter("password", password)
-                    .getSingleResult();
+            return Optional.of(
+                    em.createNamedQuery("User.findByEmailAndPassword", User.class)
+                            .setParameter("email", email)
+                            .setParameter("password", password)
+                            .getSingleResult());
         } catch (NoResultException e) {
             return null;
         }

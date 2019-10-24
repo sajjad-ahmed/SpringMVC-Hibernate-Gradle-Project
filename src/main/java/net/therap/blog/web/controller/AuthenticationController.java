@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.Objects;
+import java.util.Optional;
 
 import static net.therap.blog.util.URL.*;
 
@@ -46,13 +47,14 @@ public class AuthenticationController implements Constants {
         if (errors.hasErrors()) {
             return LOG_IN_VIEW;
         }
-        User user = userDao.findUserByEmailAndPassword(loginCmd.getEmail(), Encryption.encrypt(loginCmd.getPassword()));
-        if (Objects.isNull(user)) {
+        Optional<User> user = userDao.findUserByEmailAndPassword(loginCmd.getEmail(),
+                Encryption.encrypt(loginCmd.getPassword()));
+        if (!user.isPresent()) {
             model.addAttribute("authFailed", AUTHENTICATION_FAILED_FLAG);
             return LOG_IN_VIEW;
         } else {
             HttpSession session = request.getSession();
-            session.setAttribute(SESSION_USER_PARAMETER, user);
+            session.setAttribute(SESSION_USER_PARAMETER, user.get());
             return "redirect:" + ROOT;
         }
     }

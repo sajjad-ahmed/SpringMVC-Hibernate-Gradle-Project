@@ -32,6 +32,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import static net.therap.blog.util.URL.*;
 
@@ -68,7 +69,10 @@ public class PostController implements Constants {
     @RequestMapping(value = POST_CREATE, method = RequestMethod.GET)
     public String showPostForm(@ModelAttribute Post post,
                                Model model) {
-        post = post.isNew() ? post : postService.find(post.getId());
+        post = post.isNew() ? post : postService.find(post.getId()).get();
+        if (Objects.isNull(post)) {
+            throw new NotFoundException("Post");
+        }
         model.addAttribute("post", post);
         model.addAttribute("roles", ROLES.values());
         model.addAttribute("status", STATUS.getMap());
@@ -104,7 +108,7 @@ public class PostController implements Constants {
 
     private void setCategoryNames(Post post) {
         post.getCategories().forEach(i -> {
-            Category category = categoryDao.find(i.getId());
+            Category category = categoryDao.find(i.getId()).get();
             i.setName(category.getName());
         });
     }
@@ -152,10 +156,12 @@ public class PostController implements Constants {
         if (!(userRole.equals(ROLES.ADMIN.name()) || userRole.equals(ROLES.AUTHOR.name()))) {
             throw new WebSecurityException();
         }
-        post = postService.find(post.getId());
-        if (Objects.isNull(post)) {
+
+        Optional<Post> postOptional = postService.find(post.getId());
+        if (!postOptional.isPresent()) {
             throw new NotFoundException("Post");
         }
+        post = postService.find(post.getId()).get();
         postService.delete(post.getId());
         return "redirect:" + POST_MANAGE;
     }
@@ -187,7 +193,7 @@ public class PostController implements Constants {
                 }
             });
         }
-        post = postService.save(post);
+        post = postService.save(post).get();
         model.addAttribute("post", post);
         model.addAttribute("comment", new Comment());
         model.addAttribute("comments", post.getComments());
@@ -197,20 +203,26 @@ public class PostController implements Constants {
     @RequestMapping(value = COMMENT_DELETE, method = RequestMethod.POST)
     public String commentDeleteHandler(@ModelAttribute Comment comment,
                                        Model model) {
-        Comment targetComment = commentDao.find(comment.getId());
-        Post post = postService.find(targetComment.getPost().getId());
-        post.getComments().removeIf(i -> i.getId() == targetComment.getId());
-        postService.save(post);
+        Comment targetComment = commentDao.find(comment.getId()).get();
+        Post post = postService.find(targetComment.getPost().getId()).get();
+        List<Comment> comments = post.getComments();
+        comments.removeIf(i -> i.getId() == targetComment.getId());
+        post.setComments(comments);
+        post = postService.save(post).get();
         model.addAttribute("post", post);
         model.addAttribute("comment", new Comment());
-        model.addAttribute("comments", postService.find(post.getId()).getComments());
+        model.addAttribute("comments", post.getComments());
         return SINGLE_POST_VIEW;
     }
 
     @RequestMapping(value = COMMENT_UPDATE, method = RequestMethod.POST)
     public String commentUpdateHandler(@ModelAttribute Comment comment,
                                        Model model) {
-        Comment targetComment = commentDao.find(comment.getId());
+        Optional<Comment> commentOptional = commentDao.find(comment.getId());
+        if (!commentOptional.isPresent()) {
+            throw new NotFoundException("Comment");
+        }
+        Comment targetComment = commentOptional.get();
         Post post = targetComment.getPost();
         model.addAttribute("post", post);
         model.addAttribute("comment", targetComment);
