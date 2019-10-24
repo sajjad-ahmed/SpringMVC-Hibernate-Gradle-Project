@@ -25,4 +25,15 @@ public class UserDao extends BaseDao<User> {
             return null;
         }
     }
+
+    public User findUserByEmailAndPassword(String email, String password) {
+        try {
+            return em.createNamedQuery("User.findByEmailAndPassword", User.class)
+                    .setParameter("email", email)
+                    .setParameter("password", password)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
 }

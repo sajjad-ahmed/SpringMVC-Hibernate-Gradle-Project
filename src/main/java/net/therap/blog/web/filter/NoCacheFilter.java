@@ -15,7 +15,9 @@ public class NoCacheFilter implements Filter {
     }
 
     @Override
-    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
+    public void doFilter(ServletRequest req,
+                         ServletResponse res,
+                         FilterChain chain) throws IOException, ServletException {
         HttpServletResponse hsr = (HttpServletResponse) res;
         hsr.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
         hsr.setHeader("Pragma", "no-cache");

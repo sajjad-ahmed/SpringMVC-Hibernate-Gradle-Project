@@ -74,7 +74,6 @@ public class PostController implements Constants {
         model.addAttribute("status", STATUS.getMap());
         model.addAttribute("categories", categoryDao.findAll());
         return POST_CREATE_VIEW;
-
     }
 
     @RequestMapping(value = POST_CREATE, method = RequestMethod.POST)
@@ -128,10 +127,7 @@ public class PostController implements Constants {
         if (!Util.isAdmin(session)) {
             throw new WebSecurityException();
         }
-        List<Post> posts = postService.findAll();
-        if (Objects.nonNull(posts)) {
-            posts = Util.getPostByRole(session, postService);
-        }
+        List<Post> posts = Util.getPostByRole(session, postService);
         model.addAttribute("posts", posts);
         model.addAttribute("post", new Post());
         return POST_MANAGEMENT_VIEW;
@@ -180,7 +176,7 @@ public class PostController implements Constants {
             return SINGLE_POST_VIEW;
         }
         Post post = comment.getPost();
-        if (comment.getId() == 0) {
+        if (comment.isNew()) {
             post.getComments().add(comment);
             model.addAttribute(CONFIRMATION, "ADDED");
         } else {

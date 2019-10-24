@@ -4,8 +4,9 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ page language="java" contentType="text/html; charset=US-ASCII" pageEncoding="US-ASCII" %>
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator" %>
-<!DOCTYPE html >
+<!DOCTYPE html>
 
+<html>
 <head>
     <title><decorator:title/> | O(n)</title>
     <style>

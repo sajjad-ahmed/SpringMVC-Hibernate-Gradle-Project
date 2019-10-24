@@ -38,7 +38,7 @@ public class AuthenticationFilter implements Filter, Constants {
         } else {
             if (Objects.nonNull(session.getAttribute(SESSION_USER_PARAMETER))) {
                 User user = (User) session.getAttribute(SESSION_USER_PARAMETER);
-                if (user.getId() == 0) {
+                if (user.isNew()) {
                     RequestDispatcher requestDispatcher = req.getRequestDispatcher("/");
                     requestDispatcher.forward(req, res);
                     chain.doFilter(req, res);

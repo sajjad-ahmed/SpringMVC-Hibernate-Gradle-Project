@@ -1,4 +1,4 @@
-package net.therap.blog.interceptor;
+package net.therap.blog.exception;
 
 import net.therap.blog.util.URL;
 import org.springframework.lang.Nullable;

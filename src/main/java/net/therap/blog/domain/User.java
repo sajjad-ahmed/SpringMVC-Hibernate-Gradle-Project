@@ -19,6 +19,8 @@ import java.util.Base64;
         @NamedQuery(name = "User.findAll", query = "FROM User"),
         @NamedQuery(name = "User.findByEmail", query = "FROM User " +
                 "WHERE email = :email"),
+        @NamedQuery(name = "User.findByEmailAndPassword", query = "FROM User " +
+                "WHERE email = :email AND password =: password"),
 })
 public class User extends BaseDomain {
 

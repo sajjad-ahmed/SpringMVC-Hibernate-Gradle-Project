@@ -46,7 +46,6 @@ public class PostDao extends BaseDao<Post> {
     }
 
     public List<Post> findByRoleAndCategory(long categoryId, List<STATUS> status) {
-
         try {
             return em.createNamedQuery("Post.findAllByStatusAndCategory", Post.class)
                     .setParameter("categoryId", categoryId)

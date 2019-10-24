@@ -46,18 +46,15 @@ public class AuthenticationController implements Constants {
         if (errors.hasErrors()) {
             return LOG_IN_VIEW;
         }
-        User user = userDao.findUserByEmail(loginCmd.getEmail());
-        if (Objects.nonNull(loginCmd.getPassword()) && Objects.nonNull(loginCmd.getEmail()) && Objects.nonNull(user)) {
-            if (Encryption.encrypt(loginCmd.getPassword()).equals(user.getPassword()) &&
-                    user.getEmail().equals(loginCmd.getEmail())) {
-                HttpSession session = request.getSession();
-                session.setAttribute(SESSION_USER_PARAMETER, user);
-                return "redirect:" + ROOT;
-            }
+        User user = userDao.findUserByEmailAndPassword(loginCmd.getEmail(), Encryption.encrypt(loginCmd.getPassword()));
+        if (Objects.isNull(user)) {
+            model.addAttribute("authFailed", AUTHENTICATION_FAILED_FLAG);
+            return LOG_IN_VIEW;
+        } else {
+            HttpSession session = request.getSession();
+            session.setAttribute(SESSION_USER_PARAMETER, user);
+            return "redirect:" + ROOT;
         }
-
-        model.addAttribute("authFailed", AUTHENTICATION_FAILED_FLAG);
-        return LOG_IN_VIEW;
     }
 
     @RequestMapping(value = LOG_OUT, method = RequestMethod.GET)

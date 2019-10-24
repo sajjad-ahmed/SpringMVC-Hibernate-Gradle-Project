@@ -1,7 +1,6 @@
 package net.therap.blog.service;
 
 import net.therap.blog.dao.PostDao;
-import net.therap.blog.domain.Category;
 import net.therap.blog.domain.Post;
 import net.therap.blog.util.Constants;
 import net.therap.blog.util.STATUS;
@@ -49,7 +48,7 @@ public class PostService implements Constants {
         return postDao.findByStatus(status);
     }
 
-    public  List<Post> findByRoleAndCategory(long categoryId, List<STATUS> statuses) {
-        return postDao.findByRoleAndCategory(categoryId,statuses);
+    public List<Post> findByRoleAndCategory(long categoryId, List<STATUS> statuses) {
+        return postDao.findByRoleAndCategory(categoryId, statuses);
     }
 }

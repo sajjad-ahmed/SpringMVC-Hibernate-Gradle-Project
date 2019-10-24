@@ -26,10 +26,6 @@ public interface Constants {
 
     public static final String SESSION_USER_PARAMETER = "sessionUser";
 
-    public static final char ACCESS_DENY = '1';
-
-    public static final char FULL_ACCESS = '7';
-
     public static final String LOG = "----Log----: ";
 
 }
