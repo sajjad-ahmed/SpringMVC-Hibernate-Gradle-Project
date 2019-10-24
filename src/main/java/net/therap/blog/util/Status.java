@@ -7,7 +7,7 @@ import java.util.Map;
  * @author sajjad.ahmed
  * @since 10/13/19.
  */
-public enum STATUS {
+public enum Status {
 
     PUBLIC("Public"),
     SUBSCRIBER_ONLY("Subscriber only"),
@@ -16,13 +16,13 @@ public enum STATUS {
 
     public String val;
 
-    STATUS(String val) {
+    Status(String val) {
         this.val = val;
     }
 
     public static Map<String, String> getMap() {
         Map<String, String> statusMap = new HashMap<>();
-        for (STATUS status : STATUS.values()) {
+        for (Status status : Status.values()) {
             statusMap.put(status.name(), status.val);
         }
         return statusMap;

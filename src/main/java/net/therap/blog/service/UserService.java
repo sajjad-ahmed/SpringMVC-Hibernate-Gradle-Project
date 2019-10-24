@@ -32,7 +32,7 @@ public class UserService implements Constants {
     @Autowired
     private CommentDao commentDao;
 
-    public Optional<User> save(User user) {
+    public User save(User user) {
         user.setPassword(Encryption.encrypt(user.getPassword()));
         return userDao.save(user);
     }
@@ -48,25 +48,9 @@ public class UserService implements Constants {
     }
 
     public void delete(long id) {
-        postService.findAll().forEach(i -> {
-            if (i.getCreator().getId() == id) {
-                postService.delete(i.getId());
-
-            }
-        });
-        commentDao.findAll().forEach(i -> {
-            if (i.getUserId().getId() == id) {
-                commentDao.delete(i.getId());
-            }
-        });
-        messageDao.findAll().forEach(i -> {
-            if (i.getSender().getId() == id) {
-                messageDao.delete(i.getId());
-            }
-            if (i.getReceiver().getId() == id) {
-                messageDao.delete(i.getId());
-            }
-        });
+        deletePostsByUser(id);
+        deleteCommentsByUser(id);
+        deleteMessagesByUser(id);
         userDao.delete(id);
     }
 
@@ -76,5 +60,33 @@ public class UserService implements Constants {
 
     public boolean isEmailAlreadyInUse(String value) {
         return Objects.nonNull(userDao.findUserByEmail(value));
+    }
+
+    private void deleteMessagesByUser(long id) {
+        messageDao.findAll().forEach(i -> {
+            if (i.getSender().getId() == id) {
+                messageDao.delete(i.getId());
+            }
+            if (i.getReceiver().getId() == id) {
+                messageDao.delete(i.getId());
+            }
+        });
+    }
+
+    private void deleteCommentsByUser(long id) {
+        commentDao.findAll().forEach(i -> {
+            if (i.getUserId().getId() == id) {
+                commentDao.delete(i.getId());
+            }
+        });
+    }
+
+    private void deletePostsByUser(long id) {
+        postService.findAll().forEach(i -> {
+            if (i.getCreator().getId() == id) {
+                postService.delete(i.getId());
+
+            }
+        });
     }
 }

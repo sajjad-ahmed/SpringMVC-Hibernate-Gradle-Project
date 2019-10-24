@@ -13,31 +13,31 @@ import java.util.*;
  */
 public class Util implements Constants {
 
-    private static Map<String, List<STATUS>> roleStatusMap;
+    private static Map<String, List<Status>> roleStatusMap;
 
     static {
         roleStatusMap = new HashMap<>();
 
-        List<STATUS> statusList = new ArrayList<>();
-        statusList.add(STATUS.PUBLIC);
-        statusList.add(STATUS.DRAFT);
-        statusList.add(STATUS.RESTRICT_AUTHOR);
-        statusList.add(STATUS.SUBSCRIBER_ONLY);
-        roleStatusMap.put(ROLES.ADMIN.name(), statusList);
+        List<Status> statusList = new ArrayList<>();
+        statusList.add(Status.PUBLIC);
+        statusList.add(Status.DRAFT);
+        statusList.add(Status.RESTRICT_AUTHOR);
+        statusList.add(Status.SUBSCRIBER_ONLY);
+        roleStatusMap.put(Role.ADMIN.name(), statusList);
 
         statusList = new ArrayList<>();
-        statusList.add(STATUS.PUBLIC);
-        statusList.add(STATUS.DRAFT);
-        statusList.add(STATUS.SUBSCRIBER_ONLY);
-        roleStatusMap.put(ROLES.AUTHOR.name(), statusList);
+        statusList.add(Status.PUBLIC);
+        statusList.add(Status.DRAFT);
+        statusList.add(Status.SUBSCRIBER_ONLY);
+        roleStatusMap.put(Role.AUTHOR.name(), statusList);
 
         statusList = new ArrayList<>();
-        statusList.add(STATUS.PUBLIC);
-        statusList.add(STATUS.SUBSCRIBER_ONLY);
-        roleStatusMap.put(ROLES.SUBSCRIBER.name(), statusList);
+        statusList.add(Status.PUBLIC);
+        statusList.add(Status.SUBSCRIBER_ONLY);
+        roleStatusMap.put(Role.SUBSCRIBER.name(), statusList);
 
         statusList = new ArrayList<>();
-        statusList.add(STATUS.PUBLIC);
+        statusList.add(Status.PUBLIC);
         roleStatusMap.put("GUEST", statusList);
     }
 
@@ -53,11 +53,12 @@ public class Util implements Constants {
 
     public static List<Post> getPostByRole(HttpSession session, PostService postService) {
         String role = Util.getUserRole(session);
-        return postService.findByStatus(roleStatusMap.get(role));
+        List<Status> postStatues = roleStatusMap.get(role);
+        return postService.findByStatus(postStatues);
     }
 
     public static boolean isAdmin(HttpSession session) {
-        return getUserRole(session).equals(ROLES.ADMIN.name());
+        return getUserRole(session).equals(Role.ADMIN.name());
     }
 
     public static List<Post> getPostByRoleAndCategory(HttpSession session, PostService postService, long categoryId) {

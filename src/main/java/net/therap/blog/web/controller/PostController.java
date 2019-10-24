@@ -11,8 +11,8 @@ import net.therap.blog.exception.WebSecurityException;
 import net.therap.blog.service.PostService;
 import net.therap.blog.service.UserService;
 import net.therap.blog.util.Constants;
-import net.therap.blog.util.ROLES;
-import net.therap.blog.util.STATUS;
+import net.therap.blog.util.Role;
+import net.therap.blog.util.Status;
 import net.therap.blog.util.Util;
 import net.therap.blog.web.editor.CategoryEditor;
 import net.therap.blog.web.editor.PostEditor;
@@ -74,8 +74,8 @@ public class PostController implements Constants {
             throw new NotFoundException("Post");
         }
         model.addAttribute("post", post);
-        model.addAttribute("roles", ROLES.values());
-        model.addAttribute("status", STATUS.getMap());
+        model.addAttribute("roles", Role.values());
+        model.addAttribute("status", Status.getMap());
         model.addAttribute("categories", categoryDao.findAll());
         return POST_CREATE_VIEW;
     }
@@ -88,13 +88,13 @@ public class PostController implements Constants {
                                     RedirectAttributes redirectAttributes,
                                     @RequestParam("file") MultipartFile picture) {
         String userRole = Util.getUserRole(session);
-        if (!(userRole.equals(ROLES.ADMIN.name()) || userRole.equals(ROLES.AUTHOR.name()))) {
+        if (!(userRole.equals(Role.ADMIN.name()) || userRole.equals(Role.AUTHOR.name()))) {
             throw new WebSecurityException();
         }
         postValidator.validate(post, errors);
         if (errors.hasErrors()) {
             model.addAttribute("categories", categoryDao.findAll());
-            model.addAttribute("status", STATUS.getMap());
+            model.addAttribute("status", Status.getMap());
             return POST_CREATE_VIEW;
         }
         redirectAttributes.addFlashAttribute(CONFIRMATION, post.isNew() ? "ADDED" : "UPDATED");
@@ -140,7 +140,7 @@ public class PostController implements Constants {
     @RequestMapping(value = POST_SHOW, method = RequestMethod.GET)
     public String showSinglePost(@PathVariable("uri") String uri,
                                  Model model) {
-        Post post = postService.findBy(uri);
+        Post post = postService.findBy(uri).get();
         if (Objects.isNull(post)) {
             throw new NotFoundException("Post");
         }
@@ -153,7 +153,7 @@ public class PostController implements Constants {
     @RequestMapping(value = POST_DELETE, method = RequestMethod.POST)
     public String postDeleteHandler(@ModelAttribute Post post, HttpSession session) {
         String userRole = Util.getUserRole(session);
-        if (!(userRole.equals(ROLES.ADMIN.name()) || userRole.equals(ROLES.AUTHOR.name()))) {
+        if (!(userRole.equals(Role.ADMIN.name()) || userRole.equals(Role.AUTHOR.name()))) {
             throw new WebSecurityException();
         }
 
@@ -193,7 +193,7 @@ public class PostController implements Constants {
                 }
             });
         }
-        post = postService.save(post).get();
+        post = postService.save(post);
         model.addAttribute("post", post);
         model.addAttribute("comment", new Comment());
         model.addAttribute("comments", post.getComments());
@@ -208,7 +208,7 @@ public class PostController implements Constants {
         List<Comment> comments = post.getComments();
         comments.removeIf(i -> i.getId() == targetComment.getId());
         post.setComments(comments);
-        post = postService.save(post).get();
+        post = postService.save(post);
         model.addAttribute("post", post);
         model.addAttribute("comment", new Comment());
         model.addAttribute("comments", post.getComments());

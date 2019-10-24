@@ -35,28 +35,23 @@ public abstract class BaseDao<T extends BaseDomain> {
     }
 
     @Transactional
-    public Optional<T> save(T entity) {
+    public T save(T entity) {
         if (entity.isNew()) {
             em.persist(entity);
             em.flush();
         } else {
-            em.merge(entity);
+            entity = em.merge(entity);
         }
-        return Optional.of(entity);
+        return entity;
     }
 
     @Transactional
-    public Optional<T> delete(long id) {
+    public boolean delete(long id) {
         T item = em.find(clazz, id);
-        if (Objects.nonNull(item)) {
-            try {
-                em.remove(item);
-            } catch (IllegalStateException | PersistenceException e) {
-                e.printStackTrace();
-            }
-        } else {
+        if (Objects.isNull(item)) {
             throw new NotFoundException(clazz.getSimpleName());
         }
-        return Optional.of(item);
+        em.remove(item);
+        return true;
     }
 }

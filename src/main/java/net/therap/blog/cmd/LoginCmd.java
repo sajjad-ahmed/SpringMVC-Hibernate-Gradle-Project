@@ -15,7 +15,7 @@ public class LoginCmd implements Serializable {
 
     @NotNull
     @Size(min = 1, max = 255)
-    @Pattern(regexp = ".+@.+\\.[a-z]+")
+    @Pattern(regexp = ".+@.+\\.[a-z]+",message = "invalid email format")
     private String email;
 
     @NotNull

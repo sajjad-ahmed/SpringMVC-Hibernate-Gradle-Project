@@ -1,6 +1,6 @@
 package net.therap.blog.domain;
 
-import net.therap.blog.util.STATUS;
+import net.therap.blog.util.Status;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -9,7 +9,6 @@ import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
@@ -58,7 +57,7 @@ public class Post extends BaseDomain {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private STATUS status;
+    private Status status;
 
     @Lob
     @Column(nullable = false, columnDefinition = "mediumblob")
@@ -73,10 +72,6 @@ public class Post extends BaseDomain {
 
     @OneToMany(mappedBy = "postId", cascade = CascadeType.ALL)
     private List<Comment> comments;
-
-    public Post() {
-        this.categories = new ArrayList<>();
-    }
 
     public User getCreator() {
         return creator;
@@ -110,11 +105,11 @@ public class Post extends BaseDomain {
         this.body = body;
     }
 
-    public STATUS getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(STATUS status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
@@ -156,7 +151,7 @@ public class Post extends BaseDomain {
     }
 
     public String getAuthorName() {
-        return this.creator.getFirstName() + " " + this.creator.getLastName();
+        return String.join(this.creator.getFirstName(), " ", this.creator.getLastName());
     }
 
     @Override

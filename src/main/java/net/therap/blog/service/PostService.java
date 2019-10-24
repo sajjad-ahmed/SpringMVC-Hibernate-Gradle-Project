@@ -3,7 +3,7 @@ package net.therap.blog.service;
 import net.therap.blog.dao.PostDao;
 import net.therap.blog.domain.Post;
 import net.therap.blog.util.Constants;
-import net.therap.blog.util.STATUS;
+import net.therap.blog.util.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +21,7 @@ public class PostService implements Constants {
     @Autowired
     private PostDao postDao;
 
-    public Optional<Post> save(Post post) {
+    public Post save(Post post) {
         return postDao.save(post);
     }
 
@@ -41,15 +41,15 @@ public class PostService implements Constants {
         return Objects.nonNull(postDao.findBy(uri));
     }
 
-    public Post findBy(String uri) {
+    public Optional<Post> findBy(String uri) {
         return postDao.findBy(uri);
     }
 
-    public List<Post> findByStatus(List<STATUS> status) {
+    public List<Post> findByStatus(List<Status> status) {
         return postDao.findByStatus(status);
     }
 
-    public List<Post> findByRoleAndCategory(long categoryId, List<STATUS> statuses) {
+    public List<Post> findByRoleAndCategory(long categoryId, List<Status> statuses) {
         return postDao.findByRoleAndCategory(categoryId, statuses);
     }
 }

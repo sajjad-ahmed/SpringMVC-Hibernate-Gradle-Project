@@ -5,7 +5,7 @@ import net.therap.blog.exception.NotFoundException;
 import net.therap.blog.exception.WebSecurityException;
 import net.therap.blog.service.UserService;
 import net.therap.blog.util.Constants;
-import net.therap.blog.util.ROLES;
+import net.therap.blog.util.Role;
 import net.therap.blog.util.Util;
 import net.therap.blog.web.validator.UniqueEmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +55,7 @@ public class UserController implements Constants {
             throw new NotFoundException("User");
         }
         model.addAttribute("user", user);
-        model.addAttribute("roles", ROLES.values());
+        model.addAttribute("roles", Role.values());
         return USER_ADD_VIEW;
     }
 
@@ -82,7 +82,7 @@ public class UserController implements Constants {
             redirectAttributes.addFlashAttribute(CONFIRMATION, "UPDATED");
         }
         if (errors.hasErrors()) {
-            model.addAttribute("roles", ROLES.values());
+            model.addAttribute("roles", Role.values());
             return USER_ADD_VIEW;
         }
         setProfilePicture(user, file);
@@ -160,7 +160,7 @@ public class UserController implements Constants {
                                     RedirectAttributes redirectAttributes,
                                     @RequestParam("file") MultipartFile file) {
         String userRole = Util.getUserRole(session);
-        if (userRole.equals(ROLES.ADMIN.name())) {
+        if (userRole.equals(Role.ADMIN.name())) {
             throw new WebSecurityException();
         }
         if (errors.hasErrors()) {

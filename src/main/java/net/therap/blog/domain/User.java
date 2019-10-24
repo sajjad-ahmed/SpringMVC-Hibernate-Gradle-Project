@@ -1,6 +1,6 @@
 package net.therap.blog.domain;
 
-import net.therap.blog.util.ROLES;
+import net.therap.blog.util.Role;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -37,7 +37,7 @@ public class User extends BaseDomain {
     @NotNull
     @Size(min = 1, max = 255)
     @Column(nullable = false, unique = true)
-    @Pattern(regexp = ".+@.+\\.[a-z]+")
+    @Pattern(regexp = ".+@.+\\.[a-z]+", message = "invalid email format")
     private String email;
 
     @NotNull
@@ -47,7 +47,7 @@ public class User extends BaseDomain {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private ROLES role;
+    private Role role;
 
     @Lob
     @Column(name = "profile_picture", nullable = false, columnDefinition = "mediumblob")
@@ -85,11 +85,11 @@ public class User extends BaseDomain {
         this.password = password;
     }
 
-    public ROLES getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(ROLES role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
@@ -102,7 +102,7 @@ public class User extends BaseDomain {
     }
 
     public String getNameAndRole() {
-        return this.firstName + " " + this.lastName + " (" + this.role + ")";
+        return String.join(getFirstName(), " ", getLastName(), " (", this.role.name(), ")");
     }
 
     public String getFullName() {
