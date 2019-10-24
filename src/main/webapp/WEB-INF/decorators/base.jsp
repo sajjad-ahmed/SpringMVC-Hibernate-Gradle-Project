@@ -19,8 +19,12 @@
                     <ul class="hnav pull-left hidden-t" style="background-color: transparent">
                         <li><a href="/"><spring:message code="label.home.blogName.text"/></a></li>
                         <c:forEach items="${availableCategories}" var="category">
-                            <li><a href="<c:url value="/category/post/show/${category.id}"/>"> <c:out
-                                    value="${category.name}"/></a></li>
+                            <c:url value="/category/post/show/${category.id}" var="categoryUrl"/>
+                            <li>
+                                <a href="${categoryUrl}">
+                                    <c:out value="${category.name}"/>
+                                </a>
+                            </li>
                         </c:forEach>
                     </ul>
                 </div>

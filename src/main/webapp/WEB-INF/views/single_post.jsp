@@ -15,7 +15,8 @@
             value="${post.formattedDate}"/></h5>
 
     <c:forEach items="${post.categories}" var="category">
-        <a href="<c:url value="/category/post/show/${category.id}"/>" style="text-decoration: none">
+        <c:url value="/category/post/show/${category.id}" var="categoryUrl"/>
+        <a href="${categoryUrl}" style="text-decoration: none">
             <div class="chip"><b class="primary">C</b> <c:out value="${category.name}"/></div>
         </a>
     </c:forEach>
