@@ -26,7 +26,14 @@ public class UserEditor extends PropertyEditorSupport {
     }
 
     public void setAsText(String text) {
-        User user = userService.find(Long.parseLong(text)).get();
-        setValue(user);
+        if (text.isEmpty()) {
+            setValue(null);
+            return;
+        }
+        int id = Integer.parseInt(text);
+        if (id > 0) {
+            User user = userService.find(Long.parseLong(text)).get();
+            setValue(user);
+        }
     }
 }

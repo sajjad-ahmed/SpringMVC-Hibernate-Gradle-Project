@@ -20,10 +20,12 @@ public class PostValidator implements Validator {
     @Autowired
     private PostService postService;
 
+    @Override
     public boolean supports(Class clazz) {
         return Post.class.isAssignableFrom(clazz);
     }
 
+    @Override
     public void validate(Object target, Errors errors) {
         Post post = (Post) target;
         String value = post.getUri();
@@ -31,8 +33,6 @@ public class PostValidator implements Validator {
             if (Objects.nonNull(value)) {
                 if (postService.isUriAlreadyInUse(value)) {
                     errors.rejectValue("uri", "validator.duplicate.uri", "URI already exists");
-                } else {
-                    throw new NotFoundException("Post");
                 }
             }
         }

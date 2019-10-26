@@ -20,13 +20,18 @@ public class PostEditor extends PropertyEditorSupport {
 
     public String getAsText() {
         Post post = (Post) this.getValue();
-        if (Objects.nonNull(post))
-            return String.valueOf(post.getId());
-        return null;
+        return Objects.nonNull(post) ? String.valueOf(post.getId()) : null;
     }
 
     public void setAsText(String text) {
-        Post post = postService.find(Long.parseLong(text)).get();
-        setValue(post);
+        if (text.isEmpty()) {
+            setValue(null);
+            return;
+        }
+        int id = Integer.parseInt(text);
+        if (id > 0) {
+            Post post = postService.find(Long.parseLong(text)).get();
+            setValue(post);
+        }
     }
 }

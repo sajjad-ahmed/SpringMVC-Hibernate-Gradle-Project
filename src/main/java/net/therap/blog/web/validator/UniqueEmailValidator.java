@@ -19,10 +19,12 @@ public class UniqueEmailValidator implements Validator {
     @Autowired
     private UserService userService;
 
+    @Override
     public boolean supports(Class clazz) {
         return User.class.isAssignableFrom(clazz);
     }
 
+    @Override
     public void validate(Object target, Errors errors) {
         User user = (User) target;
         String email = user.getEmail();

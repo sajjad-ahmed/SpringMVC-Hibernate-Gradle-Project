@@ -26,9 +26,10 @@ public class PostDao extends BaseDao<Post> {
     }
 
     public Optional<Post> findBy(String uri) {
-        return Optional.of(em.createNamedQuery("Post.findByUri", Post.class)
+        List<Post> posts = em.createNamedQuery("Post.findByUri", Post.class)
                 .setParameter("uri", uri)
-                .getSingleResult());
+                .getResultList();
+        return posts.size() == 1 ? Optional.of(posts.get(0)) : Optional.empty();
     }
 
     public List<Post> findByStatus(List<Status> status) {

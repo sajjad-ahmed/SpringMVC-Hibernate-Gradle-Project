@@ -59,7 +59,7 @@ public class UserService implements Constants {
     }
 
     public boolean isEmailAlreadyInUse(String value) {
-        return Objects.nonNull(userDao.findUserByEmail(value));
+        return userDao.findUserByEmail(value).isPresent();
     }
 
     private void deleteMessagesByUser(long id) {

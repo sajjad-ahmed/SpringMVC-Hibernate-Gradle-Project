@@ -21,6 +21,7 @@ public class ExceptionHandler implements HandlerExceptionResolver {
         ModelAndView modelAndView = new ModelAndView(URL.ERROR_VIEW);
         modelAndView.addObject("exceptionType", ex.getClass().getSimpleName());
         modelAndView.addObject("exceptionMessage", ex.getMessage());
+        ex.printStackTrace();
         return modelAndView;
     }
 }

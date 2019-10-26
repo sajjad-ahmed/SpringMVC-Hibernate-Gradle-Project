@@ -3,6 +3,7 @@ package net.therap.blog.dao;
 import net.therap.blog.domain.User;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -17,17 +18,17 @@ public class UserDao extends BaseDao<User> {
     }
 
     public Optional<User> findUserByEmail(String email) {
-        return Optional.of(
-                em.createNamedQuery("User.findByEmail", User.class)
-                        .setParameter("email", email)
-                        .getSingleResult());
+        List<User> users = em.createNamedQuery("User.findByEmail", User.class)
+                .setParameter("email", email)
+                .getResultList();
+        return users.size() == 1 ? Optional.of(users.get(0)) : Optional.empty();
     }
 
     public Optional<User> findUserByEmailAndPassword(String email, String password) {
-        return Optional.of(
-                em.createNamedQuery("User.findByEmailAndPassword", User.class)
-                        .setParameter("email", email)
-                        .setParameter("password", password)
-                        .getSingleResult());
+        List<User> users = em.createNamedQuery("User.findByEmailAndPassword", User.class)
+                .setParameter("email", email)
+                .setParameter("password", password)
+                .getResultList();
+        return users.size() == 1 ? Optional.of(users.get(0)) : Optional.empty();
     }
 }
