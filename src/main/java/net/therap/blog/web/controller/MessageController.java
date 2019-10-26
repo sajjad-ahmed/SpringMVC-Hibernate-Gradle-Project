@@ -3,7 +3,6 @@ package net.therap.blog.web.controller;
 import net.therap.blog.dao.MessageDao;
 import net.therap.blog.domain.Message;
 import net.therap.blog.domain.User;
-import net.therap.blog.exception.NotFoundException;
 import net.therap.blog.service.UserService;
 import net.therap.blog.util.Constants;
 import net.therap.blog.web.editor.UserEditor;

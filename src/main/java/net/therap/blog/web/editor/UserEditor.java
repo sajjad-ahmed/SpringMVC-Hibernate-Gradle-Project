@@ -20,9 +20,7 @@ public class UserEditor extends PropertyEditorSupport {
 
     public String getAsText() {
         User user = (User) this.getValue();
-        if (Objects.nonNull(user))
-            return String.valueOf(user.getId());
-        return null;
+        return Objects.nonNull(user) ? String.valueOf(user.getId()) : null;
     }
 
     public void setAsText(String text) {

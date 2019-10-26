@@ -1,12 +1,10 @@
 package net.therap.blog.domain;
 
 import javax.persistence.*;
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author sajjad.ahmed
@@ -59,5 +57,4 @@ public class Category extends BaseDomain {
         return "id=" + getId() + ", name=" + this.name;
 
     }
-
 }
