@@ -61,6 +61,10 @@
         </mvc:interceptor>
     </mvc:interceptors>
 
+    <bean class="org.springframework.context.support.MessageSourceAccessor">
+        <constructor-arg ref="messageSource"/>
+    </bean>
+
     <bean id="localeResolver"
           class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
     </bean>

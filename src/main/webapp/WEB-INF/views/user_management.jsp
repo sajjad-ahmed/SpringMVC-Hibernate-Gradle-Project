@@ -55,7 +55,7 @@
                         <td><img src="data:image/*;base64,${user.imageBase64}" width="70" height="50"/></td>
                     </c:if>
                     <c:if test="${user.imageBase64.length() == 0}">
-                        <td><spring:message code="lable.image.not.found"/></td>
+                        <td><spring:message code="label.image.not.found"/></td>
                     </c:if>
                     <td><form:form action="/user/add" method="get"
                                    modelAttribute="user" class="hform">
