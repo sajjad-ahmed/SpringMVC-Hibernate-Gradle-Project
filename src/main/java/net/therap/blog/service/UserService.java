@@ -75,7 +75,7 @@ public class UserService implements Constants {
 
     private void deleteCommentsByUser(long id) {
         commentDao.findAll().forEach(i -> {
-            if (i.getUserId().getId() == id) {
+            if (i.getUser().getId() == id) {
                 commentDao.delete(i.getId());
             }
         });

@@ -102,11 +102,11 @@ public class User extends BaseDomain {
     }
 
     public String getNameAndRole() {
-        return String.join(getFirstName(), " ", getLastName(), " (", this.role.name(), ")");
+        return String.join("", this.firstName, " ", this.lastName, " (", this.role.name(), ")");
     }
 
     public String getFullName() {
-        return this.firstName + " " + this.lastName + " (" + this.role + ")";
+        return String.join("", this.firstName, " ", this.lastName);
     }
 
     public String getImageBase64() {

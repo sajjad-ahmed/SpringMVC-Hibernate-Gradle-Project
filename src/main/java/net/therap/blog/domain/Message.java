@@ -3,8 +3,6 @@ package net.therap.blog.domain;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 /**
@@ -92,9 +90,8 @@ public class Message extends BaseDomain {
         this.receiver = receiver;
     }
 
-    public String getFormattedTime(){
-        LocalDateTime localDateTime = LocalDateTime.ofInstant(getCreatedAt().toInstant(), ZoneId.systemDefault());
-        return localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd 'at' hh:mm:ss"));
+    public String getFormattedTime() {
+        return super.getFormattedDate(DateTimeFormatter.ofPattern("yyyy-MM-dd 'at' hh:mm:ss"));
     }
 
     @Override

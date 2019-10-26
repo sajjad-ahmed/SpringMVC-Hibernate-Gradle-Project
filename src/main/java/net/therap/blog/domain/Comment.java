@@ -21,7 +21,7 @@ public class Comment extends BaseDomain {
 
     @OneToOne
     @JoinColumn(name = "user_id")
-    private User userId;
+    private User user;
 
     @Column(nullable = false)
     @NotNull
@@ -30,14 +30,14 @@ public class Comment extends BaseDomain {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "post_id")
-    private Post postId;
+    private Post post;
 
-    public User getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(User userId) {
-        this.userId = userId;
+    public void setUser(User userId) {
+        this.user = userId;
     }
 
     public String getBody() {
@@ -49,27 +49,22 @@ public class Comment extends BaseDomain {
     }
 
     public String getCommentedOn() {
-        LocalDateTime localDateTime = LocalDateTime.ofInstant(getCreatedAt().toInstant(), ZoneId.systemDefault());
-        return localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd 'at' hh:mm:ss"));
-    }
-
-    public Post getPostId() {
-        return postId;
-    }
-
-    public void setPostId(Post postId) {
-        this.postId = postId;
+        return super.getFormattedDate(DateTimeFormatter.ofPattern("yyyy-MM-dd 'at' hh:mm:ss"));
     }
 
     public Post getPost() {
-        return postId;
+        return post;
+    }
+
+    public void setPost(Post postId) {
+        this.post = postId;
     }
 
     @Override
     public String toString() {
         return "Comment{" +
                 "id=" + getId() +
-                ", userId=" + userId +
+                ", userId=" + user +
                 ", body='" + body + '\'' +
                 ", createdAt=" + getCreatedAt() +
                 ", updatedAt=" + getUpdatedAt() +

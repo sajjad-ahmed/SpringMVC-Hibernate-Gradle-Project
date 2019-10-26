@@ -56,7 +56,7 @@
             <form class="hform">
                 <fieldset>
                     <legend><spring:message code="label.post.comment.legend"/> <strong> <c:out
-                            value="${eachComment.userId.fullName}"/> </strong></legend>
+                            value="${eachComment.user.fullName}"/> </strong></legend>
 
                     <dt><label aria-atomic="true" aria-live="polite" class="comment-date">
                         <c:out value="${eachComment.commentedOn}"/> </label></dt>
@@ -77,7 +77,7 @@
                                        value="<spring:message code="label.delete.header"/>"
                                        class="danger"/>
                             </form:form>
-                            <c:if test="${sessionScope.sessionUser.id == eachComment.userId.id}">
+                            <c:if test="${sessionScope.sessionUser.id == eachComment.user.id}">
                                 <form:form action="/comment/update" method="post"
                                            modelAttribute="comment" class="hform">
                                     <form:input path="id" type="hidden" value="${eachComment.id}"/>
@@ -86,7 +86,7 @@
                                 </form:form>
                             </c:if>
                         </c:if>
-                        <c:if test="${sessionScope.sessionUser.id == eachComment.userId.id
+                        <c:if test="${sessionScope.sessionUser.id == eachComment.user.id
                         && sessionScope.sessionUser.role != 'ADMIN'}">
                             <form:form action="/comment/delete" method="post" id="id-form-ct-${eachComment.id}"
                                        modelAttribute="comment" class="hform">
@@ -117,8 +117,8 @@
     <c:if test="${ !empty sessionScope.sessionUser.id}">
         <form:form action="/comment/add" method="post" modelAttribute="comment" class="hform">
             <form:input path="id" type="hidden"/>
-            <form:input path="postId" type="hidden" value="${post.id}"/>
-            <form:input path="userId" value="${sessionScope.sessionUser.id}" type="hidden"/>
+            <form:input path="post" type="hidden" value="${post.id}"/>
+            <form:input path="user" value="${sessionScope.sessionUser.id}" type="hidden"/>
             <fieldset>
                 <legend><spring:message code="label.post.comment.legend.new"/></legend>
 

@@ -70,7 +70,7 @@ public class Post extends BaseDomain {
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private List<Category> categories;
 
-    @OneToMany(mappedBy = "postId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comment> comments;
 
     public User getCreator() {
@@ -142,8 +142,7 @@ public class Post extends BaseDomain {
     }
 
     public String getFormattedDate() {
-        LocalDateTime localDateTime = LocalDateTime.ofInstant(getCreatedAt().toInstant(), ZoneId.systemDefault());
-        return localDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE);
+        return super.getFormattedDate(DateTimeFormatter.ISO_LOCAL_DATE);
     }
 
     public String getImageBase64() {

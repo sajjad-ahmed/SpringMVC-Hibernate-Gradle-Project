@@ -2,6 +2,9 @@ package net.therap.blog.domain;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 /**
@@ -51,5 +54,10 @@ public class BaseDomain implements Serializable {
 
     public boolean isNew() {
         return getId() == 0;
+    }
+
+    public String getFormattedDate(DateTimeFormatter format) {
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(getCreatedAt().toInstant(), ZoneId.systemDefault());
+        return localDateTime.format(format);
     }
 }
