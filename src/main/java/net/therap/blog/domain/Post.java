@@ -153,6 +153,10 @@ public class Post extends BaseDomain {
         return String.join(this.creator.getFirstName(), " ", this.creator.getLastName());
     }
 
+    public void checkNull() {
+        super.validate(this);
+    }
+
     @Override
     public String toString() {
         return "Post{" +

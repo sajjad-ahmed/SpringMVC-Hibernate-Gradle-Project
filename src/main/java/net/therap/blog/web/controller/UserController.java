@@ -1,7 +1,6 @@
 package net.therap.blog.web.controller;
 
 import net.therap.blog.domain.User;
-import net.therap.blog.exception.NotFoundException;
 import net.therap.blog.exception.WebSecurityException;
 import net.therap.blog.service.UserService;
 import net.therap.blog.util.Constants;
@@ -20,7 +19,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.Objects;
 import java.util.Optional;
 
 import static net.therap.blog.util.URL.*;
@@ -51,9 +49,7 @@ public class UserController implements Constants {
             throw new WebSecurityException();
         }
         user = user.isNew() ? user : userService.find(user.getId()).get();
-        if (Objects.isNull(user)) {
-            throw new NotFoundException("User");
-        }
+        user.checkNull();
         model.addAttribute("user", user);
         model.addAttribute("roles", Role.values());
         return USER_ADD_VIEW;
@@ -90,17 +86,6 @@ public class UserController implements Constants {
         return "redirect:" + USER_MANAGE;
     }
 
-    private void setProfilePicture(User user, MultipartFile file) {
-        if (!file.isEmpty()) {
-            try {
-                byte[] bytes = file.getBytes();
-                user.setProfilePicture(bytes);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     @RequestMapping(value = USER_MANAGE, method = RequestMethod.GET)
     public String showUserManagementView(Model model) {
         model.addAttribute("users", this.userService.findAll());
@@ -115,9 +100,7 @@ public class UserController implements Constants {
             throw new WebSecurityException();
         }
         Optional<User> userOptional = userService.find(user.getId());
-        if (!userOptional.isPresent()) {
-            throw new NotFoundException("User");
-        }
+        user.checkOptionalIsPresent(userOptional);
         user = userOptional.get();
         userService.delete(user.getId());
         return "redirect:" + USER_MANAGE;
@@ -144,9 +127,7 @@ public class UserController implements Constants {
                                  Model model) {
         User user = (User) session.getAttribute(SESSION_USER_PARAMETER);
         Optional<User> userOptional = userService.find(user.getId());
-        if (!userOptional.isPresent()) {
-            throw new NotFoundException("User");
-        }
+        user.checkOptionalIsPresent(userOptional);
         user = userOptional.get();
         model.addAttribute("user", user);
         return USER_UPDATE_VIEW;
@@ -171,6 +152,17 @@ public class UserController implements Constants {
         userService.save(user);
         redirectAttributes.addFlashAttribute(CONFIRMATION, "UPDATED");
         return "redirect:" + SHOW_DASHBOARD;
+    }
+
+    private void setProfilePicture(User user, MultipartFile file) {
+        if (!file.isEmpty()) {
+            try {
+                byte[] bytes = file.getBytes();
+                user.setProfilePicture(bytes);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
 

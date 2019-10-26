@@ -82,9 +82,7 @@ public class MessageController implements Constants {
                                        HttpSession session,
                                        Model model) {
         Optional<Message> messageOptional = messageDao.find(message.getId());
-        if (!messageOptional.isPresent()) {
-            throw new NotFoundException("Message");
-        }
+        message.checkOptionalIsPresent(messageOptional);
         messageDao.delete(message.getId());
         User user = (User) session.getAttribute(SESSION_USER_PARAMETER);
         model.addAttribute("sentMessages", messageDao.findSentMessages(user.getId()));

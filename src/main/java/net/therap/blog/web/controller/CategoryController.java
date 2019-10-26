@@ -2,7 +2,6 @@ package net.therap.blog.web.controller;
 
 import net.therap.blog.dao.CategoryDao;
 import net.therap.blog.domain.Category;
-import net.therap.blog.exception.NotFoundException;
 import net.therap.blog.exception.WebSecurityException;
 import net.therap.blog.util.Constants;
 import net.therap.blog.util.Util;
@@ -20,7 +19,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.Objects;
 import java.util.Optional;
 
 import static net.therap.blog.util.URL.*;
@@ -55,9 +53,7 @@ public class CategoryController implements Constants {
             throw new WebSecurityException();
         }
         category = category.isNew() ? category : categoryDao.find(category.getId()).get();
-        if (Objects.isNull(category)) {
-            throw new NotFoundException("Category");
-        }
+        category.checkNull();
         model.addAttribute("category", category);
         return CATEGORY_ADD_VIEW;
     }
@@ -75,9 +71,7 @@ public class CategoryController implements Constants {
             model.addAttribute("category", category);
             return CATEGORY_ADD_VIEW;
         }
-        if (Objects.isNull(category)) {
-            throw new NotFoundException("Category");
-        }
+        category.checkNull();
         redirectAttributes.addFlashAttribute(CONFIRMATION, category.isNew() ? "ADDED" : "UPDATED");
         categoryDao.save(category);
         return "redirect:" + CATEGORY_MANAGE;
@@ -91,9 +85,7 @@ public class CategoryController implements Constants {
             throw new WebSecurityException();
         }
         Optional<Category> categoryOptional = categoryDao.find(category.getId());
-        if (!categoryOptional.isPresent()) {
-            throw new NotFoundException("Category");
-        }
+        category.checkOptionalIsPresent(categoryOptional);
         category = categoryOptional.get();
         categoryDao.delete(category.getId());
         model.addAttribute("categories", categoryDao.findAll());

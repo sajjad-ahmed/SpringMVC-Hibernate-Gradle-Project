@@ -31,7 +31,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import static net.therap.blog.util.URL.*;
@@ -70,9 +69,7 @@ public class PostController implements Constants {
     public String showPostForm(@ModelAttribute Post post,
                                Model model) {
         post = post.isNew() ? post : postService.find(post.getId()).get();
-        if (Objects.isNull(post)) {
-            throw new NotFoundException("Post");
-        }
+        post.checkNull();
         model.addAttribute("post", post);
         model.addAttribute("roles", Role.values());
         model.addAttribute("status", Status.getMap());
@@ -106,26 +103,6 @@ public class PostController implements Constants {
         return "redirect:" + POST_MANAGE;
     }
 
-    private void setCategoryNames(Post post) {
-        post.getCategories().forEach(i -> {
-            Category category = categoryDao.find(i.getId()).get();
-            i.setName(category.getName());
-        });
-    }
-
-    private boolean setPostCover(Post post, MultipartFile picture) {
-        if (!picture.isEmpty()) {
-            try {
-                byte[] bytes = picture.getBytes();
-                post.setPicture(bytes);
-                return true;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return false;
-    }
-
     @RequestMapping(value = POST_MANAGE, method = RequestMethod.GET)
     public String showPostManagementPage(Model model, HttpSession session) {
         if (!Util.isAdmin(session)) {
@@ -141,9 +118,7 @@ public class PostController implements Constants {
     public String showSinglePost(@PathVariable("uri") String uri,
                                  Model model) {
         Post post = postService.findBy(uri).get();
-        if (Objects.isNull(post)) {
-            throw new NotFoundException("Post");
-        }
+        post.checkNull();
         model.addAttribute("post", post);
         model.addAttribute("comment", new Comment());
         model.addAttribute("comments", post.getComments());
@@ -156,11 +131,8 @@ public class PostController implements Constants {
         if (!(userRole.equals(Role.ADMIN.name()) || userRole.equals(Role.AUTHOR.name()))) {
             throw new WebSecurityException();
         }
-
         Optional<Post> postOptional = postService.find(post.getId());
-        if (!postOptional.isPresent()) {
-            throw new NotFoundException("Post");
-        }
+        post.checkOptionalIsPresent(postOptional);
         post = postService.find(post.getId()).get();
         postService.delete(post.getId());
         return "redirect:" + POST_MANAGE;
@@ -219,9 +191,7 @@ public class PostController implements Constants {
     public String commentUpdateHandler(@ModelAttribute Comment comment,
                                        Model model) {
         Optional<Comment> commentOptional = commentDao.find(comment.getId());
-        if (!commentOptional.isPresent()) {
-            throw new NotFoundException("Comment");
-        }
+        comment.checkOptionalIsPresent(commentOptional);
         Comment targetComment = commentOptional.get();
         Post post = targetComment.getPost();
         model.addAttribute("post", post);
@@ -239,6 +209,26 @@ public class PostController implements Constants {
         model.addAttribute("posts", Util.getPostByRoleAndCategory(session, postService, id));
         model.addAttribute(AVAILABLE_CATEGORIES, categoryDao.findAll());
         return HOME_VIEW;
+    }
+
+    private void setCategoryNames(Post post) {
+        post.getCategories().forEach(i -> {
+            Category category = categoryDao.find(i.getId()).get();
+            i.setName(category.getName());
+        });
+    }
+
+    private boolean setPostCover(Post post, MultipartFile picture) {
+        if (!picture.isEmpty()) {
+            try {
+                byte[] bytes = picture.getBytes();
+                post.setPicture(bytes);
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
     }
 }
 

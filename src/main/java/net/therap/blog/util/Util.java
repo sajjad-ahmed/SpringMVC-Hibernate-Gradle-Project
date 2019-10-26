@@ -1,7 +1,9 @@
 package net.therap.blog.util;
 
+import net.therap.blog.domain.Category;
 import net.therap.blog.domain.Post;
 import net.therap.blog.domain.User;
+import net.therap.blog.exception.NotFoundException;
 import net.therap.blog.service.PostService;
 
 import javax.servlet.http.HttpSession;

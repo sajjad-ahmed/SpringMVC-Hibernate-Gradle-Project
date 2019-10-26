@@ -1,18 +1,22 @@
 package net.therap.blog.domain;
 
+import net.therap.blog.exception.NotFoundException;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  * @author sajjad.ahmed
  * @since 10/22/19.
  */
 @MappedSuperclass
-public class BaseDomain implements Serializable {
+public class BaseDomain<T extends BaseDomain> implements Serializable {
 
     private static final long serialVersionUID = 1l;
 
@@ -59,5 +63,17 @@ public class BaseDomain implements Serializable {
     public String getFormattedDate(DateTimeFormatter format) {
         LocalDateTime localDateTime = LocalDateTime.ofInstant(getCreatedAt().toInstant(), ZoneId.systemDefault());
         return localDateTime.format(format);
+    }
+
+    public void validate(T t) {
+        if (Objects.isNull(t)) {
+            throw new NotFoundException(t.getClass().getSimpleName());
+        }
+    }
+
+    public void checkOptionalIsPresent(Optional<T> optional) {
+        if (!optional.isPresent()) {
+            throw new NotFoundException(optional.getClass().getSimpleName());
+        }
     }
 }

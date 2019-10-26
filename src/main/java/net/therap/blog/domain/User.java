@@ -113,6 +113,10 @@ public class User extends BaseDomain {
         return Base64.getEncoder().encodeToString(profilePicture);
     }
 
+    public void checkNull() {
+        super.validate(this);
+    }
+
     @Override
     public String toString() {
         return "User{" +
