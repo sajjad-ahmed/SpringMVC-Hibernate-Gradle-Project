@@ -16,29 +16,27 @@ public class Util implements Constants {
     private static Map<String, List<Status>> roleStatusMap;
 
     static {
-        roleStatusMap = new HashMap<>();
+        Map<String, List<Status>> roleStatus = new HashMap<>();
 
-        List<Status> statusList = new ArrayList<>();
-        statusList.add(Status.PUBLIC);
-        statusList.add(Status.DRAFT);
-        statusList.add(Status.RESTRICT_AUTHOR);
-        statusList.add(Status.SUBSCRIBER_ONLY);
-        roleStatusMap.put(Role.ADMIN.name(), statusList);
+        roleStatus.put(Role.ADMIN.name(),
+                Arrays.asList(Status.PUBLIC,
+                        Status.DRAFT,
+                        Status.RESTRICT_AUTHOR,
+                        Status.SUBSCRIBER_ONLY));
 
-        statusList = new ArrayList<>();
-        statusList.add(Status.PUBLIC);
-        statusList.add(Status.DRAFT);
-        statusList.add(Status.SUBSCRIBER_ONLY);
-        roleStatusMap.put(Role.AUTHOR.name(), statusList);
+        roleStatus.put(Role.AUTHOR.name(),
+                Arrays.asList(Status.PUBLIC,
+                        Status.DRAFT,
+                        Status.SUBSCRIBER_ONLY));
 
-        statusList = new ArrayList<>();
-        statusList.add(Status.PUBLIC);
-        statusList.add(Status.SUBSCRIBER_ONLY);
-        roleStatusMap.put(Role.SUBSCRIBER.name(), statusList);
+        roleStatus.put(Role.SUBSCRIBER.name(),
+                Arrays.asList(Status.PUBLIC,
+                        Status.SUBSCRIBER_ONLY));
 
-        statusList = new ArrayList<>();
-        statusList.add(Status.PUBLIC);
-        roleStatusMap.put("GUEST", statusList);
+        roleStatus.put(ACCESS_GUEST,
+                Arrays.asList(Status.PUBLIC));
+
+        roleStatusMap = Collections.unmodifiableMap(roleStatus);
     }
 
     public static String getUserRole(HttpSession session) {
