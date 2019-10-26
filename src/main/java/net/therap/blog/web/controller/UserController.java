@@ -110,8 +110,8 @@ public class UserController implements Constants {
     public String userSignUpHandler(@Valid @ModelAttribute User user,
                                     Errors errors,
                                     HttpSession session) {
-        String userRole = Util.getUserRole(session);
-        if (!userRole.equals(Constants.ACCESS_GUEST)) {
+        Role userRole = Util.getUserRole(session);
+        if (!userRole.equals(Role.GUEST)) {
             throw new WebSecurityException();
         }
         uniqueEmailValidator.validate(user, errors);
@@ -140,8 +140,8 @@ public class UserController implements Constants {
                                     HttpSession session,
                                     RedirectAttributes redirectAttributes,
                                     @RequestParam("file") MultipartFile file) {
-        String userRole = Util.getUserRole(session);
-        if (userRole.equals(Role.ADMIN.name())) {
+        Role role = Util.getUserRole(session);
+        if (role.equals(Role.ADMIN)) {
             throw new WebSecurityException();
         }
         if (errors.hasErrors()) {

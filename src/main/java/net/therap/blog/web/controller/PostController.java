@@ -84,8 +84,8 @@ public class PostController implements Constants {
                                     HttpSession session,
                                     RedirectAttributes redirectAttributes,
                                     @RequestParam("file") MultipartFile picture) {
-        String userRole = Util.getUserRole(session);
-        if (!(userRole.equals(Role.ADMIN.name()) || userRole.equals(Role.AUTHOR.name()))) {
+        Role userRole = Util.getUserRole(session);
+        if (!(userRole.equals(Role.ADMIN) || userRole.equals(Role.AUTHOR))) {
             throw new WebSecurityException();
         }
         postValidator.validate(post, errors);
@@ -127,8 +127,8 @@ public class PostController implements Constants {
 
     @RequestMapping(value = POST_DELETE, method = RequestMethod.POST)
     public String postDeleteHandler(@ModelAttribute Post post, HttpSession session) {
-        String userRole = Util.getUserRole(session);
-        if (!(userRole.equals(Role.ADMIN.name()) || userRole.equals(Role.AUTHOR.name()))) {
+        Role userRole = Util.getUserRole(session);
+        if (!(userRole.equals(Role.ADMIN) || userRole.equals(Role.AUTHOR))) {
             throw new WebSecurityException();
         }
         Optional<Post> postOptional = postService.find(post.getId());
@@ -143,8 +143,8 @@ public class PostController implements Constants {
                              Errors errors,
                              Model model,
                              HttpSession session) {
-        String userRole = Util.getUserRole(session);
-        if (userRole.equals(Constants.ACCESS_GUEST)) {
+        Role userRole = Util.getUserRole(session);
+        if (userRole.equals(Role.GUEST)) {
             throw new WebSecurityException();
         }
         if (errors.hasErrors()) {

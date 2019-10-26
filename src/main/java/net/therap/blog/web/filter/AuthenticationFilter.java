@@ -33,7 +33,8 @@ public class AuthenticationFilter implements Filter, Constants {
         String uri = req.getRequestURI();
         HttpSession session = req.getSession();
 
-        if (uri.contains("auth") || uri.contains("signup") || uri.contains("post/show") || uri.equals("/")) {
+        if (uri.contains("auth") || uri.contains("signup") || uri.contains("post/show") || uri.equals("/")
+                || uri.contains("/css")) {
             chain.doFilter(req, res);
         } else {
             if (Objects.nonNull(session.getAttribute(SESSION_USER_PARAMETER))) {

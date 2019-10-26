@@ -9,9 +9,7 @@
 <html>
 <head>
     <title><decorator:title/> | O(n)</title>
-    <style>
-        <%@include file="/css/style.css" %>
-    </style>
+    <link href="<c:url value="/css/style.css"/>" rel="stylesheet" type="text/css">
 
     <div class="row top-nav">
         <div class="container" id="navTopRow">

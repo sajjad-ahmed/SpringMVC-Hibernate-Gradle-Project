@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -74,19 +73,14 @@ public class UserService implements Constants {
     }
 
     private void deleteCommentsByUser(long id) {
-        commentDao.findAll().forEach(i -> {
-            if (i.getUser().getId() == id) {
-                commentDao.delete(i.getId());
-            }
-        });
+        commentDao.findAll()
+                .stream().filter(i -> i.getUser().getId() == id)
+                .peek(i -> commentDao.delete(i.getId()));
     }
 
     private void deletePostsByUser(long id) {
-        postService.findAll().forEach(i -> {
-            if (i.getCreator().getId() == id) {
-                postService.delete(i.getId());
-
-            }
-        });
+        postService.findAll().stream()
+                .filter(i -> i.getCreator().getId() == id)
+                .peek(i -> postService.delete(i.getId()));
     }
 }

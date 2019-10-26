@@ -5,5 +5,5 @@ package net.therap.blog.util;
  * @since 10/13/19.
  */
 public enum Role {
-    ADMIN, AUTHOR, SUBSCRIBER
+    ADMIN, AUTHOR, SUBSCRIBER, GUEST
 }
