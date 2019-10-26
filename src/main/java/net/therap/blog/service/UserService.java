@@ -62,14 +62,9 @@ public class UserService implements Constants {
     }
 
     private void deleteMessagesByUser(long id) {
-        messageDao.findAll().forEach(i -> {
-            if (i.getSender().getId() == id) {
-                messageDao.delete(i.getId());
-            }
-            if (i.getReceiver().getId() == id) {
-                messageDao.delete(i.getId());
-            }
-        });
+        messageDao.findAll()
+                .stream().filter(i -> ((i.getSender().getId() == id) || (i.getReceiver().getId() == id)))
+                .peek(i -> messageDao.delete(i.getId()));
     }
 
     private void deleteCommentsByUser(long id) {
