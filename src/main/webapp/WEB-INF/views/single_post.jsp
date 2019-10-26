@@ -78,7 +78,7 @@
                                        class="danger"/>
                             </form:form>
                             <c:if test="${sessionScope.sessionUser.id == eachComment.user.id}">
-                                <form:form action="/comment/update" method="post"
+                                <form:form action="/comment/update" method="get"
                                            modelAttribute="comment" class="hform">
                                     <form:input path="id" type="hidden" value="${eachComment.id}"/>
                                     <input type="submit" value="<spring:message code="label.update.header"/>"
@@ -96,7 +96,7 @@
                                        value="<spring:message code="label.delete.header"/>"
                                        class="danger"/>
                             </form:form>
-                            <form:form action="/comment/update" method="post"
+                            <form:form action="/comment/update" method="get"
                                        modelAttribute="comment" class="hform">
                                 <form:input path="id" type="hidden" value="${eachComment.id}"/>
                                 <input type="submit" value="<spring:message code="label.update.header"/>"

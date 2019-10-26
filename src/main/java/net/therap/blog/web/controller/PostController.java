@@ -187,21 +187,6 @@ public class PostController implements Constants {
         return SINGLE_POST_VIEW;
     }
 
-    @RequestMapping(value = COMMENT_UPDATE, method = RequestMethod.POST)
-    public String commentUpdateHandler(@ModelAttribute Comment comment,
-                                       Model model) {
-        Optional<Comment> commentOptional = commentDao.find(comment.getId());
-        comment.checkOptionalIsPresent(commentOptional);
-        Comment targetComment = commentOptional.get();
-        Post post = targetComment.getPost();
-        model.addAttribute("post", post);
-        model.addAttribute("comment", targetComment);
-        List<Comment> comments = post.getComments();
-        comments.removeIf(i -> i.getId() == targetComment.getId());
-        model.addAttribute("comments", comments);
-        return SINGLE_POST_VIEW;
-    }
-
     @RequestMapping(value = SHOW_POST_BY_CATEGORY, method = RequestMethod.GET)
     public String showPostByCategory(@PathVariable("id") long id,
                                      Model model,
@@ -209,6 +194,21 @@ public class PostController implements Constants {
         model.addAttribute("posts", Util.getPostByRoleAndCategory(session, postService, id));
         model.addAttribute(AVAILABLE_CATEGORIES, categoryDao.findAll());
         return HOME_VIEW;
+    }
+
+    @RequestMapping(value = COMMENT_UPDATE_FORM, method = RequestMethod.GET)
+    public String showCommentUpdateBox(@ModelAttribute Comment comment,
+                                       Model model) {
+        Optional<Comment> commentOptional = commentDao.find(comment.getId());
+        comment.checkOptionalIsPresent(commentOptional);
+        Comment targetComment = commentOptional.get();
+        Post post = targetComment.getPost();
+        List<Comment> comments = post.getComments();
+        comments.removeIf(i -> i.getId() == targetComment.getId());
+        model.addAttribute("post", post);
+        model.addAttribute("comment", targetComment);
+        model.addAttribute("comments", comments);
+        return SINGLE_POST_VIEW;
     }
 
     private void setCategoryNames(Post post) {

@@ -76,7 +76,7 @@ public class URL {
 
     public static final String COMMENT_ADD = "/comment/add";
 
-    public static final String COMMENT_UPDATE = "/comment/update";
+    public static final String COMMENT_UPDATE_FORM = "/comment/update";
 
     public static final String COMMENT_DELETE = "/comment/delete";
 
