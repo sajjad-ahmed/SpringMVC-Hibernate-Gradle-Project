@@ -10,7 +10,9 @@
 <body>
 <div class="row">
     <c:url value="/category/add" var="categoryAddUrl"/>
-    <a href="${categoryAddUrl}" class="button primary"> <spring:message code="label.category.add.new.title"/></a>
+    <a href="${categoryAddUrl}" class="button primary">
+        <spring:message code="label.category.add.new.title"/>
+    </a>
     <br/>
     <br/>
     <c:if test="${confirmation == 'ADDED'}">

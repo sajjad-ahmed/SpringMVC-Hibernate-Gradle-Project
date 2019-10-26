@@ -134,8 +134,10 @@
                                class="primary"></dd>
                 </c:if>
                 <c:if test="${comment.id !=0}">
-                    <dd><input type="submit" value="<spring:message code="label.post.comment.button.update"/>"
-                               class="primary"></dd>
+                    <dd>
+                        <input type="submit" value="<spring:message code="label.post.comment.button.update"/>"
+                               class="primary">
+                    </dd>
                 </c:if>
             </fieldset>
         </form:form>
@@ -143,8 +145,12 @@
 
     <c:if test="${empty sessionScope.sessionUser.id}">
         <c:url value="/auth/login" var="loginUrl"/>
-        <h4><spring:message code="label.post.comment.prompt.pref"/> <a href="${loginUrl}"> <spring:message
-                code="label.home.login.text"/></a> <spring:message code="label.post.comment.login.to.comment"/></h4>
+        <h4><spring:message code="label.post.comment.prompt.pref"/>
+            <a href="${loginUrl}">
+                <spring:message code="label.home.login.text"/>
+            </a>
+            <spring:message code="label.post.comment.login.to.comment"/>
+        </h4>
     </c:if>
 </c:if>
 </body>

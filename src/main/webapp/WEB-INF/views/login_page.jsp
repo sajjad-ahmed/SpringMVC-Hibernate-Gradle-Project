@@ -18,15 +18,21 @@
         <form:form method="post" modelAttribute="loginCmd" action="/auth/login" class="hform">
             <fieldset>
                 <legend><spring:message code="label.loginPage.legend"/></legend>
-                <dt><label aria-atomic="true" aria-live="polite"><spring:message
-                        code="label.loginPage.email.prompt"/> </label></dt>
+                <dt>
+                    <label aria-atomic="true" aria-live="polite">
+                        <spring:message code="label.loginPage.email.prompt"/>
+                    </label>
+                </dt>
                 <dd>
                     <form:input path="email" placeholder="Enter your email" aria-labelledby="code-label"
                                 aria-required="true"/>
                     <form:errors path="email" cssStyle="color: red"/>
                 </dd>
-                <dt><label aria-atomic="true" aria-live="polite"><spring:message
-                        code="label.loginPage.password.prompt"/> </label></dt>
+                <dt>
+                    <label aria-atomic="true" aria-live="polite">
+                        <spring:message code="label.loginPage.password.prompt"/>
+                    </label>
+                </dt>
                 <dd>
                     <form:input path="password" type="password" placeholder="Enter your password"
                                 aria-labelledby="code-label"

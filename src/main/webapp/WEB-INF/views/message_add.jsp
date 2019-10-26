@@ -18,16 +18,21 @@
                 <form:input path="id" type="hidden"/>
                 <form:input path="sender" value="${sessionScope.sessionUser.id}" type="hidden"/>
                 <legend><spring:message code="label.message.send.legend"/></legend>
-                <dt><label aria-atomic="true" aria-live="polite"> <spring:message
-                        code="label.message.to.prompt"/> </label></dt>
-
+                <dt>
+                    <label aria-atomic="true" aria-live="polite">
+                        <spring:message code="label.message.to.prompt"/>
+                    </label>
+                </dt>
                 <dd>
                     <form:select path="receiver" multiple="false" items="${users}"
                                  itemLabel="nameAndRole" itemValue="id"/>
                     <form:errors path="receiver"/>
                 </dd>
-                <dt><label aria-atomic="true" aria-live="polite"> <spring:message
-                        code="label.message.body.prompt"/> </label></dt>
+                <dt>
+                    <label aria-atomic="true" aria-live="polite">
+                        <spring:message code="label.message.body.prompt"/>
+                    </label>
+                </dt>
                 <dd>
                     <form:textarea path="body" type="text" placeholder="Type your message here"
                                    cssClass="tht"/>

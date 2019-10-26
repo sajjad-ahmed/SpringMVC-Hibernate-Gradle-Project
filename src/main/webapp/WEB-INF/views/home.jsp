@@ -18,13 +18,17 @@
             </c:if>
             <div class="content">
                 <h3><c:out value="${user.title}"/></h3>
-                <p>by <strong><c:out value="${user.getAuthorName()}"/></strong> - <c:out
-                        value="${user.formattedDate}"/></p>
+
+                <p>
+                    by <strong><c:out value="${user.getAuthorName()}"/></strong> -
+                    <c:out value="${user.formattedDate}"/>
+                </p>
             </div>
             <div class="footer">
                 <c:url value="/post/show/${user.uri}" var="showPostUrl"/>
-                <a href="${showPostUrl}" class="button outline primary"><spring:message
-                        code="label.post.read.more"/></a>
+                <a href="${showPostUrl}" class="button outline primary">
+                    <spring:message code="label.post.read.more"/>
+                </a>
             </div>
         </section>
     </c:forEach>
