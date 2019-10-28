@@ -10,7 +10,6 @@
 <head>
     <title><decorator:title/> | O(n)</title>
     <link href="<c:url value="/css/style.css"/>" rel="stylesheet" type="text/css">
-
     <div class="row top-nav">
         <div class="container" id="navTopRow">
             <nav class="row relative">
@@ -28,7 +27,6 @@
                         </c:forEach>
                     </ul>
                 </div>
-
                 <nav class="span-t4 span-s6">
                     <ul class="hnav pull-right hidden-t" style="background-color: transparent">
                         <c:if test="${sessionScope.sessionUser != null}">
@@ -71,7 +69,6 @@
         <decorator:body/>
     </div>
 </div>
-
 <script type="text/javascript">
     function getConfirmation(message, fieldId) {
         var retVal = confirm(message);

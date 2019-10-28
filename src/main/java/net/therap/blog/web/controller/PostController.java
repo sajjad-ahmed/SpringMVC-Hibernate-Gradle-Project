@@ -176,11 +176,8 @@ public class PostController implements Constants {
     public String commentDeleteHandler(@ModelAttribute Comment comment,
                                        Model model) {
         Comment targetComment = commentDao.find(comment.getId()).get();
+        commentDao.delete(targetComment.getId());
         Post post = postService.find(targetComment.getPost().getId()).get();
-        List<Comment> comments = post.getComments();
-        comments.removeIf(i -> i.getId() == targetComment.getId());
-        post.setComments(comments);
-        post = postService.save(post);
         model.addAttribute("post", post);
         model.addAttribute("comment", new Comment());
         model.addAttribute("comments", post.getComments());

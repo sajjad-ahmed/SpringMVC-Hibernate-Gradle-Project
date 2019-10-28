@@ -3430,13 +3430,15 @@ a {
 
 .comment-date {
     color: #666;
+    font-style: italic;
     font-size: 12px;
 }
 
 .comment-bdy {
-    color: dodgerblue;
-    font-style: italic;
-    font-size: 18px;
+    color: #880E4F;
+    font-weight: bold;
+    font-size: 24px;
+
 }
 
 .uploadButton, input[type="button"], button, .button {

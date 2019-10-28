@@ -16,22 +16,28 @@
             <fieldset>
                 <form:input path="id" type="hidden"/>
                 <legend><spring:message code="label.category.body.title"/></legend>
-                <dt><label aria-atomic="true" aria-live="polite"><spring:message
-                        code="label.category.body.name"/> </label></dt>
+                <dt>
+                    <label aria-atomic="true" aria-live="polite">
+                        <spring:message code="label.category.body.name"/>
+                    </label>
+                </dt>
                 <dd>
                     <form:input path="name"/>
                     <form:errors cssStyle="color: red" path="name"/>
                 </dd>
                 <c:if test="${category.id == 0}">
-                    <dd><input type="submit" value="<spring:message code="label.add.header"/>" class="primary"></dd>
+                    <dd>
+                        <input type="submit" value="<spring:message code="label.add.header"/>" class="primary">
+                    </dd>
                 </c:if>
                 <c:if test="${category.id != 0}">
-                    <dd><input type="submit" value="<spring:message code="label.update.header"/>" class="primary"></dd>
+                    <dd>
+                        <input type="submit" value="<spring:message code="label.update.header"/>" class="primary">
+                    </dd>
                 </c:if>
             </fieldset>
         </table>
     </form:form>
 </div>
-
 </body>
 </html>
