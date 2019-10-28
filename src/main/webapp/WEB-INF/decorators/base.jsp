@@ -74,6 +74,12 @@
 
 <script type="text/javascript">
     function getConfirmation(message, fieldId) {
+        console.log("COmmnet hit")
+        console.log("COmmnet hit")
+        console.log("COmmnet hit")
+        console.log("COmmnet hit")
+        console.log("COmmnet hit")
+        console.log("COmmnet hit")
         var retVal = confirm(message);
         if (retVal == true) {
             var f = document.getElementById(fieldId);

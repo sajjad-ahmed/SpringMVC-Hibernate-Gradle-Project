@@ -53,49 +53,31 @@
     </c:if>
     <c:if test="${!empty post.comments}">
         <c:forEach items="${post.comments}" var="eachComment">
-            <form class="hform">
-                <fieldset>
-                    <legend><spring:message code="label.post.comment.legend"/> <strong> <c:out
-                            value="${eachComment.user.fullName}"/> </strong></legend>
-
-                    <dt><label aria-atomic="true" aria-live="polite" class="comment-date">
-                        <c:out value="${eachComment.commentedOn}"/> </label></dt>
-                    <dd>
-                        <p class="comment-bdy">
-                            <c:out value="${eachComment.body}"/>
-
-                        </p>
-                    </dd>
-
-                    <dd>
-                        <c:if test="${sessionScope.sessionUser.role == 'ADMIN' }">
-                            <form:form action="/comment/delete" method="post" id="id-form-cc-${eachComment.id}"
-                                       modelAttribute="comment" class="hform">
-                                <form:input path="id" type="hidden" value="${eachComment.id}"/>
-                                <input type="button" onclick="getConfirmation('<spring:message
-                                        code="label.confirmation.prompt.delete"/>', 'id-form-cc-${eachComment.id}')"
-                                       value="<spring:message code="label.delete.header"/>"
-                                       class="danger"/>
-                            </form:form>
-                            <c:if test="${sessionScope.sessionUser.id == eachComment.user.id}">
-                                <form:form action="/comment/update" method="get"
-                                           modelAttribute="comment" class="hform">
-                                    <form:input path="id" type="hidden" value="${eachComment.id}"/>
-                                    <input type="submit" value="<spring:message code="label.update.header"/>"
-                                           class="primary"/>
-                                </form:form>
-                            </c:if>
-                        </c:if>
-                        <c:if test="${sessionScope.sessionUser.id == eachComment.user.id
-                        && sessionScope.sessionUser.role != 'ADMIN'}">
-                            <form:form action="/comment/delete" method="post" id="id-form-ct-${eachComment.id}"
-                                       modelAttribute="comment" class="hform">
-                                <form:input path="id" type="hidden" value="${eachComment.id}"/>
-                                <input type="button" onclick="getConfirmation('<spring:message
-                                        code="label.confirmation.prompt.delete"/>', 'id-form-ct-${eachComment.id}')"
-                                       value="<spring:message code="label.delete.header"/>"
-                                       class="danger"/>
-                            </form:form>
+            <section class="card">
+                <div class="header">
+                    <spring:message code="label.post.comment.legend"/>
+                    <strong> <c:out value="${eachComment.user.fullName}"/> </strong>
+                    <br>
+                    <label aria-atomic="true" aria-live="polite" class="comment-date">
+                        <c:out value="${eachComment.commentedOn}"/>
+                    </label>
+                </div>
+                <div class="content">
+                    <p class="comment-bdy">
+                        <c:out value="${eachComment.body}"/>
+                    </p>
+                </div>
+                <div class="footer">
+                    <c:if test="${sessionScope.sessionUser.role == 'ADMIN' }">
+                        <form:form action="/comment/delete" method="post"
+                                   modelAttribute="comment" class="hform" id="form-id-cdt-${eachComment.id}">
+                            <form:input path="id" type="hidden" value="${eachComment.id}"/>
+                            <input type="button" onclick="getConfirmation('<spring:message
+                                    code="label.confirmation.prompt.delete"/>', 'form-id-cdt-${eachComment.id}')"
+                                   value="<spring:message code="label.delete.header"/>"
+                                   class="danger"/>
+                        </form:form>
+                        <c:if test="${sessionScope.sessionUser.id == eachComment.user.id}">
                             <form:form action="/comment/update" method="get"
                                        modelAttribute="comment" class="hform">
                                 <form:input path="id" type="hidden" value="${eachComment.id}"/>
@@ -103,9 +85,27 @@
                                        class="primary"/>
                             </form:form>
                         </c:if>
-                    </dd>
-                </fieldset>
-            </form>
+                    </c:if>
+                    <c:if test="${sessionScope.sessionUser.id == eachComment.user.id
+                        && sessionScope.sessionUser.role != 'ADMIN'}">
+                        <form:form action="/comment/delete" method="post"
+                                   modelAttribute="comment" class="hform" id="form-id-cdt-${eachComment.id}">
+                            <form:input path="id" type="hidden" value="${eachComment.id}"/>
+                            <input type="button" onclick="getConfirmation('<spring:message
+                                    code="label.confirmation.prompt.delete"/>', 'form-id-cdt-${eachComment.id}')"
+                                   value="<spring:message code="label.delete.header"/>"
+                                   class="danger"/>
+                        </form:form>
+
+                        <form:form action="/comment/update" method="get"
+                                   modelAttribute="comment" class="hform">
+                            <form:input path="id" type="hidden" value="${eachComment.id}"/>
+                            <input type="submit" value="<spring:message code="label.update.header"/>"
+                                   class="primary"/>
+                        </form:form>
+                    </c:if>
+                </div>
+            </section>
         </c:forEach>
     </c:if>
     <c:if test="${empty post.comments}">
