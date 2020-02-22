@@ -26,7 +26,7 @@
 
     <filter>
         <filter-name>authenticationFilter</filter-name>
-        <filter-class>net.therap.blog.web.filter.AuthenticationFilter</filter-class>
+        <filter-class>red.niloy.blog.web.filter.AuthenticationFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>authenticationFilter</filter-name>
@@ -35,7 +35,7 @@
 
     <filter>
         <filter-name>noCacheFilter</filter-name>
-        <filter-class>net.therap.blog.web.filter.NoCacheFilter</filter-class>
+        <filter-class>red.niloy.blog.web.filter.NoCacheFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>noCacheFilter</filter-name>

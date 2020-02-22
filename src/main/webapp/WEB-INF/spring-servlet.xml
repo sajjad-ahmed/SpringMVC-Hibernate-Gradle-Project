@@ -25,8 +25,8 @@
 
     <context:annotation-config/>
 
-    <bean id="emailValidator" class="net.therap.blog.web.validator.UniqueEmailValidator"/>
-    <bean id="uniqueUriValidator" class="net.therap.blog.web.validator.PostValidator"/>
+    <bean id="emailValidator" class="red.niloy.blog.web.validator.UniqueEmailValidator"/>
+    <bean id="uniqueUriValidator" class="red.niloy.blog.web.validator.PostValidator"/>
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="persistenceUnitName" value="blog"/>
@@ -76,7 +76,7 @@
         <property name="validationMessageSource" ref="messageSource"/>
     </bean>
 
-    <bean class="net.therap.blog.exception.ExceptionHandler"/>
+    <bean class="red.niloy.blog.exception.ExceptionHandler"/>
 
 </beans>
 

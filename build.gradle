@@ -16,7 +16,7 @@ gretty {
 }
 
 war.archiveName = "on"
-group = 'net.therap'
+group = 'red.niloy'
 version = '0.0.1'
 
 sourceCompatibility = 1.8
@@ -48,7 +48,7 @@ dependencies {
     compile "org.hibernate:hibernate-validator:$hibernateVersion"
     compile "org.hibernate:hibernate-validator-annotation-processor:$hibernateVersion"
 
-    //lesson learned: Hibernate 4.3 this brought the newer spec (2.1). Thus NEVER EVER use 2.0
+    //note: Hibernate 4.3 this brought the newer spec (2.1). Thus NEVER EVER use 2.0
     compile group: 'org.hibernate.javax.persistence', name: 'hibernate-jpa-2.1-api', version: '1.0.0.Final'
 
     compile "opensymphony:sitemesh:2.4.2"
